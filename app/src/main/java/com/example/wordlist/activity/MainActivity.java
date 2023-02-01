@@ -8,7 +8,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.wordlist.R;
-import com.example.wordlist.adapter.TabPagerAdapter;
+import com.example.wordlist.adapter.MainPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //创建一个翻页适配器
-        TabPagerAdapter adapter=new TabPagerAdapter(getSupportFragmentManager());
+        MainPagerAdapter adapter=new MainPagerAdapter(getSupportFragmentManager());
         viewPager=findViewById(R.id.vp_content);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){

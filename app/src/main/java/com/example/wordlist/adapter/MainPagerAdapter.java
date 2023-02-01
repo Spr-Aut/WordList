@@ -4,15 +4,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.wordlist.fragment.TabFirstFragment;
-import com.example.wordlist.fragment.TabSecondFragment;
-import com.example.wordlist.fragment.TabThirdFragment;
+import com.example.wordlist.fragment.ReviewFragment;
+import com.example.wordlist.fragment.WordListFragment;
+import com.example.wordlist.fragment.SettingsFragment;
 
 
-public class TabPagerAdapter extends FragmentPagerAdapter {
+public class MainPagerAdapter extends FragmentPagerAdapter {
 
     // 碎片页适配器的构造方法，传入碎片管理器
-    public TabPagerAdapter(FragmentManager fm) {
+    public MainPagerAdapter(FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
@@ -20,11 +20,11 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new TabFirstFragment();  // 返回第一个碎片
+            return new ReviewFragment();  // 返回第一个碎片
         } else if (position == 1) {
-            return new TabSecondFragment();  // 返回第二个碎片
+            return new WordListFragment();  // 返回第二个碎片
         } else if (position == 2) {
-            return new TabThirdFragment();  // 返回第三个碎片
+            return new SettingsFragment();  // 返回第三个碎片
         } else {
             return null;
         }

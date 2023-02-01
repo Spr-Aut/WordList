@@ -19,20 +19,20 @@
             android:id="@+id/rb_home"
             style="@style/TabButton"
             android:checked="true"
-            android:text="首页"
-            android:drawableTop="@drawable/tab_first_selector" />
+            android:text="复习"
+            android:drawableTop="@drawable/tab_review_selector" />
 
         <RadioButton
             android:id="@+id/rb_class"
             style="@style/TabButton"
-            android:text="分类"
-            android:drawableTop="@drawable/tab_second_selector" />
+            android:text="词本"
+            android:drawableTop="@drawable/tab_word_list_selector" />
 
         <RadioButton
             android:id="@+id/rb_cart"
             style="@style/TabButton"
-            android:text="购物车"
-            android:drawableTop="@drawable/tab_third_selector" />
+            android:text="我的"
+            android:drawableTop="@drawable/tab_settings_selector" />
     </RadioGroup>
 
 </LinearLayout>
