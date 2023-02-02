@@ -47,6 +47,7 @@
                     android:textStyle="bold"
                     android:gravity="center"
                     android:padding="10dp"
+                    android:text="translate"
                     />
             </LinearLayout>
 

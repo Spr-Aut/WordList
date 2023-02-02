@@ -23,6 +23,7 @@ import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.MyTools;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import okhttp3.OkHttpClient;
@@ -47,6 +48,7 @@ public class TranslateFragment extends Fragment {
     private TextView tvResult;//译文
 
     BookDao bookDao= MainApplication.getInstance().getBookDB().bookDao();
+    WordInfo wordInfo=new WordInfo();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,7 +85,9 @@ public class TranslateFragment extends Fragment {
     }
 
     private void clear() {
-
+        tvResult.setText("");
+        wordInfo=new WordInfo();//获取新对象，相当于清空wordInfo，但是可能浪费内存，明天再调整
+        notifyWord();
     }
 
     private void translate(){
@@ -95,7 +99,7 @@ public class TranslateFragment extends Fragment {
 
         //addToDetail();//弃用，用notifyWord();
 
-        notifyWord();
+        //notifyWord();//要在MyAsyncTask()里调用，否则是同步的
 
         //待做：添加到单词本
 
@@ -110,6 +114,16 @@ public class TranslateFragment extends Fragment {
      * */
     private void notifyWord(){
         Intent intent=new Intent(BroadcastName.WORD_DETAIL_REFRESH);
+
+        ArrayList<String> wordDetailList=new ArrayList<>();
+        wordDetailList.add(wordInfo.getName());
+        wordDetailList.add(wordInfo.getSymbol_uk());
+        wordDetailList.add(wordInfo.getSymbol_us());
+        wordDetailList.add(wordInfo.getDesc());
+        wordDetailList.add(wordInfo.getSentence());
+        //MyTools.showMsg(wordDetailList.get(0),mContext);
+
+        intent.putStringArrayListExtra("WORD_DETAIL",wordDetailList);
         mContext.sendBroadcast(intent);
     }
 
@@ -194,7 +208,7 @@ public class TranslateFragment extends Fragment {
         @Override
         protected void onPostExecute(String params) {
             String text = "null";
-            WordInfo wordInfo=new WordInfo();
+            //WordInfo wordInfo=new WordInfo();
             if (params != null) {
                 long time= MyTools.getCurrentTimeMillis();
                 try {
@@ -207,6 +221,7 @@ public class TranslateFragment extends Fragment {
                 //tv_result.setText(wordInfo.toString());
                 text=wordInfo.getDesc();
                 tvResult.setText(text);
+                notifyWord();
             }
 
         }
