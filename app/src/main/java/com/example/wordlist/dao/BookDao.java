@@ -31,6 +31,8 @@ public interface BookDao {
     @Delete
     void deleteBook(BookInfo book); // 删除书籍信息
 
+
+
     @Query("DELETE FROM BookInfo WHERE 1=1") // 设置删除语句
     void deleteAllBook(); // 删除所有书籍信息
 }

@@ -40,6 +40,8 @@ public class ReviewFragment extends Fragment implements View.OnClickListener {
         btnTrans.setOnClickListener(this);
 
 
+
+
         return mView;
     }
 

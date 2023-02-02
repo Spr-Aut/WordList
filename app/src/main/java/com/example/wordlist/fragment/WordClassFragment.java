@@ -34,7 +34,7 @@ public class WordClassFragment extends Fragment {
         Toolbar tl_head = mView.findViewById(R.id.tl_head);
         mAppCompatActivity.setSupportActionBar(tl_head); // 使用tl_head替换系统自带的ActionBar
         mTitleList.add("翻译");
-        mTitleList.add("单词本");
+        mTitleList.add("详情");
         // 从布局文件中获取名叫tab_title的标签布局
         TabLayout tab_title = mView.findViewById(R.id.tab_title);
         // 从布局文件中获取名叫vp2_content的二代翻页视图

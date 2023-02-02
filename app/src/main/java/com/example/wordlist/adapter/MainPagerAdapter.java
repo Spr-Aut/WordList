@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.wordlist.fragment.ReviewFragment;
 import com.example.wordlist.fragment.WordClassFragment;
-import com.example.wordlist.fragment.SettingsFragment;
+import com.example.wordlist.fragment.WordListFragment;
 
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
@@ -24,7 +24,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         } else if (position == 1) {
             return new WordClassFragment();  // 返回第二个碎片
         } else if (position == 2) {
-            return new SettingsFragment();  // 返回第三个碎片
+            return new  WordListFragment();  // 返回第三个碎片
         } else {
             return null;
         }

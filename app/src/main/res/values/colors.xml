@@ -21,4 +21,33 @@
     <color name="blue_light">#aaaaff</color>
     <color name="tab_text_selected">#0084e8</color>
     <color name="tab_text_normal">#7597b3</color>
+
+    <color name="grey_f3f3f3">#F3F3F3</color>
+    <color name="green_006400">#ff6633</color>
+    <color name="grey_7d7d7d">#7d7d7d</color>
+    <color name="orange_ff6633">#ff6633</color>
+
+    <color name="gray_background">#f7f7f7</color>
+    <color name="white_card_bg">#ffffff</color>
+    <color name="yellow_f5c342">#f5c342</color>
+    <color name="yellow_f6ca45">#f6ca45</color>
+    <color name="yellow_f8da61">#f8da61</color>
+    <color name="gray_line">#4d303030</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+
+    <color name="main_bg">#f7f7f7</color>
+    <color name="card_bg">#ffffff</color>
+    <color name="dialog_bg">#f5c342</color>
+    <color name="button_bg">#ffffff</color>
+    <color name="button_bg_pressed">#4d303030</color>
+    <color name="button_bg_blue">#66bbff</color>
+    <color name="button_bg_pressed_blue">#3590C2</color>
+    <color name="main_typeface">#FF000000</color>
+    <color name="widget_bg">#ffffff</color>
+    <color name="widget_typeface_main">#e6000000</color>
+    <color name="widget_typeface_second">#70000000</color>
+    <color name="widget_typeface_third">#4d000000</color>
 </resources>
