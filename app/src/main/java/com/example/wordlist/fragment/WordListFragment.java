@@ -23,14 +23,14 @@ public class WordListFragment extends Fragment {
     private static final String TAG = "WordListFragment";
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
-
+    private static TextView tv_second;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity(); // 获取活动页面的上下文
         // 根据布局文件fragment_tab_second.xml生成视图对象
         mView = inflater.inflate(R.layout.fragment_word_list, container, false);
-        TextView tv_second = mView.findViewById(R.id.tv_word_list);
+        tv_second = mView.findViewById(R.id.tv_word_list);
         tv_second.setText("我是词本页面");
 
 
@@ -38,6 +38,8 @@ public class WordListFragment extends Fragment {
         return mView;
     }
 
-
+    public static void vis(){
+        tv_second.setText("收到");
+    }
 
 }

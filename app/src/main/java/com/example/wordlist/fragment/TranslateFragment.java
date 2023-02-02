@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -24,6 +25,10 @@ public class TranslateFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_translate, container, false);
         TextView tv_second = mView.findViewById(R.id.tv_translate);
         tv_second.setText("我是翻译页面");
+
+        Button btnVis=mView.findViewById(R.id.btn_vis);
+        btnVis.setOnClickListener(v -> WordListFragment.vis());
+
 
 
 

@@ -52,4 +52,6 @@ public class WordClassFragment extends Fragment {
 
         return mView;
     }
+
+
 }
