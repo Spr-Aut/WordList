@@ -56,6 +56,13 @@ public class WordDetailFragment extends Fragment {
         broadcastReceiver=new MyBroadcastReceiver();
         IntentFilter filter=new IntentFilter(BroadcastName.WORD_DETAIL_REFRESH);
         mContext.registerReceiver(broadcastReceiver,filter);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(mContext,TAG+"启动时刷新",Toast.LENGTH_SHORT).show();
     }
 
     @Override

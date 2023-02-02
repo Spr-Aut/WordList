@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.wordlist.util.MyTools;
 import com.example.wordlist.R;
 import com.example.wordlist.XMLParse;
+import com.example.wordlist.entity.WordInfo;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -78,18 +80,22 @@ public class ReviewFragment extends Fragment implements View.OnClickListener {
 
         }
 
+        /*解析XML为WordInfo*/
         @Override
         protected void onPostExecute(String params) {
             String text = "null";
+            WordInfo wordInfo=new WordInfo();
             if (params != null) {
+                long time= MyTools.getCurrentTimeMillis();
                 try {
-                    text = XMLParse.parseXmlWithPull(params, true);
+                    wordInfo = XMLParse.parseXmlWithPull(params, true);
                     Log.d(TAG,text);
                     //DBHelper.setExampleSentence(context, text, wordId);
                 } catch (Exception e) {
                     Log.d(TAG, "onPostExecute: " + text);
                 }
-                tv_result.setText(text);
+                tv_result.setText(wordInfo.toString());
+                //Toast.makeText(mContext,text,Toast.LENGTH_SHORT).show();
                 tv_result.setGravity(Gravity.START);
             }
 

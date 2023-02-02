@@ -1,5 +1,8 @@
 package com.example.wordlist;
 
+import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.util.MyTools;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -66,37 +69,75 @@ import java.io.StringReader;
 public class XMLParse {
     private static final String TAG = "myTAG";
 
-    public static String parseXmlWithPull(String data,boolean showTrans){
-        StringBuilder stringBuilder=new StringBuilder();
+    public static WordInfo parseXmlWithPull(String data,boolean showTrans){
+        WordInfo wordInfo=new WordInfo();
+
+        String name="";//单词名
+        StringBuilder desc=new StringBuilder();//释义
+        StringBuilder sentence=new StringBuilder();//例句
+        String symbol_uk="";//英式音标
+        String sound_uk="";//英式读音
+        String symbol_us="";//美式音标
+        String sound_us="";//美式读音
+        boolean symbol_flag=false;//存了一个音标后，置true
+        boolean sound_flag=false;//存了一个读音后，置true
+        String orig="";
+        String trans="";
+
+        long time= MyTools.getCurrentTimeMillis();
+
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser pullParser=factory.newPullParser();
             pullParser.setInput(new StringReader(data));
             int eventType=pullParser.getEventType();
-            String orig="";
-            String trans="";
-            String desc="";
+
+
+
             while (eventType!=XmlPullParser.END_DOCUMENT){
                 switch (eventType){
                     case XmlPullParser.START_TAG: {
-                        if (pullParser.getName().equals("orig")) {
+                        String str=pullParser.getName();
+                        if (str.equals("key")){//单词名
+                            name=pullParser.nextText();
+                        }else if (str.equals("ps")){//音标
+                            if (symbol_flag){
+                                symbol_us=pullParser.nextText();
+                            }else {
+                                symbol_uk=pullParser.nextText();
+                                symbol_flag=true;
+                            }
+                        }else if (str.equals("pron")){//读音
+                            if (sound_flag){
+                                sound_us=pullParser.nextText();
+                            }else {
+                                sound_uk=pullParser.nextText();
+                                sound_flag=true;
+                            }
+                        }else if (str.equals("pos")||str.equals("acceptation")){
+                            desc.append(pullParser.nextText());
+                        }else if (str.equals("orig")){
+                            orig = pullParser.nextText();
+                        }else if (str.equals("trans")){
+                            trans = pullParser.nextText();
+                        }
+
+                        /*if (pullParser.getName().equals("orig")) {
                             orig = pullParser.nextText();
                         } else if (pullParser.getName().equals("trans")) {
                             trans = pullParser.nextText();
                         }else if (pullParser.getName().equals("acceptation")){
                             desc=pullParser.nextText();
                             stringBuilder.append(desc);
-                        }
+                        }*/
                         break;
                     }
                     case XmlPullParser.END_TAG:{
                         if (pullParser.getName().equals("sent")){
-                            stringBuilder.append(orig);
-                            if (showTrans)
-                                stringBuilder.append(trans);
-                            stringBuilder.append("\n");
-                        }else if(pullParser.getName().equals("acceptation")){
-                            stringBuilder.append(desc);
+                            sentence.append(orig);
+                            //if (showTrans)
+                            sentence.append(trans);
+                            sentence.append("\n");
                         }
                     }
                     default:
@@ -107,9 +148,21 @@ public class XMLParse {
             }
         }catch (Exception e){
             e.printStackTrace();
-            stringBuilder.append(e.getMessage());
+            sentence.append(e.getMessage());
         }
-        return sqliteEscape(stringBuilder.toString());
+
+        wordInfo.setName(name);
+        wordInfo.setDesc(desc.toString());
+        wordInfo.setSymbol_uk(symbol_uk);
+        wordInfo.setSound_uk(sound_uk);
+        wordInfo.setSymbol_us(symbol_us);
+        wordInfo.setSound_us(sound_us);
+        wordInfo.setSentence(sentence.toString());
+        //剩下的都是默认值
+
+        //return sqliteEscape(sound_uk);
+        time= MyTools.getCurrentTimeMillis()-time;
+        return wordInfo;
     }
 
     public static String sqliteEscape(String keyWord) {

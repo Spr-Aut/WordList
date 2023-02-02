@@ -14,6 +14,16 @@ public class BookInfo {
 
     private String text;
 
+    private long time=1675341973622L;
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
     public String getText() {
         return text;
     }

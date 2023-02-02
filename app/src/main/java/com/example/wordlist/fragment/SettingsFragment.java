@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.wordlist.util.MyTools;
 import com.example.wordlist.R;
 
 public class SettingsFragment extends Fragment {
@@ -23,6 +24,9 @@ public class SettingsFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_settings, container, false);
         TextView tv_third = mView.findViewById(R.id.tv_third);
         tv_third.setText("我是购物车页面");
+        long timeMillis = MyTools.getCurrentTimeMillis();
+        long time=1675341973622L;
+        tv_third.setText(Integer.MAX_VALUE+"");
 
         return mView;
     }
