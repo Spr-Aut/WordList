@@ -6,6 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.wordlist.fragment.SettingsFragment;
 import com.example.wordlist.fragment.TranslateFragment;
+import com.example.wordlist.fragment.WordDetailFragment;
 import com.example.wordlist.fragment.WordListFragment;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class WordClassPagerAdapter extends FragmentStateAdapter {
         if (position == 0) { // 第一页展示翻译
             return new TranslateFragment();
         } else { // 第二页展示单词本
-            return new SettingsFragment();
+            return new WordDetailFragment();
         }
     }
 

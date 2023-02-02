@@ -12,6 +12,15 @@ public class BookInfo {
 
     private int price;
 
+    private String text;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 
     public BookInfo() {
     }
