@@ -22,13 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.wordlist.R;
 import com.example.wordlist.entity.WordInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static String TAG = "LinearDynamicAdapter";
     private Context mContext; // 声明一个上下文对象
-    private ArrayList<WordInfo> mWordList;
+    private List<WordInfo> mWordList;
 
     private LayoutInflater mLayoutInflater;
     private int viewType;
@@ -36,7 +35,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public static final int TYPE_GRID_LAYOUT = 1;
     public int TRANS_VISUAL_STATE=0;
 
-    public SlideRecyclerViewAdapter(Context context,ArrayList<WordInfo> wordList){
+    public SlideRecyclerViewAdapter(Context context,List<WordInfo> wordList){
         this.mContext=context;
         this.mWordList=wordList;
         mLayoutInflater=LayoutInflater.from(mContext);
@@ -79,7 +78,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         return mWordList.size();
     }
 
-    public void refreshData(ArrayList<WordInfo> wordList){
+    public void refreshData(List<WordInfo> wordList){
         this.mWordList=wordList;
         notifyDataSetChanged();
     }

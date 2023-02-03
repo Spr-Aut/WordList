@@ -43,14 +43,16 @@ public class WordListFragment extends Fragment {
     BookDao bookDao= MainApplication.getInstance().getBookDB().bookDao();
     WordDao wordDao=MainApplication.getInstance().getWordDB().wordDao();
     List<BookInfo> allBook;
-    ArrayList<WordInfo> allWord;
+    List<WordInfo> allWord;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity(); // 获取活动页面的上下文
         mView = inflater.inflate(R.layout.fragment_word_list, container, false);// 根据布局文件fragment_tab_second.xml生成视图对象
 
+        initData();
+
         mRecyclerView=mView.findViewById(R.id.rc_word_list);
-        allWord=new ArrayList<>();
+
 
         WordInfo wordInfo=new WordInfo();
         wordInfo.setName("原文");
@@ -79,17 +81,27 @@ public class WordListFragment extends Fragment {
         return mView;
     }
 
+    private void initData() {
+        allWord=new ArrayList<>();
+        Log.d(TAG,"初始化");
+    }
+
     private void refresh() {
         Toast.makeText(mContext,"刷新",Toast.LENGTH_SHORT).show();
+
         /*allBook = bookDao.getAllBook();
         if (allBook.size()==0){
             tv_second.setText("没有书");
         }else {
             //tv_second.setText(allBook.get(0).getName());
             tv_second.setText(allBook.get(0).getPrice()+"");
-        }
+        }*/
 
-        allWord=wordDao.getAllWord();*/
+        allWord=wordDao.getAllWord();
+        slideAdapter.refreshData(allWord);
+        Log.d(TAG,"数据库第一个词为"+wordDao.getAllWord().get(0).getName());
+        Log.d(TAG,"刷新");
+
     }
 
     @Override
@@ -103,6 +115,7 @@ public class WordListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG,"resume");
         refresh();
     }
 

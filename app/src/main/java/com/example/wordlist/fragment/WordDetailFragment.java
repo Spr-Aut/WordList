@@ -19,8 +19,10 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.wordlist.MainApplication;
 import com.example.wordlist.R;
 import com.example.wordlist.broadcast.BroadcastName;
+import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.util.TempMsg;
@@ -32,6 +34,8 @@ public class WordDetailFragment extends Fragment {
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
 
+    private WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
+
     private TextView tvName;//单词名
     private TextView tvSymbolUk;//英式音标
     private TextView tvSymbolUs;//美式音标
@@ -39,6 +43,7 @@ public class WordDetailFragment extends Fragment {
     private TextView tvSentence;//例句
     private MyBroadcastReceiver broadcastReceiver;
     private ImageButton btnSound;
+    private ImageButton btnFavorite;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,15 +57,25 @@ public class WordDetailFragment extends Fragment {
         tvDesc=mView.findViewById(R.id.tv_detail_desc);
         tvSentence=mView.findViewById(R.id.tv_detail_sentence);
         btnSound=mView.findViewById(R.id.btn_sound);
+        btnFavorite=mView.findViewById(R.id.btn_favorite);
 
         btnSound.setOnClickListener(v -> {
             playSound(TempMsg.WordInfo.getSound_uk());//默认播放英式
+        });
+        btnFavorite.setOnClickListener(v -> {
+            addToDao();
         });
 
 
 
 
         return mView;
+    }
+
+    private void addToDao() {
+        wordDao.insertOneWord(TempMsg.WordInfo);
+
+        Log.d(TAG,"添加单词"+TempMsg.WordInfo.getName());
     }
 
     private void playSound(String soundRul) {
