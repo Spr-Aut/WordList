@@ -1,23 +1,49 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:background="@color/card_bg"
+    >
 
-    <TextView
-        android:id="@+id/tv_word_list"
+    <!--列表-->
+    <com.example.wordlist.customview.SlideRecyclerView
+        android:id="@+id/rc_word_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom|center"
-        android:textColor="#000000"
-        android:textSize="17sp" />
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:id="@+id/btn_test"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bar_main_top"
         />
 
+    <!--顶部标题栏-->
+    <RelativeLayout
+        android:id="@+id/bar_main_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_top_main"
+        >
+        <ImageView
+            android:id="@+id/iv_main_top_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/wordlist"
+            android:layout_toLeftOf="@+id/tv_main_top"
+            />
+        <TextView
+            android:id="@+id/tv_main_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="单词本"
+            android:textStyle="bold"
+            android:textColor="@color/main_typeface"
+            android:textSize="23sp"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
 
 
-</LinearLayout>
+
+
+
+
+</RelativeLayout>
