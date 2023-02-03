@@ -1,6 +1,9 @@
 package com.example.wordlist;
 
 import android.app.Application;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.room.Room;
 
@@ -30,4 +33,6 @@ public class MainApplication extends Application {
     public BookDatabase getBookDB(){
         return bookDatabase;
     }
+
+
 }

@@ -6,6 +6,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -102,4 +105,6 @@ public class MyTools {
     public static void splitDesc(String desc){
 
     }
+
+
 }

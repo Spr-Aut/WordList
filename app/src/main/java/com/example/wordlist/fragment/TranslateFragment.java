@@ -1,5 +1,6 @@
 package com.example.wordlist.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -46,6 +49,7 @@ public class TranslateFragment extends Fragment {
     private Button btnAdd;//添加到单词本
     private EditText etOrigin;//原文
     private TextView tvResult;//译文
+    private Activity mActivity;
 
     //BookDao bookDao= MainApplication.getInstance().getBookDB().bookDao();
     //TempMsg.WordInfo TempMsg.WordInfo=new TempMsg.WordInfo();
@@ -56,6 +60,9 @@ public class TranslateFragment extends Fragment {
         // 根据布局文件fragment_tab_second.xml生成视图对象
         mView = inflater.inflate(R.layout.fragment_translate, container, false);
 
+
+
+
         btnTrans=mView.findViewById(R.id.btn_trans_translate);
         btnClear=mView.findViewById(R.id.btn_clear_translate);
         btnAdd=mView.findViewById(R.id.btn_add_translate);
@@ -65,6 +72,8 @@ public class TranslateFragment extends Fragment {
         btnTrans.setOnClickListener(v -> translate());
         btnClear.setOnClickListener(v -> clear());
         btnAdd.setOnClickListener(v -> add());
+
+        //popUpKeyboard(etOrigin);
 
         return mView;
     }
@@ -228,6 +237,8 @@ public class TranslateFragment extends Fragment {
 
     }
 
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -238,6 +249,7 @@ public class TranslateFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG,"继续，Name为"+TempMsg.WordInfo.getName());
+        //popUpKeyboard(etOrigin);
     }
 
     @Override
@@ -260,5 +272,20 @@ public class TranslateFragment extends Fragment {
         }
     }
 
+    //自动弹出键盘
+    private void popUpKeyboard(EditText editText){
+        editText.requestFocus();
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    //收起键盘
+    private void hideKeyboard(){
+        InputMethodManager inputMethodManager=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(inputMethodManager!=null){
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(),0);
+        }
+    }
 
 }

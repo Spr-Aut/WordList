@@ -51,6 +51,8 @@
     <color name="widget_typeface_second">#70000000</color>
     <color name="widget_typeface_third">#4d000000</color>
 
+    <color name="bg_grey_bottom">#F7F7F7</color>
+
     <color name="colorMainBlue">#3675FF</color>
     <color name="colorLightBlue">#4089ff</color>
     <color name="colorLightBlueN">#3E6AB1</color>

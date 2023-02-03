@@ -1,6 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/padding_bottom_main"
+    android:background="@color/bg_grey_bottom"
     >
     <View
         android:id="@+id/view_top"
@@ -24,26 +26,30 @@
         android:id="@+id/rg_tabbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <RadioButton
             android:id="@+id/rb_home"
             style="@style/TabButton"
             android:checked="true"
             android:text="复习"
-            android:drawableTop="@drawable/tab_review_selector" />
+            android:drawableTop="@drawable/tab_review_selector"
+            />
 
         <RadioButton
             android:id="@+id/rb_class"
             style="@style/TabButton"
             android:text="词本"
-            android:drawableTop="@drawable/tab_word_class_selector" />
+            android:drawableTop="@drawable/tab_word_class_selector"
+            />
 
         <RadioButton
             android:id="@+id/rb_cart"
             style="@style/TabButton"
             android:text="我的"
-            android:drawableTop="@drawable/tab_settings_selector" />
+            android:drawableTop="@drawable/tab_settings_selector"
+            />
     </RadioGroup>
 
 </RelativeLayout>
