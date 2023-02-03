@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">单词本</string>
+
+    <dimen name="normal_btn_radius">5dp</dimen>
     <dimen name="rectangel_radius">10dp</dimen>
     <dimen name="padding_horizontal_main">25dp</dimen>
     <dimen name="padding_top_main">30dp</dimen>

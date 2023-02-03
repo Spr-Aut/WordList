@@ -39,6 +39,7 @@
     <color name="light_blue_900">#FF01579B</color>
 
     <color name="main_bg">#f7f7f7</color>
+    <color name="frag_bg">#FBFBFD</color>
     <color name="card_bg">#ffffff</color>
     <color name="dialog_bg">#f5c342</color>
     <color name="button_bg">#ffffff</color>
@@ -52,6 +53,10 @@
     <color name="widget_typeface_third">#4d000000</color>
 
     <color name="bg_grey_bottom">#F7F7F7</color>
+    <color name="btn_normal">#F2F3F8</color>
+    <color name="btn_normal_pressed">#4d303030</color>
+    <color name="btn_highlight">#4089ff</color>
+    <color name="btn_highlight_pressed">#3060ff</color>
 
     <color name="colorMainBlue">#3675FF</color>
     <color name="colorLightBlue">#4089ff</color>

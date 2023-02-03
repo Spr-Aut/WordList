@@ -31,4 +31,20 @@
         <item name="android:textColor">@drawable/toolbar_text_selector</item>
     </style>
 
+    <!--
+    android:background="@drawable/btn_normal_selector"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+    -->
+
+    <style name="BtnNormal">
+        <item name="android:background">@drawable/btn_normal_selector</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="BtnHighlight">
+        <item name="android:background">@drawable/btn_highlight_selector</item>
+    </style>
+
 </resources>

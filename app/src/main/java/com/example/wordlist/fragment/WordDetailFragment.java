@@ -4,12 +4,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +38,7 @@ public class WordDetailFragment extends Fragment {
     private TextView tvDesc;//释义
     private TextView tvSentence;//例句
     private MyBroadcastReceiver broadcastReceiver;
+    private ImageButton btnSound;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,12 +51,29 @@ public class WordDetailFragment extends Fragment {
         tvSymbolUs=mView.findViewById(R.id.tv_detail_symbol_us);
         tvDesc=mView.findViewById(R.id.tv_detail_desc);
         tvSentence=mView.findViewById(R.id.tv_detail_sentence);
+        btnSound=mView.findViewById(R.id.btn_sound);
+
+        btnSound.setOnClickListener(v -> {
+            playSound(TempMsg.WordInfo.getSound_uk());//默认播放英式
+        });
+
+
 
 
         return mView;
     }
 
-
+    private void playSound(String soundRul) {
+        if (soundRul!=null&&soundRul.length()!=0){
+            Log.d(TAG, "点击播放声音");
+            //String sound="https://res.iciba.com/resource/amp3/oxford/0/6f/0a/6f0a0924a725e59aa0104109317cfa09.mp3";
+            Log.d(TAG,"soundUrl:   "+soundRul);
+            MediaPlayer mediaPlayer = MediaPlayer.create(mContext, Uri.parse(soundRul));
+            mediaPlayer.start();
+        }else {
+            MyTools.showMsg("声音获取失败",mContext);
+        }
+    }
 
 
     private void refresh(String name) {//判断当前name和传来的name是否一样，不一样则刷新
@@ -64,6 +86,7 @@ public class WordDetailFragment extends Fragment {
             tvSymbolUs.setText(TempMsg.WordInfo.getSymbol_us());
             tvDesc.setText(TempMsg.WordInfo.getDesc());
             tvSentence.setText(TempMsg.WordInfo.getSentence());
+
 
             Log.d(TAG,"刷新当前Name为"+TempMsg.WordInfo.getName());
         }

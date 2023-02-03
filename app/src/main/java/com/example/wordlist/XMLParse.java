@@ -153,10 +153,11 @@ public class XMLParse {
 
         wordInfo.setName(name);
         wordInfo.setDesc(desc.toString());
-        wordInfo.setSymbol_uk(symbol_uk);
-        wordInfo.setSound_uk(sound_uk);
-        wordInfo.setSymbol_us(symbol_us);
-        wordInfo.setSound_us(sound_us);
+        wordInfo.setSymbol_uk(MyTools.proSymbol(symbol_uk));
+        //https://res.iciba.com/resource/amp3/oxford/0/6f/0a/6f0a0924a725e59aa0104109317cfa09.mp3   sound
+        wordInfo.setSound_uk(MyTools.proURL(sound_uk));
+        wordInfo.setSymbol_us(MyTools.proSymbol(symbol_us));
+        wordInfo.setSound_us(MyTools.proURL(sound_us));
         wordInfo.setSentence(sentence.toString());
         //剩下的都是默认值
 

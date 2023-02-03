@@ -101,10 +101,28 @@ public class MyTools {
         editor.apply();
     }
 
-    /*将desc用"-"分割成ArrayList*/
-    public static void splitDesc(String desc){
-
+    /*处理音标*/
+    public static String proSymbol(String str){
+        if (str!=null&&str.length()!=0){
+            String res = str.split(",")[0];//将str用","分割成ArrayList，然后取第0个
+            return "/" + res + "/";
+        }else return "";
     }
 
+    /*将str用"-"分割成ArrayList，然后取第0个*/
+    public static String splitWithHengGang(String str){
+        if (str!=null&&str.length()!=0){
+            String res = str.split("-")[0];
+            return res;
+        }else return "";
+    }
+
+    /*处理网址，将http改为https*/
+    public static String proURL(String str){
+        if (str!=null&&str.length()!=0){
+            String later=str.split(":")[1];
+            return "https:"+later;
+        }else return "";
+    }
 
 }
