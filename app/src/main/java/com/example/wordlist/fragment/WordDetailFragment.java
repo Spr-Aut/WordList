@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.wordlist.R;
 import com.example.wordlist.broadcast.BroadcastName;
+import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.MyTools;
+import com.example.wordlist.util.TempMsg;
 
 import java.util.ArrayList;
 
@@ -32,6 +35,7 @@ public class WordDetailFragment extends Fragment {
     private TextView tvSentence;//例句
     private MyBroadcastReceiver broadcastReceiver;
 
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity(); // 获取活动页面的上下文
         // 根据布局文件fragment_tab_second.xml生成视图对象
@@ -44,27 +48,26 @@ public class WordDetailFragment extends Fragment {
         tvSentence=mView.findViewById(R.id.tv_detail_sentence);
 
 
-        //refresh();
-
-
-
-
-
         return mView;
     }
 
-    private void refresh(){
-
-    }
 
 
-    private void refresh(ArrayList<String> word_detail_list) {
-        //Toast.makeText(mContext,TAG+"刷新",Toast.LENGTH_SHORT).show();
-        tvName.setText(word_detail_list.get(0));
-        tvSymbolUk.setText(word_detail_list.get(1));
-        tvSymbolUs.setText(word_detail_list.get(2));
-        tvDesc.setText(word_detail_list.get(3));
-        tvSentence.setText(word_detail_list.get(4));
+
+    private void refresh(String name) {//判断当前name和传来的name是否一样，不一样则刷新
+
+        if (tvName.getText().equals(name)){
+            Log.d(TAG,"无需刷新,name="+name);
+        }else {
+            tvName.setText(TempMsg.WordInfo.getName());
+            tvSymbolUk.setText(TempMsg.WordInfo.getSymbol_uk());
+            tvSymbolUs.setText(TempMsg.WordInfo.getSymbol_us());
+            tvDesc.setText(TempMsg.WordInfo.getDesc());
+            tvSentence.setText(TempMsg.WordInfo.getSentence());
+
+            Log.d(TAG,"刷新当前Name为"+TempMsg.WordInfo.getName());
+        }
+
     }
 
     @Override
@@ -73,22 +76,23 @@ public class WordDetailFragment extends Fragment {
         broadcastReceiver=new MyBroadcastReceiver();
         IntentFilter filter=new IntentFilter(BroadcastName.WORD_DETAIL_REFRESH);
         mContext.registerReceiver(broadcastReceiver,filter);
-
+        Log.d(TAG,"启动");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //Toast.makeText(mContext,TAG+"启动时刷新",Toast.LENGTH_SHORT).show();
+        Log.d(TAG,"继续");
+
+        refresh(TempMsg.WordInfo.getName());
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mContext.unregisterReceiver(broadcastReceiver);
+        Log.d(TAG,"停止");
     }
-
-
 
     /**
      * 切换Fragment可视状态
@@ -97,24 +101,21 @@ public class WordDetailFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){
-            refresh();
+            Log.d(TAG,"切换可视状态");
         }else {
         }
     }
-
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent!=null&&intent.getAction().equals(BroadcastName.WORD_DETAIL_REFRESH)){
 
-                ArrayList<String> word_detail = intent.getStringArrayListExtra("WORD_DETAIL");
-                //MyTools.showMsg("收到广播"+word_detail.get(0),mContext);
-                refresh(word_detail);
+                Log.d(TAG,"收到广播");
+                String name=intent.getStringExtra("name");
+                refresh(name);
             }
         }
     }
-
-
 
 }

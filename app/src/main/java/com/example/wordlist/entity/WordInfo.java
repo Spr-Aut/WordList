@@ -50,6 +50,26 @@ public class WordInfo {
     }
 
     /**
+     * 清空WordInfo存储的信息
+     * */
+    public void initWord(){
+        name = "";
+        desc = "";
+        symbol_uk = "";
+        sound_uk = "";
+        symbol_us = "";
+        sound_us = "";
+        sentence = "";
+        time_stamp = 1675341973622L;
+        favorite = 0;
+        memory = 0;
+        word_operation = 0;
+        source = 0;
+        class_name = 0;
+
+    }
+
+    /**
      * 获取
      * @return name
      */

@@ -97,4 +97,9 @@ public class MyTools {
         editor.putBoolean("login_status",loginStatus);
         editor.apply();
     }
+
+    /*将desc用"-"分割成ArrayList*/
+    public static void splitDesc(String desc){
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.wordlist.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordClassFragment extends Fragment {
-    private static final String TAG = "WordFragment";
+    private static final String TAG = "WordClassFragment";
     protected View mView; // 声明一个视图对象
     protected AppCompatActivity mAppCompatActivity; // 声明一个活动对象
     private List<String> mTitleList = new ArrayList<String>(); // 标题文字列表
@@ -51,6 +52,38 @@ public class WordClassFragment extends Fragment {
         }).attach();
 
         return mView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"启动");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"继续");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG,"停止");
+    }
+
+
+
+    /**
+     * 切换Fragment可视状态
+     * */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            Log.d(TAG,"切换可视状态");
+        }else {
+        }
     }
 
 

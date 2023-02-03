@@ -19,8 +19,8 @@ import com.example.wordlist.R;
 import com.example.wordlist.XMLParse;
 import com.example.wordlist.broadcast.BroadcastName;
 import com.example.wordlist.dao.BookDao;
-import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.MyTools;
+import com.example.wordlist.util.TempMsg;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,8 +47,8 @@ public class TranslateFragment extends Fragment {
     private EditText etOrigin;//原文
     private TextView tvResult;//译文
 
-    BookDao bookDao= MainApplication.getInstance().getBookDB().bookDao();
-    WordInfo wordInfo=new WordInfo();
+    //BookDao bookDao= MainApplication.getInstance().getBookDB().bookDao();
+    //TempMsg.WordInfo TempMsg.WordInfo=new TempMsg.WordInfo();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,25 +69,17 @@ public class TranslateFragment extends Fragment {
         return mView;
     }
 
-    /*@Override
-    public void onClick(View v) {
-        if (btnTrans.equals(v)) {
-            translate();
-        } else if (btnClear.equals(v)) {
-            clear();
-        } else if (btnAdd.equals(v)) {
-            add();
-        }
-    }*/
-
     private void add() {
 
     }
 
     private void clear() {
+        TempMsg.WordInfo.initWord();//清空TempMsg.WordInfo
+        etOrigin.setText("");
         tvResult.setText("");
-        wordInfo=new WordInfo();//获取新对象，相当于清空wordInfo，但是可能浪费内存，明天再调整
+        Log.d(TAG,"清空TempMsg.WordInfo");
         notifyWord();
+
     }
 
     private void translate(){
@@ -113,18 +105,22 @@ public class TranslateFragment extends Fragment {
      * 刷新WordDetailFragment
      * */
     private void notifyWord(){
+        //广播
         Intent intent=new Intent(BroadcastName.WORD_DETAIL_REFRESH);
-
-        ArrayList<String> wordDetailList=new ArrayList<>();
-        wordDetailList.add(wordInfo.getName());
-        wordDetailList.add(wordInfo.getSymbol_uk());
-        wordDetailList.add(wordInfo.getSymbol_us());
-        wordDetailList.add(wordInfo.getDesc());
-        wordDetailList.add(wordInfo.getSentence());
-        //MyTools.showMsg(wordDetailList.get(0),mContext);
-
-        intent.putStringArrayListExtra("WORD_DETAIL",wordDetailList);
+        String name=TempMsg.WordInfo.getName();
+        intent.putExtra("name",name);
         mContext.sendBroadcast(intent);
+        Log.d(TAG,"发送广播,name="+name);
+
+        /*TempMsg.WordInfo.setName(TempMsg.WordInfo.getName());
+        TempMsg.WordInfo.setSymbol_us(TempMsg.WordInfo.getSymbol_us());
+        TempMsg.WordInfo.setSymbol_us(TempMsg.WordInfo.getSymbol_us());
+        TempMsg.WordInfo.setDesc(TempMsg.WordInfo.getDesc());
+        TempMsg.WordInfo.setSentence(TempMsg.WordInfo.getSentence());*/
+
+        //XML解析得到的信息已经存入TempMsg.WordInfo TempMsg.WordInfo=TempMsg.tempTempMsg.WordInfo;
+        Log.d(TAG,"提醒WordDetail刷新");
+
     }
 
     //控件状态切换
@@ -203,24 +199,22 @@ public class TranslateFragment extends Fragment {
         }
 
         /**
-         * 解析XML为WordInfo
+         * 解析XML为TempMsg.WordInfo
          * */
         @Override
         protected void onPostExecute(String params) {
             String text = "null";
-            //WordInfo wordInfo=new WordInfo();
             if (params != null) {
                 long time= MyTools.getCurrentTimeMillis();
                 try {
-                    wordInfo = XMLParse.parseXmlWithPull(params, true);
-                    Log.d(TAG,text);
+                    TempMsg.WordInfo = XMLParse.parseXmlWithPull(params, true);
+                    Log.d(TAG,"XML处理完毕，存入TempMsg.tempTempMsg.WordInfo,Name为"+TempMsg.WordInfo.getName());
                     //DBHelper.setExampleSentence(context, text, wordId);
                 } catch (Exception e) {
                     Log.d(TAG, "onPostExecute: " + text);
                 }
-                //tv_result.setText(wordInfo.toString());
-                text=wordInfo.getDesc();
-                tvResult.setText(text);
+                //显示到翻译结果上
+                tvResult.setText(TempMsg.WordInfo.getDesc());
                 notifyWord();
             }
 
@@ -232,6 +226,38 @@ public class TranslateFragment extends Fragment {
             Log.d("myTAG", "onCancelled: ");
         }
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"启动");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"继续，Name为"+TempMsg.WordInfo.getName());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG,"停止");
+    }
+
+
+
+    /**
+     * 切换Fragment可视状态
+     * */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            Log.d(TAG,"切换可视状态");
+        }else {
+        }
     }
 
 

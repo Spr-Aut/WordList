@@ -109,4 +109,36 @@ public class ReviewFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"启动");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"继续");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG,"停止");
+    }
+
+
+
+    /**
+     * 切换Fragment可视状态
+     * */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            Log.d(TAG,"切换可视状态");
+        }else {
+        }
+    }
+
 }
