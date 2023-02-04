@@ -24,12 +24,8 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity(); // 获取活动页面的上下文
         // 根据布局文件fragment_tab_third.xml生成视图对象
-        mView = inflater.inflate(R.layout.fragment_settings, container, false);
-        TextView tv_third = mView.findViewById(R.id.tv_third);
-        tv_third.setText("我是购物车页面");
-        long timeMillis = MyTools.getCurrentTimeMillis();
-        long time=1675341973622L;
-        tv_third.setText(Integer.MAX_VALUE+"");
+        mView = inflater.inflate(R.layout.fragment_main, container, false);
+
 
         return mView;
     }

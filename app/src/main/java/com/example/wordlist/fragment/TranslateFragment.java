@@ -20,8 +20,10 @@ import androidx.fragment.app.Fragment;
 import com.example.wordlist.MainApplication;
 import com.example.wordlist.R;
 import com.example.wordlist.XMLParse;
+import com.example.wordlist.activity.WordListActivity;
 import com.example.wordlist.broadcast.BroadcastName;
 import com.example.wordlist.dao.BookDao;
+import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.util.TempMsg;
 
@@ -44,6 +46,7 @@ public class TranslateFragment extends Fragment {
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
 
+    private Button btnWordList;
     private Button btnTrans;//翻译
     private Button btnClear;//清空
     private Button btnAdd;//添加到单词本
@@ -54,6 +57,8 @@ public class TranslateFragment extends Fragment {
     //BookDao bookDao= MainApplication.getInstance().getBookDB().bookDao();
     //TempMsg.WordInfo TempMsg.WordInfo=new TempMsg.WordInfo();
 
+    WordDao wordDao=MainApplication.getInstance().getWordDB().wordDao();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity(); // 获取活动页面的上下文
@@ -63,23 +68,34 @@ public class TranslateFragment extends Fragment {
 
 
 
+        btnWordList=mView.findViewById(R.id.btn_chek_word_list);
         btnTrans=mView.findViewById(R.id.btn_trans_translate);
         btnClear=mView.findViewById(R.id.btn_clear_translate);
         btnAdd=mView.findViewById(R.id.btn_add_translate);
         etOrigin=mView.findViewById(R.id.et_origin_translate);
         tvResult=mView.findViewById(R.id.tv_trans_translate);
 
+        btnWordList.setOnClickListener(v -> checkWordList());
         btnTrans.setOnClickListener(v -> translate());
         btnClear.setOnClickListener(v -> clear());
-        btnAdd.setOnClickListener(v -> add());
+        btnAdd.setOnClickListener(v -> addToDB());
 
         //popUpKeyboard(etOrigin);
 
         return mView;
     }
 
-    private void add() {
+    private void checkWordList() {
+        startActivity(new Intent(mContext, WordListActivity.class));
+    }
 
+    private void addToDB() {
+        TempMsg.WordInfo.setTime_stamp(MyTools.getCurrentTimeMillis());
+        TempMsg.WordInfo.setFavorite(1);
+        wordDao.insertOneWord(TempMsg.WordInfo);
+
+        stateSwitch(STATE_AFTER_ADD);
+        Log.d(TAG,"添加单词"+TempMsg.WordInfo.getName());
     }
 
     private void clear() {
@@ -92,6 +108,7 @@ public class TranslateFragment extends Fragment {
     }
 
     private void translate(){
+        stateSwitch(STATE_DURING_TRANS);//翻译中
         StringBuilder url=new StringBuilder();
         url.append("https://dict-co.iciba.com/api/dictionary.php?w=");
         url.append(etOrigin.getText());
@@ -106,9 +123,6 @@ public class TranslateFragment extends Fragment {
 
     }
 
-    private void addToDetail() {
-
-    }
 
     /**
      * 刷新WordDetailFragment
@@ -224,7 +238,11 @@ public class TranslateFragment extends Fragment {
                 }
                 //显示到翻译结果上
                 tvResult.setText(MyTools.briefDesc(TempMsg.WordInfo.getDesc()));
-                notifyWord();
+                //tvTranslation.setText("翻译");
+                //tvTranslation.setEnabled(true);
+                stateSwitch(STATE_AFTER_TRANS);//获取到了翻译结果，显示添加按钮
+                //notifyWord();
+
             }
 
         }
@@ -287,5 +305,6 @@ public class TranslateFragment extends Fragment {
             inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(),0);
         }
     }
+
 
 }

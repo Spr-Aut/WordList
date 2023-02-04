@@ -86,7 +86,6 @@ public class WordListFragment extends Fragment {
     }
 
     private void refresh() {
-        Toast.makeText(mContext,"刷新",Toast.LENGTH_SHORT).show();
 
         /*allBook = bookDao.getAllBook();
         if (allBook.size()==0){

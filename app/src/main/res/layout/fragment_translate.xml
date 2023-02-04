@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/padding_top_main"
+    android:paddingTop="120dp"
     android:paddingBottom="@dimen/padding_bottom_main"
     android:paddingHorizontal="@dimen/padding_horizontal_main"
     android:background="@color/main_bg"
@@ -90,22 +90,23 @@
 
         </LinearLayout>
 
+        <!--220dp-->
         <!--按键部分-->
         <LinearLayout
             android:id="@+id/view_btn_trans"
-            android:layout_width="220dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_below="@+id/view_text_trans"
             >
             <!--查看单词本按钮-->
             <Button
-                android:id="@+id/btn_check_translate"
-                android:layout_width="match_parent"
+                android:id="@+id/btn_chek_word_list"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:drawableTop="@mipmap/wordlist"
-                android:text="查看单词本"
+                android:text="单词本"
                 android:textStyle="bold"
                 android:textColor="@color/main_typeface"
                 android:textSize="20sp"
@@ -113,13 +114,14 @@
                 android:layout_marginTop="@dimen/padding_vertical_main"
                 android:layout_marginHorizontal="10dp"
                 android:paddingVertical="5dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 />
             <!--清空按钮-->
             <Button
                 android:id="@+id/btn_clear_translate"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:drawableTop="@mipmap/clear"
                 android:text="清空"
                 android:textStyle="bold"
@@ -127,15 +129,16 @@
                 android:textSize="20sp"
                 android:background="@drawable/btn_bg_selector"
                 android:layout_marginTop="@dimen/padding_vertical_main"
-                android:visibility="visible"
                 android:layout_marginHorizontal="10dp"
                 android:paddingVertical="5dp"
+                android:visibility="visible"
                 />
             <!--翻译按钮-->
             <Button
                 android:id="@+id/btn_trans_translate"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:drawableTop="@mipmap/translate"
                 android:text="翻译"
                 android:textStyle="bold"
@@ -143,15 +146,17 @@
                 android:textSize="20sp"
                 android:background="@drawable/btn_bg_selector"
                 android:layout_marginTop="@dimen/padding_vertical_main"
-                android:layout_marginBottom="@dimen/padding_vertical_main"
                 android:layout_marginHorizontal="10dp"
-                android:paddingVertical="10dp"
+                android:paddingVertical="5dp"
+                android:layout_marginBottom="@dimen/padding_vertical_main"
+                android:visibility="visible"
                 />
             <!--添加按钮-->
             <Button
                 android:id="@+id/btn_add_translate"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:drawableTop="@mipmap/add"
                 android:text="添加"
                 android:textStyle="bold"
@@ -159,10 +164,10 @@
                 android:textSize="20sp"
                 android:background="@drawable/btn_bg_selector"
                 android:layout_marginTop="@dimen/padding_vertical_main"
+                android:layout_marginHorizontal="10dp"
+                android:paddingVertical="5dp"
                 android:layout_marginBottom="@dimen/padding_vertical_main"
                 android:visibility="gone"
-                android:layout_marginHorizontal="10dp"
-                android:paddingVertical="10dp"
                 />
 
 
