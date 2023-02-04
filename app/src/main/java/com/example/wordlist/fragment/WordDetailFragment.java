@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.wordlist.MainApplication;
 import com.example.wordlist.R;
+import com.example.wordlist.activity.WordListActivity;
 import com.example.wordlist.broadcast.BroadcastName;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
@@ -31,6 +32,8 @@ import java.util.ArrayList;
 
 public class WordDetailFragment extends Fragment {
     private static final String TAG = "WordDetailFragment";
+    private boolean isFromIntent=false;
+    private String name="";//用于来自Intent的刷新
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
 
@@ -44,12 +47,22 @@ public class WordDetailFragment extends Fragment {
     private MyBroadcastReceiver broadcastReceiver;
     private ImageButton btnSound;
     private ImageButton btnFavorite;
+    private Button btnContinue;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity(); // 获取活动页面的上下文
         // 根据布局文件fragment_tab_second.xml生成视图对象
         mView = inflater.inflate(R.layout.fragment_word_detail, container, false);
+
+        String name = getActivity().getIntent().getStringExtra("name");
+
+        if (name!=null&&name.length()!=0){
+            isFromIntent=true;
+            Log.d(TAG,"来自intent,name="+name);
+            this.name=name;
+            //refresh(name);//写在onResume里了
+        }else isFromIntent=false;
 
         tvName=mView.findViewById(R.id.tv_detail_name);
         tvSymbolUk=mView.findViewById(R.id.tv_detail_symbol_uk);
@@ -58,12 +71,17 @@ public class WordDetailFragment extends Fragment {
         tvSentence=mView.findViewById(R.id.tv_detail_sentence);
         btnSound=mView.findViewById(R.id.btn_sound);
         btnFavorite=mView.findViewById(R.id.btn_favorite);
+        btnContinue=mView.findViewById(R.id.btn_continue);
 
         btnSound.setOnClickListener(v -> {
             playSound(TempMsg.WordInfo.getSound_uk());//默认播放英式
         });
         btnFavorite.setOnClickListener(v -> {
             addToDao();
+        });
+        btnContinue.setOnClickListener(v -> {
+            Intent intent=new Intent(getActivity(),WordListActivity.class);
+            startActivity(intent);
         });
 
 
@@ -73,6 +91,8 @@ public class WordDetailFragment extends Fragment {
     }
 
     private void addToDao() {
+        TempMsg.WordInfo.setTime_stamp(MyTools.getCurrentTimeMillis());
+        TempMsg.WordInfo.setFavorite(1);
         wordDao.insertOneWord(TempMsg.WordInfo);
 
         Log.d(TAG,"添加单词"+TempMsg.WordInfo.getName());
@@ -93,7 +113,7 @@ public class WordDetailFragment extends Fragment {
 
     private void refresh(String name) {//判断当前name和传来的name是否一样，不一样则刷新
 
-        if (tvName.getText().equals(name)){
+         if (tvName.getText().equals(name)){
             Log.d(TAG,"无需刷新,name="+name);
         }else {
             tvName.setText(TempMsg.WordInfo.getName());
@@ -102,10 +122,18 @@ public class WordDetailFragment extends Fragment {
             tvDesc.setText(TempMsg.WordInfo.getDesc());
             tvSentence.setText(TempMsg.WordInfo.getSentence());
 
-
             Log.d(TAG,"刷新当前Name为"+TempMsg.WordInfo.getName());
         }
+    }
 
+    private void refreshFromIntent(){
+        WordInfo wordInfo=wordDao.getWordByName(name);
+        tvName.setText(wordInfo.getName());
+        tvSymbolUk.setText(wordInfo.getSymbol_uk());
+        tvSymbolUs.setText(wordInfo.getSymbol_us());
+        tvDesc.setText(wordInfo.getDesc());
+        tvSentence.setText(wordInfo.getSentence());
+        Log.d(TAG,"刷新当前Name为"+wordInfo.getName());
     }
 
     @Override
@@ -122,7 +150,13 @@ public class WordDetailFragment extends Fragment {
         super.onResume();
         Log.d(TAG,"继续");
 
-        refresh(TempMsg.WordInfo.getName());
+        if (isFromIntent){
+            refreshFromIntent();
+        }else {
+            refresh(TempMsg.WordInfo.getName());
+        }
+
+
     }
 
     @Override

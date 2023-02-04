@@ -84,7 +84,7 @@ public class MyTools {
 
     public static void showMsg(String msg, Context context) {
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP,0,0);
+        //toast.setGravity(Gravity.TOP,0,0);
         toast.show();
     }
 

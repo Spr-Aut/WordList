@@ -406,7 +406,7 @@
             android:layout_marginHorizontal="5dp"
             android:text="继续"
             style="@style/BtnHighlight"
-            android:visibility="gone"
+            android:visibility="visible"
             />
 
 

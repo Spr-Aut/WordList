@@ -2,6 +2,7 @@ package com.example.wordlist.adapter;
 
 import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -19,7 +20,10 @@ import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wordlist.MainApplication;
 import com.example.wordlist.R;
+import com.example.wordlist.activity.WordDetailActivity;
+import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
 
 import java.util.List;
@@ -34,6 +38,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public static final int TYPE_LINEAR_LAYOUT = 0;
     public static final int TYPE_GRID_LAYOUT = 1;
     public int TRANS_VISUAL_STATE=0;
+    private WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
 
     public SlideRecyclerViewAdapter(Context context,List<WordInfo> wordList){
         this.mContext=context;
@@ -100,11 +105,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         holder.mTvOrigin.setText(wordInfo.getName());
         holder.mTvTrans.setText(wordInfo.getDesc());
-        holder.mViewMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+
         holder.mViewSlideDelete.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -127,6 +128,19 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             public void onClick(View v) {
                 shake();
                 transVisualStateSwitch(holder);
+            }
+        });
+
+        holder.mViewMain.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent=new Intent(mContext, WordDetailActivity.class);
+                WordInfo wordInfo=mWordList.get(position);
+                intent.putExtra("name",wordInfo.getName());
+                mContext.startActivity(intent);
+
+
+                return true;
             }
         });
     }
@@ -152,6 +166,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     private void deleteItem(WordInfo word,int position){
         //int row=mNoteDbOpenHelper.deleteFromDbById(note.getId()+"");
         if(true){//row>0
+            wordDao.deleteWord(word);
             removeData(position);
             showMsg("删除");
         }

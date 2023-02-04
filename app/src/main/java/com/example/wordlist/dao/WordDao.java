@@ -34,6 +34,9 @@ public interface WordDao {
 
 
 
+
+
+
     @Query("DELETE FROM WordInfo WHERE 1=1") // 设置删除语句
     void deleteAllWord(); // 删除所有信息
 }
