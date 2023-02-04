@@ -131,7 +131,7 @@ public class WordDetailFragment extends Fragment {
         tvName.setText(wordInfo.getName());
         tvSymbolUk.setText(wordInfo.getSymbol_uk());
         tvSymbolUs.setText(wordInfo.getSymbol_us());
-        tvDesc.setText(wordInfo.getDesc());
+        tvDesc.setText((wordInfo.getDesc()));
         tvSentence.setText(wordInfo.getSentence());
         Log.d(TAG,"刷新当前Name为"+wordInfo.getName());
     }

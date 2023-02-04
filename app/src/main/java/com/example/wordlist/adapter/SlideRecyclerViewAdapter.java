@@ -25,6 +25,7 @@ import com.example.wordlist.R;
 import com.example.wordlist.activity.WordDetailActivity;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.util.MyTools;
 
 import java.util.List;
 
@@ -104,7 +105,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         WordInfo wordInfo=mWordList.get(position);
 
         holder.mTvOrigin.setText(wordInfo.getName());
-        holder.mTvTrans.setText(wordInfo.getDesc());
+        holder.mTvTrans.setText(MyTools.briefDesc(wordInfo.getDesc()));
 
         holder.mViewSlideDelete.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)

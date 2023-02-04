@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 
 import com.example.wordlist.R;
 import com.example.wordlist.adapter.MainPagerAdapter;
+import com.example.wordlist.util.MyTools;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
@@ -22,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setStatusBar();
+        //setStatusBar();
+        MyTools.setStatusBar(this);
 
         radioGroup=findViewById(R.id.rg_tabbar);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {

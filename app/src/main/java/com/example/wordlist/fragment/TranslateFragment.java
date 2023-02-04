@@ -223,7 +223,7 @@ public class TranslateFragment extends Fragment {
                     Log.d(TAG, "onPostExecute: " + text);
                 }
                 //显示到翻译结果上
-                tvResult.setText(TempMsg.WordInfo.getDesc());
+                tvResult.setText(MyTools.briefDesc(TempMsg.WordInfo.getDesc()));
                 notifyWord();
             }
 

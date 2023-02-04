@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.example.wordlist.R;
 import com.example.wordlist.fragment.WordDetailFragment;
 import com.example.wordlist.fragment.WordListFragment;
+import com.example.wordlist.util.MyTools;
 
 public class WordDetailActivity extends AppCompatActivity {
 
@@ -14,6 +15,7 @@ public class WordDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_detail);
+        MyTools.setStatusBar(this);
 
         getSupportFragmentManager()
                 .beginTransaction()

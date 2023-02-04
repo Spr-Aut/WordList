@@ -1,10 +1,12 @@
 package com.example.wordlist.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +18,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MyTools {
+    private static final String TAG = "MyTools";
     public final static long ONE_DAY_MILLIS = 86400000L;
     public final static long TWO_DAY_MILLIS = 172800000L;
     public final static long SIX_DAY_MILLIS = 518400000L;
@@ -125,4 +128,32 @@ public class MyTools {
         }else return "";
     }
 
+    /*处理desc，只取第一个意思*/
+    public static String briefDesc(String desc){
+        if (desc!=null&&desc.length()!=0){
+            String briefDesc=desc.split("；")[0];//显示词性
+            //去掉词性
+            String[] strings = briefDesc.split("\\.");
+            Log.d(TAG,briefDesc);
+            int len=strings.length;
+            Log.d(TAG,len+"");
+            if (len!=0){
+                briefDesc=strings[len-1];
+            }
+
+            return briefDesc;
+        }else return "";
+    }
+
+    public static void setStatusBar(Activity activity){
+        //适配MIUI，沉浸小横条和状态栏
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        //状态栏文字显示为黑色
+        Window window = activity.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        /*window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);*/
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    }
 }

@@ -35,7 +35,6 @@ public class WordListFragment extends Fragment {
     private static final String TAG = "WordListFragment";
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
-    private TextView tv_second;
     private MyBroadcastReceiver broadcastReceiver;
     private SlideRecyclerViewAdapter slideAdapter;
     private SlideRecyclerView mRecyclerView;
