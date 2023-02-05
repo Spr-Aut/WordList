@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.wordlist.R;
+import com.example.wordlist.fragment.Test2Fragment;
+import com.example.wordlist.fragment.TestFragment;
 import com.example.wordlist.fragment.WordListFragment;
 import com.example.wordlist.util.MyTools;
 
@@ -15,10 +17,14 @@ public class WordListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_list);
         MyTools.setStatusBar(this);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container_test,new TestFragment())
+                .commit();
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.container_word_list,new WordListFragment())
+                .add(R.id.container_word_list,new Test2Fragment())
                 .commit();
     }
 }

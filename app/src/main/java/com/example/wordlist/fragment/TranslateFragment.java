@@ -102,9 +102,9 @@ public class TranslateFragment extends Fragment {
         TempMsg.WordInfo.initWord();//清空TempMsg.WordInfo
         etOrigin.setText("");
         tvResult.setText("");
-        Log.d(TAG,"清空TempMsg.WordInfo");
         notifyWord();
-
+        stateSwitch(STATE_DURING_INPUT);
+        Log.d(TAG,"清空TempMsg.WordInfo");
     }
 
     private void translate(){
