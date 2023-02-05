@@ -77,7 +77,10 @@ public class WordDetailFragment extends Fragment {
             playSound(TempMsg.WordInfo.getSound_uk());//默认播放英式
         });
         btnFavorite.setOnClickListener(v -> {
-            addToDao();
+            if (TempMsg.WordInfo.getName()!=null&&TempMsg.WordInfo.getName()!=""){
+                addToDao();
+            }
+
         });
         btnContinue.setOnClickListener(v -> {
             Intent intent=new Intent(getActivity(),WordListActivity.class);

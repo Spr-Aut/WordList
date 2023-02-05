@@ -177,12 +177,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <!--<ImageView
+                        <!--泡泡图片-->
+                        <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:alpha="0.1"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/icon_popo" />-->
+                            android:src="@drawable/icon_popo" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

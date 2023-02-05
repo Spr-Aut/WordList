@@ -19,12 +19,9 @@ public class WordListActivity extends AppCompatActivity {
         MyTools.setStatusBar(this);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.container_test,new TestFragment())
+                .add(R.id.container_word_list,new WordListFragment())
                 .commit();
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.container_word_list,new Test2Fragment())
-                .commit();
+
     }
 }

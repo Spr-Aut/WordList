@@ -57,7 +57,7 @@
                                 android:layout_toStartOf="@+id/img_detail_word_folder"
                                 android:gravity="start|center_vertical"
                                 android:maxLines="1"
-                                android:text="reserve"
+                                android:text=""
                                 android:textColor="@color/colorMainBlue"
                                 android:textSize="25sp"
                                 android:textStyle="bold"
@@ -204,7 +204,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
-                                    android:text="/rɪ'zɜːv/"
+                                    android:text=""
                                     android:textColor="@color/colorGrey"
                                     android:textSize="13sp" />
 
@@ -227,7 +227,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
-                                    android:text="/rɪ'zɝv/"
+                                    android:text=""
                                     android:textColor="@color/colorGrey"
                                     android:textSize="13sp" />
 
@@ -242,7 +242,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:background="?android:attr/selectableItemBackground"
-                            android:text="vt. 保留[储备]某物\nn. 贮藏; 储备"
+                            android:text=""
                             android:textColor="@color/colorLightBlack"
                             android:textSize="15sp" />
 
@@ -293,7 +293,7 @@
                         android:id="@+id/tv_detail_sentence"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="But if you backslide,Hiram says,'Start over'.\n但加入你倒退了，海勒姆说，'那就重新开始'"
+                        android:text=""
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="@color/colorBlack"

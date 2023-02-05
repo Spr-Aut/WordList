@@ -15,6 +15,7 @@ public class MainApplication extends Application {
     private static MainApplication mainApplication;
     private BookDatabase bookDatabase;
     private WordDatabase wordDatabase;
+    private WordDatabase wordDatabase2;
 
 
     //获取当前应用的唯一实例

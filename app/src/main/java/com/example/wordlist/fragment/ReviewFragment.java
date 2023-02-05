@@ -1,6 +1,9 @@
 package com.example.wordlist.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,17 +12,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.room.Query;
 
+import com.example.wordlist.MainApplication;
+import com.example.wordlist.activity.WordDetailActivity;
+import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.R;
 import com.example.wordlist.XMLParse;
 import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.util.TempMsg;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -27,25 +40,235 @@ import okhttp3.Response;
 
 
 public class ReviewFragment extends Fragment {
-    private static final String TAG = "TabFirstFragment";
+    private static final String TAG = "ReviewFragment";
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
+    private TextView tvWord;
+    private TextView tvSymbol;
+    private TextView tvSentence;
+    private CardView cvSentence;
+    private CardView cvWell;
+    private CardView cvKnow;
+    private CardView cvAmbiguous;
+    private CardView cvUnKnow;
+    private WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
+    private List<WordInfo> wordList;
+    private int current;//当前队列
+    private int count=0;//当前队列到第几个了
+    private int maxCount=2;//背几个换队列
+    private boolean isNotEmpty=false;//数据库是否空
+    private Queue<WordInfo> queue0=new LinkedList<>();
+    private Queue<WordInfo> queue1=new LinkedList<>();
+    private Queue<WordInfo> queue2=new LinkedList<>();
+    private Queue<WordInfo> queue3=new LinkedList<>();
+    private Queue<WordInfo> currentQueue;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity(); // 获取活动页面的上下文
         // 根据布局文件fragment_tab_first.xml生成视图对象
-        mView = inflater.inflate(R.layout.fragment_review, container, false);
+        mView = inflater.inflate(R.layout.activity_learn_word, container, false);
+
+        prepareData();
 
 
+        tvWord=mView.findViewById(R.id.tv_word_learn);
+        tvSymbol=mView.findViewById(R.id.tv_symbol_learn);
+        tvSentence=mView.findViewById(R.id.tv_sentence_learn);
+        cvSentence=mView.findViewById(R.id.cv_sentence_learn);
+        cvWell=mView.findViewById(R.id.cv_know_well_learn);
+        cvKnow=mView.findViewById(R.id.cv_know_learn);
+        cvAmbiguous=mView.findViewById(R.id.cv_ambiguous_learn);
+        cvUnKnow=mView.findViewById(R.id.cv_not_know_learn);
 
+        if (isNotEmpty){
+            initView();
+        }else {
+            MyTools.showMsg("数据库空",mContext);
+            learnFinish();
+        }
 
 
         return mView;
     }
 
+    private void learnFinish() {
+        cvSentence.setVisibility(View.GONE);
+        LinearLayout layout=mView.findViewById(R.id.linear_word_bottom);
+        layout.setVisibility(View.GONE);
+        tvSymbol.setVisibility(View.GONE);
+        tvWord.setText("今日单词已学完");
+    }
 
+    private void initView(){
+        tvWord.setText(TempMsg.WordLearn.getName());
+        tvSymbol.setText(TempMsg.WordLearn.getSymbol_uk());
+        tvSymbol.setOnClickListener(v -> {
+            playSound(TempMsg.WordLearn.getSound_uk());
+        });
+        tvSentence.setText("");
+        cvSentence.setOnClickListener(v -> {
+            Log.d(TAG,"切换句子的显示状态");
+            if (tvSentence.getText()==""&&isNotEmpty)tvSentence.setText(TempMsg.WordLearn.getSentence());
+            else tvSentence.setText("");
+        });
+        cvWell.setOnClickListener(v -> opWell());
+        cvKnow.setOnClickListener(v -> opKnow());
+        cvAmbiguous.setOnClickListener(v -> opAmbiguous());
+        cvUnKnow.setOnClickListener(v -> opUnKnow());
+    }
+    private void playSound(String soundRul) {
+        if (soundRul!=null&&soundRul.length()!=0){
+            Log.d(TAG, "点击播放声音");
+            //String sound="https://res.iciba.com/resource/amp3/oxford/0/6f/0a/6f0a0924a725e59aa0104109317cfa09.mp3";
+            Log.d(TAG,"soundUrl:   "+soundRul);
+            MediaPlayer mediaPlayer = MediaPlayer.create(mContext, Uri.parse(soundRul));
+            mediaPlayer.start();
+        }else {
+            MyTools.showMsg("声音获取失败",mContext);
+        }
+    }
 
+    private void prepareData() {
+        wordList=wordDao.getAllOpWord();
+        current=0;
+        if (wordList.size()!=0)isNotEmpty=true;
+        if (isNotEmpty){
+            addWordListToQueue();
+            if (isQueueEmpty()){
+                isNotEmpty=false;
+                return;
+            }
+            currentQueue=getCurrentQueue();
+            TempMsg.WordLearn = getCurrentQueue().remove();//把第一个词赋给TempMsg.WordLearn
+        }
+    }
+
+    private void addWordListToQueue() {
+        for (WordInfo word : wordList) {
+            //将所有mem置为0
+            word.setMemory(0);
+            wordDao.insertOneWord(word);
+            addWordToQueue(word);
+        }
+    }
+
+    private void addWordToQueue(WordInfo word){
+        switch (word.getMemory()){
+            case 0-> queue0.add(word);
+            case 1-> queue1.add(word);
+            case 2-> queue2.add(word);
+            case 3-> queue3.add(word);
+        }
+    }
+
+    private Queue<WordInfo> getCurrentQueue(){
+        if (isQueueEmpty()){
+            refreshData();
+            return currentQueue;
+        }
+        if (current==0){
+            if (queue0.size()!=0){
+                Log.d(TAG,"切换到队列"+current);
+                return queue0;
+            }
+            else {
+                current++;
+                count=0;
+                Log.d(TAG,"切换到队列"+current);
+                return getCurrentQueue();
+            }
+        }else if (current==1){
+            if (queue1.size()!=0){
+                Log.d(TAG,"切换到队列"+current);
+                return queue1;
+            }
+            else {
+                current++;
+                count=0;
+                Log.d(TAG,"切换到队列"+current);
+                return getCurrentQueue();
+            }
+        }else if (current==2){
+            if (queue2.size()!=0){
+                Log.d(TAG,"切换到队列"+current);
+                return queue2;
+            }
+            else {
+                current++;
+                count=0;
+                Log.d(TAG,"切换到队列"+current);
+                return getCurrentQueue();
+            }
+        }else {
+            Log.d(TAG,"切换到队列"+current);
+            current=0;
+            count=0;
+
+            return getCurrentQueue();
+        }
+    }
+
+    private void refreshData(){
+        if (isQueueEmpty()){
+            tvWord.setText("");
+            Log.d(TAG,"背完了");
+            learnFinish();
+            return;
+        }
+        if (count>=maxCount){
+            count=0;
+            current++;
+            Log.d(TAG,"切换队列");
+        }else {
+            count++;
+        }
+
+        currentQueue=getCurrentQueue();
+        TempMsg.WordLearn=currentQueue.remove();
+        initView();
+    }
+
+    private boolean isQueueEmpty(){
+        if (queue0.size()==0&&queue1.size()==0&&queue2.size()==0){
+            return true;
+        }else return false;
+    }
+
+    private void opWell() {
+        Log.d(TAG,"点击了熟知");
+        TempMsg.WordLearn.setWord_operation(1);//不再出现
+        wordDao.insertOneWord(TempMsg.WordLearn);
+        refreshData();
+    }
+
+    private void opKnow() {
+        Log.d(TAG,"点击了认识");
+        int memory = TempMsg.WordLearn.getMemory();
+        memory++;
+        TempMsg.WordLearn.setMemory(memory);
+        wordDao.insertOneWord(TempMsg.WordLearn);
+        addWordToQueue(TempMsg.WordLearn);
+        refreshData();
+    }
+
+    private void opAmbiguous(){
+        Log.d(TAG,"点击了模糊");
+        //memory不改变
+        addWordToQueue(TempMsg.WordLearn);
+        refreshData();
+    }
+
+    private void opUnKnow(){
+        Log.d(TAG,"点击了不认识");
+        int memory = TempMsg.WordLearn.getMemory();
+        memory--;
+        TempMsg.WordLearn.setMemory(memory);
+        wordDao.insertOneWord(TempMsg.WordLearn);
+        addWordToQueue(TempMsg.WordLearn);
+        refreshData();
+    }
 
     @Override
     public void onStart() {

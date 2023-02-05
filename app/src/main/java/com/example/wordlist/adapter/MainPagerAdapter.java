@@ -21,11 +21,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new SettingsFragment();  // 返回第一个碎片
+            return new ReviewFragment();  // 返回第一个碎片
         } else if (position == 1) {
             return new WordClassFragment();  // 返回第二个碎片
         } else if (position == 2) {
-            return new WordListFragment();  // 返回第三个碎片
+            return new SettingsFragment();  // 返回第三个碎片
         } else {
             return null;
         }

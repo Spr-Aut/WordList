@@ -20,6 +20,9 @@ public interface WordDao {
     @Query("SELECT * FROM WordInfo WHERE name = :name")
     WordInfo getWordByName(String name);
 
+    @Query("SELECT * FROM wordinfo WHERE word_operation = 0")
+    List<WordInfo> getAllOpWord();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE) // 记录重复时替换原记录
     void insertOneWord(WordInfo word); // 插入一条信息
 
