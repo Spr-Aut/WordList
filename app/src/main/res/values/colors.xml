@@ -57,6 +57,7 @@
     <color name="btn_normal_pressed">#4d303030</color>
     <color name="btn_highlight">#4089ff</color>
     <color name="btn_highlight_pressed">#3060ff</color>
+    <color name="card_grey">#F2F3F8</color>
 
     <color name="colorMainBlue">#3675FF</color>
     <color name="colorLightBlue">#4089ff</color>

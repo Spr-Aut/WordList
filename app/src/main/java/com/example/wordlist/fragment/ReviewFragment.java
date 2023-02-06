@@ -168,7 +168,7 @@ public class ReviewFragment extends Fragment {
         for (WordInfo word : wordList) {
             //将所有mem置为0
             word.setMemory(0);
-            wordDao.insertOneWord(word);
+            wordDao.updateWord(word);
             addWordToQueue(word);
         }
     }
@@ -307,6 +307,7 @@ public class ReviewFragment extends Fragment {
         WordInfo word=wordDao.getWordByName(TempMsg.WordLearn.getName());
         if (word==null){
             Log.d(TAG,"数据库中不存在，插入");
+            TempMsg.WordLearn.setTime_stamp(MyTools.getCurrentTimeMillis());
             wordDao.insertOneWord(TempMsg.WordLearn);
         }else {
             Log.d(TAG,"数据库中存在，更新");

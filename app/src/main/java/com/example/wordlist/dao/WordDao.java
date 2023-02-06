@@ -17,6 +17,9 @@ public interface WordDao {
     @Query("SELECT * FROM WordInfo")
     List<WordInfo> getAllWord();
 
+    @Query("SELECT * FROM WordInfo ORDER BY time_stamp desc")
+    List<WordInfo> getAllWordDescByTime();
+
     @Query("SELECT * FROM WordInfo WHERE name = :name")
     WordInfo getWordByName(String name);
 

@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="@color/frag_bg"
     android:orientation="vertical"
     >
 
@@ -10,7 +10,7 @@
         android:id="@+id/tl_head"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/blue"
+        android:background="@color/frag_bg"
         android:paddingTop="@dimen/padding_top_main">
 
         <RelativeLayout
@@ -28,15 +28,16 @@
                 app:tabIndicatorHeight="2dp"
                 app:tabMode="scrollable"
 
+
                 app:tabTextAppearance="@style/TabText" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <View
+    <!--<View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey" />
+        android:background="@color/grey" />-->
 
     <!-- 二代翻页视图ViewPager2节点也需要使用完整路径 -->
     <androidx.viewpager2.widget.ViewPager2

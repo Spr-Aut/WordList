@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -107,8 +108,16 @@ public class WordDetailFragment extends Fragment {
         }else {//刷新
             if (isFromIntent){
                 wordInfo= wordDao.getWordByName(wordName);
+                btnContinue.setVisibility(View.VISIBLE);
+                btnContinue.setOnClickListener(v -> getActivity().finish());
             }else {
                 wordInfo=TempMsg.WordInfo;
+            }
+
+            if (wordInfo.getName()!=null&&wordInfo.getName().length()!=0&&wordDao.getWordByName(wordInfo.getName())!=null){
+                btnFavorite.setImageResource(R.drawable.icon_star_fill);
+            }else {
+                btnFavorite.setImageResource(R.drawable.icon_star);
             }
 
             tvName.setText(wordInfo.getName());
@@ -122,13 +131,24 @@ public class WordDetailFragment extends Fragment {
             });
             btnFavorite.setOnClickListener(v -> {
                 if (wordInfo.getName()!=null&&wordInfo.getName()!=""){
-                    addToDao();
+                    if (wordDao.getWordByName(wordInfo.getName())!=null){
+                        wordDao.deleteWord(wordInfo);
+                        btnFavorite.setImageResource(R.drawable.icon_star);
+                        MyTools.showMsg("取消收藏"+wordInfo.getName(),mContext);
+                    }else {
+                        addToDao();
+                        btnFavorite.setImageResource(R.drawable.icon_star_fill);
+                        MyTools.showMsg("收藏"+wordInfo.getName(),mContext);
+                    }
+
                 }
             });
             btnContinue.setOnClickListener(v -> {
                 Intent intent=new Intent(getActivity(), WordListActivity.class);
                 startActivity(intent);
             });
+
+
         }
     }
 

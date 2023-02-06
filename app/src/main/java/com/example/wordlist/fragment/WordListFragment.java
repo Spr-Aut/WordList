@@ -95,7 +95,7 @@ public class WordListFragment extends Fragment {
             tv_second.setText(allBook.get(0).getPrice()+"");
         }*/
 
-        allWord=wordDao.getAllWord();
+        allWord=wordDao.getAllWordDescByTime();
         slideAdapter.refreshData(allWord);
         //Log.d(TAG,"数据库第一个词为"+wordDao.getAllWord().get(0).getName());//数据库空时报错
         Log.d(TAG,"刷新");

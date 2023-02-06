@@ -6,8 +6,9 @@
     android:paddingTop="120dp"
     android:paddingBottom="@dimen/padding_bottom_main"
     android:paddingHorizontal="@dimen/padding_horizontal_main"
-    android:background="@color/main_bg"
+    android:background="@color/frag_bg"
     >
+    <!--main_bg-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,6 +38,7 @@
                     android:layout_marginBottom="@dimen/padding_vertical_main"
                     android:layout_gravity="center_horizontal"
                     />
+                <!--frame_input-->
                 <EditText
                     android:id="@+id/et_origin_translate"
                     android:layout_width="match_parent"
