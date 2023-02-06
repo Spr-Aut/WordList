@@ -106,10 +106,14 @@ public class WordDetailFragment extends Fragment {
         if (tvName.getText().equals(wordName)){
             Log.d(TAG,"无需刷新");
         }else {//刷新
+            /*if (wordInfo.getName()==null&&wordInfo.getName().length()==0){
+                return;
+            }*/
             if (isFromIntent){
                 wordInfo= wordDao.getWordByName(wordName);
                 btnContinue.setVisibility(View.VISIBLE);
                 btnContinue.setOnClickListener(v -> getActivity().finish());
+
             }else {
                 wordInfo=TempMsg.WordInfo;
             }
@@ -125,6 +129,8 @@ public class WordDetailFragment extends Fragment {
             tvSymbolUs.setText(wordInfo.getSymbol_us());
             tvSentence.setText(wordInfo.getSentence());
             tvDesc.setText(wordInfo.getDesc());
+            Log.d(TAG,"刷新Detail");
+            //Log.d(TAG,wordInfo.getSentence());
 
             btnSound.setOnClickListener(v -> {
                 playSound(wordInfo.getSound_uk());//默认播放英式
@@ -143,10 +149,10 @@ public class WordDetailFragment extends Fragment {
 
                 }
             });
-            btnContinue.setOnClickListener(v -> {
+            /*btnContinue.setOnClickListener(v -> {
                 Intent intent=new Intent(getActivity(), WordListActivity.class);
                 startActivity(intent);
-            });
+            });*/
 
 
         }
@@ -181,7 +187,7 @@ public class WordDetailFragment extends Fragment {
 
                 wordName=intent.getStringExtra("name");
                 Log.d(TAG,"收到广播，name="+wordName);
-                refreshView();
+                //refreshView();//暂时去掉，因为现在访问了WordList再清空translate的etOrigin，会导致闪退
             }
         }
     }

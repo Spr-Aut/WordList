@@ -145,6 +145,24 @@ public class MyTools {
         }else return "";
     }
 
+    /*处理sentences，只取第一个sentence*/
+    public static String briefSentence(String sentences){
+        if (sentences!=null&&sentences.length()!=0){
+            String[] splits = sentences.split("\n");
+            int i=0;
+            for (i = 0; i < splits.length; i++) {
+
+                if (!splits[i].equals("")){
+                    String briefSentence=splits[i];
+                    Log.d(TAG,briefSentence);
+                    return briefSentence;
+                }
+            }
+            return "";
+
+        }else return "";
+    }
+
     public static void setStatusBar(Activity activity){
         //适配MIUI，沉浸小横条和状态栏
         activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

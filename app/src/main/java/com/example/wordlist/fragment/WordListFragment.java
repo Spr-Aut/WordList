@@ -71,7 +71,7 @@ public class WordListFragment extends Fragment {
         //slideAdapter.setViewType(SlideRecyclerViewAdapter.TYPE_LINEAR_LAYOUT);
         slideAdapter.notifyDataSetChanged();
 
-        //refresh();
+        refresh();
 
 
 

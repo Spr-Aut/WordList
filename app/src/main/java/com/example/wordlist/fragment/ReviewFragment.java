@@ -33,6 +33,7 @@ public class ReviewFragment extends Fragment {
     private static final String TAG = "ReviewFragment";
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
+    private TextView tvLastText;
     private TextView tvLast;
     private TextView tvWord;
     private TextView tvSymbol;
@@ -83,6 +84,7 @@ public class ReviewFragment extends Fragment {
     }
 
     private void bindView(){
+        tvLastText=mView.findViewById(R.id.tv_last_learn_text);
         tvLast=mView.findViewById(R.id.tv_last_learn);
         tvWord=mView.findViewById(R.id.tv_word_learn);
         tvSymbol=mView.findViewById(R.id.tv_symbol_learn);
@@ -103,9 +105,12 @@ public class ReviewFragment extends Fragment {
     }
 
     private void refreshView(){
-        if (TempMsg.LastWordLearn!=null&&TempMsg.LastWordLearn.length()!=0){
-            tvLast.setText(TempMsg.LastWordLearn);
-            tvLast.setOnClickListener(v -> turnToDetail(TempMsg.LastWordLearn));
+        String lastWord=TempMsg.LastWordLearn;
+        if (lastWord!=null&&lastWord.length()!=0){
+            tvLastText.setText("上一个：");
+            String str=lastWord+":"+MyTools.briefDesc(wordDao.getWordByName(lastWord).getDesc());
+            tvLast.setText(str);
+            tvLast.setOnClickListener(v -> turnToDetail(lastWord));
         }
         tvWord.setText(TempMsg.WordLearn.getName());
         tvSymbol.setText(TempMsg.WordLearn.getSymbol_uk());
@@ -114,8 +119,8 @@ public class ReviewFragment extends Fragment {
         });
         tvSentence.setText("");
         cvSentence.setOnClickListener(v -> {
-            Log.d(TAG,"切换句子的显示状态");
-            if (tvSentence.getText()==""&&isNotEmpty)tvSentence.setText(TempMsg.WordLearn.getSentence());
+        Log.d(TAG,"切换句子的显示状态:"+ TempMsg.WordLearn.getSentence());
+            if (tvSentence.getText()==""&&isNotEmpty)tvSentence.setText(MyTools.briefSentence(TempMsg.WordLearn.getSentence()));
             else tvSentence.setText("");
         });
         cvWell.setOnClickListener(v -> opWell());
@@ -247,7 +252,8 @@ public class ReviewFragment extends Fragment {
             count++;
         }
 
-        TempMsg.LastWordLearn=TempMsg.WordLearn.getName();
+
+        TempMsg.LastWordLearn=TempMsg.WordLearn.getName();//上一个词
         currentQueue=getCurrentQueue();//得到当前应学的队列
         TempMsg.WordLearn=currentQueue.remove();//取一个词
         refreshView();
