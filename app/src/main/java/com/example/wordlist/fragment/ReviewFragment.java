@@ -4,39 +4,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.room.Query;
 
 import com.example.wordlist.MainApplication;
 import com.example.wordlist.activity.WordDetailActivity;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.R;
-import com.example.wordlist.XMLParse;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.TempMsg;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Queue;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 
 public class ReviewFragment extends Fragment {
@@ -57,6 +47,7 @@ public class ReviewFragment extends Fragment {
     private int count=0;//当前队列到第几个了
     private int maxCount=2;//背几个换队列
     private boolean isNotEmpty=false;//数据库是否空
+    private boolean isFirstBoot=true;
     private Queue<WordInfo> queue0=new LinkedList<>();
     private Queue<WordInfo> queue1=new LinkedList<>();
     private Queue<WordInfo> queue2=new LinkedList<>();
@@ -70,9 +61,27 @@ public class ReviewFragment extends Fragment {
         // 根据布局文件fragment_tab_first.xml生成视图对象
         mView = inflater.inflate(R.layout.activity_learn_word, container, false);
 
-        prepareData();
+        Log.d(TAG,"执行onCreateView");
 
+        /*避免每次切换fragment都刷新队列*/
+        if (isFirstBoot){//是第一次启动
+            isFirstBoot=false;
+            prepareData();
+        }
+        //prepareData();
+        bindView();
 
+        if (isNotEmpty){
+            refreshView();
+        }else {
+            MyTools.showMsg("数据库空",mContext);
+            learnFinish();
+        }
+
+        return mView;
+    }
+
+    private void bindView(){
         tvWord=mView.findViewById(R.id.tv_word_learn);
         tvSymbol=mView.findViewById(R.id.tv_symbol_learn);
         tvSentence=mView.findViewById(R.id.tv_sentence_learn);
@@ -81,16 +90,6 @@ public class ReviewFragment extends Fragment {
         cvKnow=mView.findViewById(R.id.cv_know_learn);
         cvAmbiguous=mView.findViewById(R.id.cv_ambiguous_learn);
         cvUnKnow=mView.findViewById(R.id.cv_not_know_learn);
-
-        if (isNotEmpty){
-            initView();
-        }else {
-            MyTools.showMsg("数据库空",mContext);
-            learnFinish();
-        }
-
-
-        return mView;
     }
 
     private void learnFinish() {
@@ -101,7 +100,7 @@ public class ReviewFragment extends Fragment {
         tvWord.setText("今日单词已学完");
     }
 
-    private void initView(){
+    private void refreshView(){
         tvWord.setText(TempMsg.WordLearn.getName());
         tvSymbol.setText(TempMsg.WordLearn.getSymbol_uk());
         tvSymbol.setOnClickListener(v -> {
@@ -115,7 +114,14 @@ public class ReviewFragment extends Fragment {
         });
         cvWell.setOnClickListener(v -> opWell());
         cvKnow.setOnClickListener(v -> opKnow());
-        cvAmbiguous.setOnClickListener(v -> opAmbiguous());
+        cvAmbiguous.setOnClickListener(v -> {
+            /*try {
+                opAmbiguous();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }*/
+            opAmbiguous();
+        });
         cvUnKnow.setOnClickListener(v -> opUnKnow());
     }
     private void playSound(String soundRul) {
@@ -131,20 +137,26 @@ public class ReviewFragment extends Fragment {
     }
 
     private void prepareData() {
-        wordList=wordDao.getAllOpWord();
-        current=0;
-        if (wordList.size()!=0)isNotEmpty=true;
+        wordList=wordDao.getAllOpWord();//加载所有word_operation=0的词
+        if (wordList.size()!=0)isNotEmpty=true;//非空
+
+
         if (isNotEmpty){
-            addWordListToQueue();
-            if (isQueueEmpty()){
+            addWordListToQueue();//从wordList加载到四个队列
+            if (isQueueEmpty()){//0、1、2队列空，没有要学的词，返回到onCreateView，执行learnFinish();
                 isNotEmpty=false;
                 return;
             }
+
             currentQueue=getCurrentQueue();
             TempMsg.WordLearn = getCurrentQueue().remove();//把第一个词赋给TempMsg.WordLearn
+
         }
+
+
     }
 
+    /*从wordList加载到四个队列*/
     private void addWordListToQueue() {
         for (WordInfo word : wordList) {
             //将所有mem置为0
@@ -154,6 +166,7 @@ public class ReviewFragment extends Fragment {
         }
     }
 
+    /*加载单个word到队列*/
     private void addWordToQueue(WordInfo word){
         switch (word.getMemory()){
             case 0-> queue0.add(word);
@@ -163,11 +176,13 @@ public class ReviewFragment extends Fragment {
         }
     }
 
+    /*获取当前应学习的队列*/
     private Queue<WordInfo> getCurrentQueue(){
         if (isQueueEmpty()){
             refreshData();
             return currentQueue;
         }
+        Log.d(TAG,"队列的size分别为："+ queue0.size()+","+queue1.size()+","+queue2.size()+","+queue3.size());
         if (current==0){
             if (queue0.size()!=0){
                 Log.d(TAG,"切换到队列"+current);
@@ -211,13 +226,13 @@ public class ReviewFragment extends Fragment {
     }
 
     private void refreshData(){
-        if (isQueueEmpty()){
+        if (isQueueEmpty()){//如果0、1、2队列全空，学习结束
             tvWord.setText("");
             Log.d(TAG,"背完了");
             learnFinish();
             return;
         }
-        if (count>=maxCount){
+        if (count>=maxCount){//当前队列学习的词达到了切换限值
             count=0;
             current++;
             Log.d(TAG,"切换队列");
@@ -225,9 +240,9 @@ public class ReviewFragment extends Fragment {
             count++;
         }
 
-        currentQueue=getCurrentQueue();
-        TempMsg.WordLearn=currentQueue.remove();
-        initView();
+        currentQueue=getCurrentQueue();//得到当前应学的队列
+        TempMsg.WordLearn=currentQueue.remove();//取一个词
+        refreshView();
     }
 
     private boolean isQueueEmpty(){
@@ -250,25 +265,44 @@ public class ReviewFragment extends Fragment {
         TempMsg.WordLearn.setMemory(memory);
         wordDao.insertOneWord(TempMsg.WordLearn);
         addWordToQueue(TempMsg.WordLearn);
-        refreshData();
+        turnToDetail();
+        //延时一秒刷新，避免切换activity动画过程中，单词刷新
+        new Handler().postDelayed(mRefresh,1000);
     }
 
-    private void opAmbiguous(){
+    private void opAmbiguous() {
         Log.d(TAG,"点击了模糊");
         //memory不改变
         addWordToQueue(TempMsg.WordLearn);
-        refreshData();
+        turnToDetail();
+        new Handler().postDelayed(mRefresh,1000);
+
     }
 
     private void opUnKnow(){
         Log.d(TAG,"点击了不认识");
         int memory = TempMsg.WordLearn.getMemory();
-        memory--;
+        memory=(memory==0)?0:--memory;
         TempMsg.WordLearn.setMemory(memory);
         wordDao.insertOneWord(TempMsg.WordLearn);
         addWordToQueue(TempMsg.WordLearn);
-        refreshData();
+        turnToDetail();
+        new Handler().postDelayed(mRefresh,1000);
     }
+
+    private void turnToDetail() {
+        Intent intent=new Intent(getActivity(), WordDetailActivity.class);
+        intent.putExtra("name",TempMsg.WordLearn.getName());
+        startActivity(intent);
+    }
+
+    private Runnable mRefresh=new Runnable() {
+        @Override
+        public void run() {
+            refreshData();
+        }
+    };
+
 
     @Override
     public void onStart() {
@@ -280,6 +314,7 @@ public class ReviewFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG,"继续");
+
     }
 
     @Override
@@ -287,8 +322,6 @@ public class ReviewFragment extends Fragment {
         super.onStop();
         Log.d(TAG,"停止");
     }
-
-
 
     /**
      * 切换Fragment可视状态

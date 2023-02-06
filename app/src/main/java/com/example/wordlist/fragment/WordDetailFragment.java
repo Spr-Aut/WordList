@@ -13,9 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -28,26 +26,25 @@ import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.util.TempMsg;
 
-import java.util.ArrayList;
-
 public class WordDetailFragment extends Fragment {
     private static final String TAG = "WordDetailFragment";
-    private boolean isFromIntent=false;
-    private String name="";//用于来自Intent的刷新
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
 
     private WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
-
     private TextView tvName;//单词名
     private TextView tvSymbolUk;//英式音标
     private TextView tvSymbolUs;//美式音标
     private TextView tvDesc;//释义
     private TextView tvSentence;//例句
-    private MyBroadcastReceiver broadcastReceiver;
     private ImageButton btnSound;
     private ImageButton btnFavorite;
     private Button btnContinue;
+    private MyBroadcastReceiver broadcastReceiver;
+
+    private String wordName="";
+    private boolean isFromIntent=false;
+    private WordInfo wordInfo;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,15 +52,13 @@ public class WordDetailFragment extends Fragment {
         // 根据布局文件fragment_tab_second.xml生成视图对象
         mView = inflater.inflate(R.layout.fragment_word_detail, container, false);
 
-        String name = getActivity().getIntent().getStringExtra("name");
+        judgeSource();
+        bindView();
 
-        if (name!=null&&name.length()!=0){
-            isFromIntent=true;
-            Log.d(TAG,"来自intent,name="+name);
-            this.name=name;
-            //refresh(name);//写在onResume里了
-        }else isFromIntent=false;
 
+        return mView;
+    }
+    private void bindView(){
         tvName=mView.findViewById(R.id.tv_detail_name);
         tvSymbolUk=mView.findViewById(R.id.tv_detail_symbol_uk);
         tvSymbolUs=mView.findViewById(R.id.tv_detail_symbol_us);
@@ -72,33 +67,77 @@ public class WordDetailFragment extends Fragment {
         btnSound=mView.findViewById(R.id.btn_sound);
         btnFavorite=mView.findViewById(R.id.btn_favorite);
         btnContinue=mView.findViewById(R.id.btn_continue);
+    }
 
-        btnSound.setOnClickListener(v -> {
-            playSound(TempMsg.WordInfo.getSound_uk());//默认播放英式
-        });
-        btnFavorite.setOnClickListener(v -> {
-            if (TempMsg.WordInfo.getName()!=null&&TempMsg.WordInfo.getName()!=""){
-                addToDao();
+    @Override
+    public void onStart() {
+        super.onStart();
+        broadcastReceiver=new MyBroadcastReceiver();
+        IntentFilter filter=new IntentFilter(BroadcastName.WORD_DETAIL_REFRESH);
+        mContext.registerReceiver(broadcastReceiver,filter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        judgeSource();
+        refreshView();
+    }
+
+    /*判断数据来源*/
+    private void judgeSource(){
+        //来自Intent的话，不管广播和nameTemp
+        String nameIntent = getActivity().getIntent().getStringExtra("name");//Intent
+        //nameBroad在MyBroadCast里赋值了
+        String nameTemp=TempMsg.WordInfo.getName();
+
+        if (nameIntent!=null&&nameIntent.length()!=0){//来自Intent，不管广播和nameTemp
+            wordName=nameIntent;
+            isFromIntent=true;
+        }else{
+            wordName=nameTemp;
+            isFromIntent=false;
+        }
+    }
+
+
+    private void refreshView(){
+        if (tvName.getText().equals(wordName)){
+            Log.d(TAG,"无需刷新");
+        }else {//刷新
+            if (isFromIntent){
+                wordInfo= wordDao.getWordByName(wordName);
+            }else {
+                wordInfo=TempMsg.WordInfo;
             }
 
-        });
-        btnContinue.setOnClickListener(v -> {
-            Intent intent=new Intent(getActivity(),WordListActivity.class);
-            startActivity(intent);
-        });
+            tvName.setText(wordInfo.getName());
+            tvSymbolUk.setText(wordInfo.getSymbol_uk());
+            tvSymbolUs.setText(wordInfo.getSymbol_us());
+            tvSentence.setText(wordInfo.getSentence());
+            tvDesc.setText(wordInfo.getDesc());
 
-
-
-
-        return mView;
+            btnSound.setOnClickListener(v -> {
+                playSound(wordInfo.getSound_uk());//默认播放英式
+            });
+            btnFavorite.setOnClickListener(v -> {
+                if (wordInfo.getName()!=null&&wordInfo.getName()!=""){
+                    addToDao();
+                }
+            });
+            btnContinue.setOnClickListener(v -> {
+                Intent intent=new Intent(getActivity(), WordListActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     private void addToDao() {
-        TempMsg.WordInfo.setTime_stamp(MyTools.getCurrentTimeMillis());
-        TempMsg.WordInfo.setFavorite(1);
-        wordDao.insertOneWord(TempMsg.WordInfo);
+        wordInfo.setTime_stamp(MyTools.getCurrentTimeMillis());
+        wordInfo.setFavorite(1);
+        wordDao.insertOneWord(wordInfo);
 
-        Log.d(TAG,"添加单词"+TempMsg.WordInfo.getName());
+        Log.d(TAG,"添加单词"+wordInfo.getName());
     }
 
     private void playSound(String soundRul) {
@@ -114,83 +153,16 @@ public class WordDetailFragment extends Fragment {
     }
 
 
-    private void refresh(String name) {//判断当前name和传来的name是否一样，不一样则刷新
-
-         if (tvName.getText().equals(name)){
-            Log.d(TAG,"无需刷新,name="+name);
-        }else {
-            tvName.setText(TempMsg.WordInfo.getName());
-            tvSymbolUk.setText(TempMsg.WordInfo.getSymbol_uk());
-            tvSymbolUs.setText(TempMsg.WordInfo.getSymbol_us());
-            tvDesc.setText(TempMsg.WordInfo.getDesc());
-            tvSentence.setText(TempMsg.WordInfo.getSentence());
-
-            Log.d(TAG,"刷新当前Name为"+TempMsg.WordInfo.getName());
-        }
-    }
-
-    private void refreshFromIntent(){
-        WordInfo wordInfo=wordDao.getWordByName(name);
-        tvName.setText(wordInfo.getName());
-        tvSymbolUk.setText(wordInfo.getSymbol_uk());
-        tvSymbolUs.setText(wordInfo.getSymbol_us());
-        tvDesc.setText((wordInfo.getDesc()));
-        tvSentence.setText(wordInfo.getSentence());
-        Log.d(TAG,"刷新当前Name为"+wordInfo.getName());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        broadcastReceiver=new MyBroadcastReceiver();
-        IntentFilter filter=new IntentFilter(BroadcastName.WORD_DETAIL_REFRESH);
-        mContext.registerReceiver(broadcastReceiver,filter);
-        Log.d(TAG,"启动");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG,"继续");
-
-        if (isFromIntent){
-            refreshFromIntent();
-        }else {
-            refresh(TempMsg.WordInfo.getName());
-        }
-
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mContext.unregisterReceiver(broadcastReceiver);
-        Log.d(TAG,"停止");
-    }
-
-    /**
-     * 切换Fragment可视状态
-     * */
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
-            Log.d(TAG,"切换可视状态");
-        }else {
-        }
-    }
-
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent!=null&&intent.getAction().equals(BroadcastName.WORD_DETAIL_REFRESH)){
 
-                Log.d(TAG,"收到广播");
-                String name=intent.getStringExtra("name");
-                refresh(name);
+
+                wordName=intent.getStringExtra("name");
+                Log.d(TAG,"收到广播，name="+wordName);
+                refreshView();
             }
         }
     }
-
 }

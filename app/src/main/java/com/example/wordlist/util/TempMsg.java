@@ -13,5 +13,6 @@ public class TempMsg {
     public static ArrayList<String>list=new ArrayList<>();
     public static WordInfo WordInfo=new WordInfo();
     public static WordInfo WordLearn=new WordInfo();
+
     public static int x=0;
 }

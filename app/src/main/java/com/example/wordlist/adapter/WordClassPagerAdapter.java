@@ -4,10 +4,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.wordlist.fragment.SettingsFragment;
 import com.example.wordlist.fragment.TranslateFragment;
 import com.example.wordlist.fragment.WordDetailFragment;
-import com.example.wordlist.fragment.WordListFragment;
 
 import java.util.List;
 

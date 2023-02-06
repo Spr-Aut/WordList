@@ -108,10 +108,15 @@ public class TranslateFragment extends Fragment {
     }
 
     private void translate(){
+        String origin=etOrigin.getText().toString();
+        if (origin==null||origin.length()==0){
+            MyTools.showMsg("请输入单词",mContext);
+            return;
+        }
         stateSwitch(STATE_DURING_TRANS);//翻译中
         StringBuilder url=new StringBuilder();
         url.append("https://dict-co.iciba.com/api/dictionary.php?w=");
-        url.append(etOrigin.getText());
+        url.append(origin);
         url.append("&key=0EAE08A016D6688F64AB3EBB2337BFB0");
         new MyAsyncTask().execute(url.toString());
 
