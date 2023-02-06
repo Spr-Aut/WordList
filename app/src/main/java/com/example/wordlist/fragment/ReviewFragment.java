@@ -33,6 +33,7 @@ public class ReviewFragment extends Fragment {
     private static final String TAG = "ReviewFragment";
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
+    private TextView tvLast;
     private TextView tvWord;
     private TextView tvSymbol;
     private TextView tvSentence;
@@ -82,6 +83,7 @@ public class ReviewFragment extends Fragment {
     }
 
     private void bindView(){
+        tvLast=mView.findViewById(R.id.tv_last_learn);
         tvWord=mView.findViewById(R.id.tv_word_learn);
         tvSymbol=mView.findViewById(R.id.tv_symbol_learn);
         tvSentence=mView.findViewById(R.id.tv_sentence_learn);
@@ -101,6 +103,10 @@ public class ReviewFragment extends Fragment {
     }
 
     private void refreshView(){
+        if (TempMsg.LastWordLearn!=null&&TempMsg.LastWordLearn.length()!=0){
+            tvLast.setText(TempMsg.LastWordLearn);
+            tvLast.setOnClickListener(v -> turnToDetail(TempMsg.LastWordLearn));
+        }
         tvWord.setText(TempMsg.WordLearn.getName());
         tvSymbol.setText(TempMsg.WordLearn.getSymbol_uk());
         tvSymbol.setOnClickListener(v -> {
@@ -136,6 +142,7 @@ public class ReviewFragment extends Fragment {
         }
     }
 
+    /*初次启动才会执行*/
     private void prepareData() {
         wordList=wordDao.getAllOpWord();//加载所有word_operation=0的词
         if (wordList.size()!=0)isNotEmpty=true;//非空
@@ -240,6 +247,7 @@ public class ReviewFragment extends Fragment {
             count++;
         }
 
+        TempMsg.LastWordLearn=TempMsg.WordLearn.getName();
         currentQueue=getCurrentQueue();//得到当前应学的队列
         TempMsg.WordLearn=currentQueue.remove();//取一个词
         refreshView();
@@ -254,7 +262,8 @@ public class ReviewFragment extends Fragment {
     private void opWell() {
         Log.d(TAG,"点击了熟知");
         TempMsg.WordLearn.setWord_operation(1);//不再出现
-        wordDao.insertOneWord(TempMsg.WordLearn);
+        //wordDao.insertOneWord(TempMsg.WordLearn);
+        updateToDB();
         refreshData();
     }
 
@@ -263,9 +272,10 @@ public class ReviewFragment extends Fragment {
         int memory = TempMsg.WordLearn.getMemory();
         memory++;
         TempMsg.WordLearn.setMemory(memory);
-        wordDao.insertOneWord(TempMsg.WordLearn);
+        //wordDao.insertOneWord(TempMsg.WordLearn);
+        updateToDB();
         addWordToQueue(TempMsg.WordLearn);
-        turnToDetail();
+        turnToDetail(TempMsg.WordLearn.getName());
         //延时一秒刷新，避免切换activity动画过程中，单词刷新
         new Handler().postDelayed(mRefresh,1000);
     }
@@ -273,8 +283,9 @@ public class ReviewFragment extends Fragment {
     private void opAmbiguous() {
         Log.d(TAG,"点击了模糊");
         //memory不改变
+        updateToDB();
         addWordToQueue(TempMsg.WordLearn);
-        turnToDetail();
+        turnToDetail(TempMsg.WordLearn.getName());
         new Handler().postDelayed(mRefresh,1000);
 
     }
@@ -284,15 +295,29 @@ public class ReviewFragment extends Fragment {
         int memory = TempMsg.WordLearn.getMemory();
         memory=(memory==0)?0:--memory;
         TempMsg.WordLearn.setMemory(memory);
-        wordDao.insertOneWord(TempMsg.WordLearn);
+        //wordDao.insertOneWord(TempMsg.WordLearn);
+        updateToDB();
         addWordToQueue(TempMsg.WordLearn);
-        turnToDetail();
+        turnToDetail(TempMsg.WordLearn.getName());
         new Handler().postDelayed(mRefresh,1000);
     }
 
-    private void turnToDetail() {
+    private void updateToDB(){
+        Log.d(TAG,"尝试更新到数据库");
+        WordInfo word=wordDao.getWordByName(TempMsg.WordLearn.getName());
+        if (word==null){
+            Log.d(TAG,"数据库中不存在，插入");
+            wordDao.insertOneWord(TempMsg.WordLearn);
+        }else {
+            Log.d(TAG,"数据库中存在，更新");
+            wordDao.updateWord(word);
+        }
+
+    }
+
+    private void turnToDetail(String name) {
         Intent intent=new Intent(getActivity(), WordDetailActivity.class);
-        intent.putExtra("name",TempMsg.WordLearn.getName());
+        intent.putExtra("name",name);
         startActivity(intent);
     }
 

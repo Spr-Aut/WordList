@@ -86,16 +86,16 @@
                     android:id="@+id/text_new_num_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="新学15"
+                    android:text="上一个："
                     android:textColor="@color/colorLightGrey"
                     android:textSize="13sp" />
 
                 <TextView
-                    android:id="@+id/text_review_num_top"
+                    android:id="@+id/tv_last_learn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="复习9"
+                    android:text=""
                     android:textColor="@color/colorLightGrey"
                     android:textSize="13sp" />
 
