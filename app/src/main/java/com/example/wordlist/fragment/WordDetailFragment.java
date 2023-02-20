@@ -114,6 +114,7 @@ public class WordDetailFragment extends Fragment {
                 btnContinue.setVisibility(View.VISIBLE);
                 btnContinue.setOnClickListener(v -> getActivity().finish());
 
+
             }else {
                 wordInfo=TempMsg.WordInfo;
             }
@@ -191,4 +192,6 @@ public class WordDetailFragment extends Fragment {
             }
         }
     }
+
+
 }

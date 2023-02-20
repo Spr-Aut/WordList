@@ -58,10 +58,10 @@
                                 android:gravity="start|center_vertical"
                                 android:maxLines="1"
                                 android:text=""
-                                android:textColor="@color/colorMainBlue"
+                                android:textColor="@color/blue"
                                 android:textSize="25sp"
                                 android:textStyle="bold"
-
+                                android:transitionName="WORD"
                                 />
 
 

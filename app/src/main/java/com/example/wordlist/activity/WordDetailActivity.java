@@ -23,4 +23,9 @@ public class WordDetailActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

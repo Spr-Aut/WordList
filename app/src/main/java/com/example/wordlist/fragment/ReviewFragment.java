@@ -1,5 +1,6 @@
 package com.example.wordlist.fragment;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -47,7 +48,7 @@ public class ReviewFragment extends Fragment {
     private List<WordInfo> wordList;
     private int current;//当前队列
     private int count=0;//当前队列到第几个了
-    private int maxCount=2;//背几个换队列
+    private int maxCount=4;//背几个换队列
     private boolean isNotEmpty=false;//数据库是否空
     private boolean isFirstBoot=true;
     private Queue<WordInfo> queue0=new LinkedList<>();
@@ -55,6 +56,7 @@ public class ReviewFragment extends Fragment {
     private Queue<WordInfo> queue2=new LinkedList<>();
     private Queue<WordInfo> queue3=new LinkedList<>();
     private Queue<WordInfo> currentQueue;
+    private int delayToDetail=500;
 
 
     @Override
@@ -283,7 +285,7 @@ public class ReviewFragment extends Fragment {
         addWordToQueue(TempMsg.WordLearn);
         turnToDetail(TempMsg.WordLearn.getName());
         //延时一秒刷新，避免切换activity动画过程中，单词刷新
-        new Handler().postDelayed(mRefresh,1000);
+        new Handler().postDelayed(mRefresh,delayToDetail);
     }
 
     private void opAmbiguous() {
@@ -292,7 +294,7 @@ public class ReviewFragment extends Fragment {
         updateToDB();
         addWordToQueue(TempMsg.WordLearn);
         turnToDetail(TempMsg.WordLearn.getName());
-        new Handler().postDelayed(mRefresh,1000);
+        new Handler().postDelayed(mRefresh,delayToDetail);
 
     }
 
@@ -305,7 +307,7 @@ public class ReviewFragment extends Fragment {
         updateToDB();
         addWordToQueue(TempMsg.WordLearn);
         turnToDetail(TempMsg.WordLearn.getName());
-        new Handler().postDelayed(mRefresh,1000);
+        new Handler().postDelayed(mRefresh,delayToDetail);
     }
 
     private void updateToDB(){
@@ -325,7 +327,8 @@ public class ReviewFragment extends Fragment {
     private void turnToDetail(String name) {
         Intent intent=new Intent(getActivity(), WordDetailActivity.class);
         intent.putExtra("name",name);
-        startActivity(intent);
+        ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(getActivity(),tvWord,"WORD");
+        startActivity(intent,options.toBundle());
     }
 
     private Runnable mRefresh=new Runnable() {
