@@ -172,12 +172,16 @@ public class ReviewFragment extends Fragment {
 
     /*从wordList加载到四个队列*/
     private void addWordListToQueue() {
+        Log.d(TAG,"从wordList加载到四个队列");
+        long time = MyTools.getCurrentTimeMillis();
         for (WordInfo word : wordList) {
             //将所有mem置为0
             word.setMemory(0);
             wordDao.updateWord(word);
             addWordToQueue(word);
         }
+        time=MyTools.getCurrentTimeMillis()-time;
+        Log.d(TAG,"读取数据库耗时"+time);
     }
 
     /*加载单个word到队列*/
@@ -319,7 +323,7 @@ public class ReviewFragment extends Fragment {
             wordDao.insertOneWord(TempMsg.WordLearn);
         }else {
             Log.d(TAG,"数据库中存在，更新");
-            wordDao.updateWord(word);
+            wordDao.updateWord(TempMsg.WordLearn);
         }
 
     }

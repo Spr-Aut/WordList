@@ -2,6 +2,7 @@ package com.example.wordlist.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
+import androidx.room.DeleteColumn;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -23,7 +24,7 @@ public interface WordDao {
     @Query("SELECT * FROM WordInfo WHERE name = :name")
     WordInfo getWordByName(String name);
 
-    @Query("SELECT * FROM wordinfo WHERE word_operation = 0")
+    @Query("SELECT * FROM WordInfo WHERE word_operation = 0")
     List<WordInfo> getAllOpWord();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) // 记录重复时替换原记录
@@ -37,6 +38,8 @@ public interface WordDao {
 
     @Delete
     void deleteWord(WordInfo word); // 删除信息
+
+
 
 
 

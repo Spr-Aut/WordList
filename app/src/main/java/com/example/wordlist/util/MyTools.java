@@ -134,9 +134,8 @@ public class MyTools {
             String briefDesc=desc.split("；")[0];//显示词性
             //去掉词性
             String[] strings = briefDesc.split("\\.");
-            Log.d(TAG,briefDesc);
             int len=strings.length;
-            Log.d(TAG,len+"");
+            Log.d(TAG,briefDesc+"：有"+len+"个词性");
             if (len!=0){
                 briefDesc=strings[len-1];
             }

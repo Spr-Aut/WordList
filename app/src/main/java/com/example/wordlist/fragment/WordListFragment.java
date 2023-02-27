@@ -27,6 +27,7 @@ import com.example.wordlist.dao.BookDao;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.BookInfo;
 import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.util.MyTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,11 +96,15 @@ public class WordListFragment extends Fragment {
             tv_second.setText(allBook.get(0).getPrice()+"");
         }*/
 
+        long time = MyTools.getCurrentTimeMillis();
+
         allWord=wordDao.getAllWordDescByTime();
         slideAdapter.refreshData(allWord);
         //Log.d(TAG,"数据库第一个词为"+wordDao.getAllWord().get(0).getName());//数据库空时报错
         Log.d(TAG,"刷新");
 
+        time= MyTools.getCurrentTimeMillis()-time;
+        Log.d(TAG,"读取数据库耗时"+time);
     }
 
     @Override
