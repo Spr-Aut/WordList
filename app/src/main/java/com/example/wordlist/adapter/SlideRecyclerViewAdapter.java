@@ -25,6 +25,7 @@ import com.example.wordlist.R;
 import com.example.wordlist.activity.WordDetailActivity;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.tuple.WordNameTransTuple;
 import com.example.wordlist.util.MyTools;
 
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.List;
 public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static String TAG = "LinearDynamicAdapter";
     private Context mContext; // 声明一个上下文对象
-    private List<WordInfo> mWordList;
+    private List<WordNameTransTuple> mWordList;
 
     private LayoutInflater mLayoutInflater;
     private int viewType;
@@ -41,7 +42,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public int TRANS_VISUAL_STATE=0;
     private WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
 
-    public SlideRecyclerViewAdapter(Context context,List<WordInfo> wordList){
+    public SlideRecyclerViewAdapter(Context context,List<WordNameTransTuple> wordList){
         this.mContext=context;
         this.mWordList=wordList;
         mLayoutInflater=LayoutInflater.from(mContext);
@@ -84,7 +85,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         return mWordList.size();
     }
 
-    public void refreshData(List<WordInfo> wordList){
+    public void refreshData(List<WordNameTransTuple> wordList){
         this.mWordList=wordList;
         notifyDataSetChanged();
     }
@@ -102,7 +103,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         holder.mViewSlideDelete.setVisibility(View.VISIBLE);
         holder.mViewSlideMore.setVisibility(View.VISIBLE);
 
-        WordInfo wordInfo=mWordList.get(position);
+        WordNameTransTuple wordInfo=mWordList.get(position);
 
         holder.mTvOrigin.setText(wordInfo.getName());
         holder.mTvTrans.setText(MyTools.briefDesc(wordInfo.getDesc()));
@@ -136,7 +137,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             @Override
             public boolean onLongClick(View v) {
                 Intent intent=new Intent(mContext, WordDetailActivity.class);
-                WordInfo wordInfo=mWordList.get(position);
+                WordNameTransTuple wordInfo=mWordList.get(position);
                 intent.putExtra("name",wordInfo.getName());
                 mContext.startActivity(intent);
 
@@ -164,10 +165,12 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         }
     }*/
 
-    private void deleteItem(WordInfo word,int position){
+    private void deleteItem(WordNameTransTuple word,int position){
         //int row=mNoteDbOpenHelper.deleteFromDbById(note.getId()+"");
         if(true){//row>0
-            wordDao.deleteWord(word);
+            WordInfo wordInfo=new WordInfo();
+            wordInfo.setName(word.getName());
+            wordDao.deleteWord(wordInfo);
             removeData(position);
             showMsg("删除");
         }

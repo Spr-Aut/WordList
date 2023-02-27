@@ -27,6 +27,7 @@ import com.example.wordlist.dao.BookDao;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.BookInfo;
 import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.tuple.WordNameTransTuple;
 import com.example.wordlist.util.MyTools;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class WordListFragment extends Fragment {
     BookDao bookDao= MainApplication.getInstance().getBookDB().bookDao();
     WordDao wordDao=MainApplication.getInstance().getWordDB().wordDao();
     List<BookInfo> allBook;
-    List<WordInfo> allWord;
+    List<WordNameTransTuple> allWord;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity(); // 获取活动页面的上下文
@@ -52,12 +53,6 @@ public class WordListFragment extends Fragment {
         initData();
 
         mRecyclerView=mView.findViewById(R.id.rc_word_list);
-
-
-        WordInfo wordInfo=new WordInfo();
-        wordInfo.setName("原文");
-        wordInfo.setDesc("译文");
-        allWord.add(wordInfo);
 
         slideAdapter=new SlideRecyclerViewAdapter(mContext,allWord);
 
@@ -72,12 +67,6 @@ public class WordListFragment extends Fragment {
         //slideAdapter.setViewType(SlideRecyclerViewAdapter.TYPE_LINEAR_LAYOUT);
         slideAdapter.notifyDataSetChanged();
 
-        refresh();
-
-
-
-
-
         return mView;
     }
 
@@ -88,23 +77,14 @@ public class WordListFragment extends Fragment {
 
     private void refresh() {
 
-        /*allBook = bookDao.getAllBook();
-        if (allBook.size()==0){
-            tv_second.setText("没有书");
-        }else {
-            //tv_second.setText(allBook.get(0).getName());
-            tv_second.setText(allBook.get(0).getPrice()+"");
-        }*/
+        MyTools.timeStart();
 
-        long time = MyTools.getCurrentTimeMillis();
-
-        allWord=wordDao.getAllWordDescByTime();
+        allWord=wordDao.getWordList();
         slideAdapter.refreshData(allWord);
         //Log.d(TAG,"数据库第一个词为"+wordDao.getAllWord().get(0).getName());//数据库空时报错
         Log.d(TAG,"刷新");
 
-        time= MyTools.getCurrentTimeMillis()-time;
-        Log.d(TAG,"读取数据库耗时"+time);
+        MyTools.timeEnd(TAG);
     }
 
     @Override

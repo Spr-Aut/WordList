@@ -15,6 +15,7 @@ import com.example.wordlist.MainApplication;
 import com.example.wordlist.R;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.tuple.WordNameTransTuple;
 import com.example.wordlist.util.MyTools;
 
 import java.util.List;
@@ -35,8 +36,10 @@ public class StatisticsFragment extends Fragment {
 
         Button button=mView.findViewById(R.id.btn_add_batch);
         Button button2=mView.findViewById(R.id.btn_delete_batch);
+        Button button3=mView.findViewById(R.id.btn_query_batch);
         button.setOnClickListener(v -> addToDB());
         button2.setOnClickListener(v -> deleteAll());
+        button3.setOnClickListener(v -> getWordList());
 
         return mView;
     }
@@ -76,6 +79,17 @@ public class StatisticsFragment extends Fragment {
         }
         time=MyTools.getCurrentTimeMillis()-time;
         Log.d(TAG,"读取数据库耗时"+time);
+    }
+
+    private void getWordList(){
+        MyTools.timeStart();
+
+        List<WordNameTransTuple> wordList = wordDao.getWordList();
+        String name = wordList.get(0).getName();
+
+
+        MyTools.timeEnd(TAG);
+        Log.d(TAG,name);
     }
 
     @Override

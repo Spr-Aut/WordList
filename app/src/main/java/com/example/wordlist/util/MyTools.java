@@ -31,6 +31,8 @@ public class MyTools {
     public final static int EXISTENCE = 1;
     public final static int NONEXISTENCE = 0;
 
+    public static long time=0L;
+
     /*判断单词是否出现被安排在在下一个，击中率为(100-memory)/100*/
     public static boolean random_hit(int memory) {
         if (memory < 0)
@@ -160,6 +162,14 @@ public class MyTools {
             return "";
 
         }else return "";
+    }
+
+    public static void timeStart(){
+        time=getCurrentTimeMillis();
+    }
+    public static void timeEnd(String TAG){
+        time=getCurrentTimeMillis()-time;
+        Log.d(TAG,"耗时："+time+"毫秒");
     }
 
     public static void setStatusBar(Activity activity){
