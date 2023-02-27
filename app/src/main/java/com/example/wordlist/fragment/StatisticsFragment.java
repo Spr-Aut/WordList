@@ -84,12 +84,13 @@ public class StatisticsFragment extends Fragment {
     private void getWordList(){
         MyTools.timeStart();
 
-        List<WordNameTransTuple> wordList = wordDao.getWordList();
-        String name = wordList.get(0).getName();
+        List<WordInfo> wordList = wordDao.getAllWord();
+        String name = wordList.get(5000).getName();
 
 
         MyTools.timeEnd(TAG);
         Log.d(TAG,name);
+
     }
 
     @Override

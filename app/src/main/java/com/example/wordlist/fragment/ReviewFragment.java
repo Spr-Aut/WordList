@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment;
 import com.example.wordlist.MainApplication;
 import com.example.wordlist.activity.WordDetailActivity;
 import com.example.wordlist.dao.WordDao;
+import com.example.wordlist.tuple.WordNameMemTuple;
+import com.example.wordlist.tuple.WordNameTransTuple;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.R;
 import com.example.wordlist.entity.WordInfo;
@@ -45,17 +47,17 @@ public class ReviewFragment extends Fragment {
     private CardView cvAmbiguous;
     private CardView cvUnKnow;
     private WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
-    private List<WordInfo> wordList;
+    private List<WordNameMemTuple> wordList;
     private int current;//当前队列
     private int count=0;//当前队列到第几个了
     private int maxCount=4;//背几个换队列
     private boolean isNotEmpty=false;//数据库是否空
     private boolean isFirstBoot=true;
-    private Queue<WordInfo> queue0=new LinkedList<>();
-    private Queue<WordInfo> queue1=new LinkedList<>();
-    private Queue<WordInfo> queue2=new LinkedList<>();
-    private Queue<WordInfo> queue3=new LinkedList<>();
-    private Queue<WordInfo> currentQueue;
+    private Queue<WordNameMemTuple> queue0=new LinkedList<>();
+    private Queue<WordNameMemTuple> queue1=new LinkedList<>();
+    private Queue<WordNameMemTuple> queue2=new LinkedList<>();
+    private Queue<WordNameMemTuple> queue3=new LinkedList<>();
+    private Queue<WordNameMemTuple> currentQueue;
     private int delayToDetail=500;
 
 
@@ -151,6 +153,7 @@ public class ReviewFragment extends Fragment {
 
     /*初次启动才会执行*/
     private void prepareData() {
+
         wordList=wordDao.getAllOpWord();//加载所有word_operation=0的词
         if (wordList.size()!=0)isNotEmpty=true;//非空
 
@@ -163,7 +166,12 @@ public class ReviewFragment extends Fragment {
             }
 
             currentQueue=getCurrentQueue();
-            TempMsg.WordLearn = getCurrentQueue().remove();//把第一个词赋给TempMsg.WordLearn
+            WordNameMemTuple tuple;
+            while (true){
+                tuple = getCurrentQueue().remove();
+                if (tuple!=null)break;
+            }
+            TempMsg.WordLearn = MyTools.nameMemToWord(tuple);//把第一个词赋给TempMsg.WordLearn
 
         }
 
@@ -173,19 +181,22 @@ public class ReviewFragment extends Fragment {
     /*从wordList加载到四个队列*/
     private void addWordListToQueue() {
         Log.d(TAG,"从wordList加载到四个队列");
-        long time = MyTools.getCurrentTimeMillis();
-        for (WordInfo word : wordList) {
+        MyTools.timeStart();
+        for (WordNameMemTuple word : wordList) {
             //将所有mem置为0
-            word.setMemory(0);
-            wordDao.updateWord(word);
-            addWordToQueue(word);
+            //word.setMemory(0);
+            WordInfo wordInfo = MyTools.nameMemToWord(word);
+            if (wordInfo!=null){
+                //wordDao.updateWord(wordInfo);
+                addWordToQueue(wordInfo);
+            }
         }
-        time=MyTools.getCurrentTimeMillis()-time;
-        Log.d(TAG,"读取数据库耗时"+time);
+        MyTools.timeEnd(TAG);
     }
 
     /*加载单个word到队列*/
-    private void addWordToQueue(WordInfo word){
+    private void addWordToQueue(WordInfo wordInfo){
+        WordNameMemTuple word=new WordNameMemTuple(wordInfo.getName(),wordInfo.getMemory());
         switch (word.getMemory()){
             case 0-> queue0.add(word);
             case 1-> queue1.add(word);
@@ -195,7 +206,7 @@ public class ReviewFragment extends Fragment {
     }
 
     /*获取当前应学习的队列*/
-    private Queue<WordInfo> getCurrentQueue(){
+    private Queue<WordNameMemTuple> getCurrentQueue(){
         if (isQueueEmpty()){
             refreshData();
             return currentQueue;
@@ -260,8 +271,27 @@ public class ReviewFragment extends Fragment {
 
 
         TempMsg.LastWordLearn=TempMsg.WordLearn.getName();//上一个词
-        currentQueue=getCurrentQueue();//得到当前应学的队列
-        TempMsg.WordLearn=currentQueue.remove();//取一个词
+        //currentQueue=getCurrentQueue();//得到当前应学的队列
+        WordNameMemTuple tuple;
+        WordInfo wordInfo;
+        while (true){
+            Log.d(TAG,"获取下一个");
+            tuple = getCurrentQueue().remove();
+            if (isQueueEmpty()){
+                tvWord.setText("");
+                Log.d(TAG,"背完了");
+                learnFinish();
+                return;
+            }
+            wordInfo=MyTools.nameMemToWord(tuple);
+            if (wordInfo!=null){
+                Log.d(TAG,"赋值");
+                TempMsg.WordLearn = MyTools.nameMemToWord(tuple);//把第一个词赋给TempMsg.WordLearn
+                break;
+            }
+            Log.d(TAG,"下一个是null");
+        }
+        //TempMsg.WordLearn=MyTools.nameMemToWord(currentQueue.remove());//取一个词
         refreshView();
     }
 

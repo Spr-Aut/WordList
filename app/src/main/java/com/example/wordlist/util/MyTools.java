@@ -13,6 +13,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.example.wordlist.MainApplication;
+import com.example.wordlist.dao.WordDao;
+import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.tuple.WordNameMemTuple;
+import com.example.wordlist.tuple.WordNameTransTuple;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -164,12 +170,20 @@ public class MyTools {
         }else return "";
     }
 
+    /*计算耗时操作的时间*/
     public static void timeStart(){
         time=getCurrentTimeMillis();
     }
     public static void timeEnd(String TAG){
         time=getCurrentTimeMillis()-time;
         Log.d(TAG,"耗时："+time+"毫秒");
+    }
+
+    /*将WordNameTransTuple转为WordInfo*/
+    public static WordInfo nameMemToWord(WordNameMemTuple tuple){
+        WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
+        WordInfo word = wordDao.getWordByName(tuple.getName());
+        return word;
     }
 
     public static void setStatusBar(Activity activity){

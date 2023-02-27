@@ -10,6 +10,7 @@ import androidx.room.Update;
 
 import com.example.wordlist.entity.BookInfo;
 import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.tuple.WordNameMemTuple;
 import com.example.wordlist.tuple.WordNameTransTuple;
 
 import java.util.List;
@@ -25,13 +26,12 @@ public interface WordDao {
     @Query("SELECT * FROM WordInfo WHERE name = :name")
     WordInfo getWordByName(String name);//用name查词
 
-    @Query("SELECT * FROM WordInfo WHERE word_operation = 0")
-    List<WordInfo> getAllOpWord();//所有op==0的词
 
     @Query("SELECT `name`,`desc` FROM WordInfo")
     List<WordNameTransTuple> getWordList();
 
-
+    @Query("SELECT `name`,`memory` FROM WordInfo WHERE word_operation = 0")
+    List<WordNameMemTuple> getAllOpWord();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) // 记录重复时替换原记录
     void insertOneWord(WordInfo word); // 插入一条信息
