@@ -178,6 +178,10 @@ public class MyTools {
         time=getCurrentTimeMillis()-time;
         Log.d(TAG,"耗时："+time+"毫秒");
     }
+    public static void timeEnd(String TAG,String text){
+        time=getCurrentTimeMillis()-time;
+        Log.d(TAG,"耗时："+time+"毫秒 "+text);
+    }
 
     /*将WordNameTransTuple转为WordInfo*/
     public static WordInfo nameMemToWord(WordNameMemTuple tuple){

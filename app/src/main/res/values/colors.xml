@@ -12,6 +12,35 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <!--
+    <color name="main_bg">#FBFBFD</color>
+    <color name="frag_bg">#ffffff</color>
+    <color name="card_bg">#F2F3F8</color>
+    -->
+    <color name="main_bg">#F2F3F8</color>
+    <color name="frag_bg">#ffffff</color>
+    <color name="card_bg">#ffffff</color>
+    <color name="button_bg">#445f88</color>
+    <color name="button_bg_pressed">#4d303030</color>
+
+    <color name="bg_grey_bottom">#F7F7F7</color>
+    <color name="btn_normal">#F2F3F8</color>
+    <color name="btn_normal_pressed">#4d303030</color>
+    <color name="btn_highlight">#4089ff</color>
+    <color name="btn_highlight_pressed">#3060ff</color>
+
+    <color name="card_grey">#F2F3F8</color>
+    <color name="dialog_bg">#f5c342</color>
+
+    <color name="button_bg_blue">#66bbff</color>
+    <color name="button_bg_pressed_blue">#3590C2</color>
+    <color name="main_typeface">#FF000000</color>
+    <color name="widget_bg">#ffffff</color>
+    <color name="widget_typeface_main">#e6000000</color>
+    <color name="widget_typeface_second">#70000000</color>
+    <color name="widget_typeface_third">#4d000000</color>
+
+
 
     <color name="grey">#888888</color>
     <color name="red">#ff0000</color>
@@ -38,26 +67,8 @@
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
 
-    <color name="main_bg">#f7f7f7</color>
-    <color name="frag_bg">#FBFBFD</color>
-    <color name="card_bg">#ffffff</color>
-    <color name="dialog_bg">#f5c342</color>
-    <color name="button_bg">#ffffff</color>
-    <color name="button_bg_pressed">#4d303030</color>
-    <color name="button_bg_blue">#66bbff</color>
-    <color name="button_bg_pressed_blue">#3590C2</color>
-    <color name="main_typeface">#FF000000</color>
-    <color name="widget_bg">#ffffff</color>
-    <color name="widget_typeface_main">#e6000000</color>
-    <color name="widget_typeface_second">#70000000</color>
-    <color name="widget_typeface_third">#4d000000</color>
 
-    <color name="bg_grey_bottom">#F7F7F7</color>
-    <color name="btn_normal">#F2F3F8</color>
-    <color name="btn_normal_pressed">#4d303030</color>
-    <color name="btn_highlight">#4089ff</color>
-    <color name="btn_highlight_pressed">#3060ff</color>
-    <color name="card_grey">#F2F3F8</color>
+
 
     <color name="colorMainBlue">#3675FF</color>
     <color name="colorLightBlue">#4089ff</color>
@@ -92,5 +103,5 @@
     <color name="colorFontInGrey">#ffffff</color>
     <color name="colorBgWhite">#FFFFFF</color>
     <color name="colorBgWhiteN">#424242</color>
-    <color name="colorBgLittleWhite">#FBFBFD</color>
+    <color name="colorBgLittleWhite">#ff0000</color>
 </resources>

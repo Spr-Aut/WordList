@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,18 +19,24 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.wordlist.MainApplication;
+import com.example.wordlist.XMLParse;
 import com.example.wordlist.activity.WordDetailActivity;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.tuple.WordNameMemTuple;
-import com.example.wordlist.tuple.WordNameTransTuple;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.R;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.TempMsg;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class ReviewFragment extends Fragment {
@@ -65,7 +72,7 @@ public class ReviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity(); // 获取活动页面的上下文
         // 根据布局文件fragment_tab_first.xml生成视图对象
-        mView = inflater.inflate(R.layout.activity_learn_word, container, false);
+        mView = inflater.inflate(R.layout.fragment_review, container, false);
 
         Log.d(TAG,"执行onCreateView");
 
@@ -174,7 +181,6 @@ public class ReviewFragment extends Fragment {
             TempMsg.WordLearn = MyTools.nameMemToWord(tuple);//把第一个词赋给TempMsg.WordLearn
 
         }
-
 
     }
 
@@ -402,6 +408,66 @@ public class ReviewFragment extends Fragment {
             Log.d(TAG,"切换可视状态");
         }else {
         }
+    }
+
+    private class MyAsyncTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        /**
+         * 在线翻译
+         * */
+        @Override
+        protected String doInBackground(String... params) {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder().url(params[0]).build();
+            try {
+                Response response = client.newCall(request).execute();
+                // publishProgress(++i);
+                return Objects.requireNonNull(response.body()).string();
+            } catch (IOException e) {
+                return e.getMessage();
+            }
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            //    更新ProgressDialog的进度条
+
+        }
+
+        /**
+         * 解析XML为TempMsg.WordInfo
+         * */
+        @Override
+        protected void onPostExecute(String params) {
+            String text = "null";
+            if (params != null) {
+                long time= MyTools.getCurrentTimeMillis();
+                try {
+                    TempMsg.WordInfo = XMLParse.parseXmlWithPull(params, true);
+                    Log.d(TAG,"XML处理完毕，存入TempMsg.tempTempMsg.WordInfo,Name为"+TempMsg.WordInfo.getName());
+                    //DBHelper.setExampleSentence(context, text, wordId);
+                } catch (Exception e) {
+                    Log.d(TAG, "onPostExecute: " + text);
+                }
+                //显示到翻译结果上
+
+
+            }
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Log.d("myTAG", "onCancelled: ");
+        }
+
     }
 
 }

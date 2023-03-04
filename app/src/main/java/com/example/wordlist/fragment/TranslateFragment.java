@@ -246,7 +246,7 @@ public class TranslateFragment extends Fragment {
                 //tvTranslation.setText("翻译");
                 //tvTranslation.setEnabled(true);
                 stateSwitch(STATE_AFTER_TRANS);//获取到了翻译结果，显示添加按钮
-                //notifyWord();
+                notifyWord();
 
             }
 

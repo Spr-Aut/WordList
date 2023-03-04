@@ -52,6 +52,7 @@ public class WordDetailFragment extends Fragment {
         mContext = getActivity(); // 获取活动页面的上下文
         // 根据布局文件fragment_tab_second.xml生成视图对象
         mView = inflater.inflate(R.layout.fragment_word_detail, container, false);
+        Log.d(TAG,"创建");
 
         judgeSource();
         bindView();
@@ -73,16 +74,44 @@ public class WordDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG,"启动");
         broadcastReceiver=new MyBroadcastReceiver();
         IntentFilter filter=new IntentFilter(BroadcastName.WORD_DETAIL_REFRESH);
         mContext.registerReceiver(broadcastReceiver,filter);
+        judgeSource();
+        refreshView();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG,"继续");
+        MyTools.timeStart();
         judgeSource();
         refreshView();
+        MyTools.timeEnd(TAG);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG,"暂停");
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.d(TAG,"停止");
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            Log.d(TAG,"切换可视状态");
+        }else {
+            Log.d(TAG,"不切换可视状态");
+        }
     }
 
     /*判断数据来源*/
@@ -188,7 +217,7 @@ public class WordDetailFragment extends Fragment {
 
                 wordName=intent.getStringExtra("name");
                 Log.d(TAG,"收到广播，name="+wordName);
-                //refreshView();//暂时去掉，因为现在访问了WordList再清空translate的etOrigin，会导致闪退
+                refreshView();//暂时去掉，因为现在访问了WordList再清空translate的etOrigin，会导致闪退
             }
         }
     }
