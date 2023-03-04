@@ -76,20 +76,23 @@ public class ReviewFragment extends Fragment {
 
         Log.d(TAG,"执行onCreateView");
 
-        /*避免每次切换fragment都刷新队列*/
-        if (isFirstBoot){//是第一次启动
-            isFirstBoot=false;
-            prepareData();
-        }
-        //prepareData();
         bindView();
-
-        if (isNotEmpty){
-            refreshView();
+        /*避免每次切换fragment都刷新队列*/
+        if (isFirstBoot) {//是第一次启动
+            isFirstBoot = false;
+            new MyAsyncTask().execute();
+            //prepareData();
         }else {
-            MyTools.showMsg("数据库空",mContext);
-            learnFinish();
+            if (isNotEmpty){
+                refreshView();
+            }else {
+                MyTools.showMsg("数据库空",mContext);
+                learnFinish();
+            }
         }
+
+
+
 
         return mView;
     }
@@ -116,6 +119,7 @@ public class ReviewFragment extends Fragment {
     }
 
     private void refreshView(){
+        Log.d(TAG,"刷新当前单词页面");
         String lastWord=TempMsg.LastWordLearn;
         if (lastWord!=null&&lastWord.length()!=0){
             tvLastText.setText("上一个：");
@@ -422,16 +426,8 @@ public class ReviewFragment extends Fragment {
          * */
         @Override
         protected String doInBackground(String... params) {
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url(params[0]).build();
-            try {
-                Response response = client.newCall(request).execute();
-                // publishProgress(++i);
-                return Objects.requireNonNull(response.body()).string();
-            } catch (IOException e) {
-                return e.getMessage();
-            }
-
+            prepareData();
+            return "";
         }
 
         @Override
@@ -440,24 +436,18 @@ public class ReviewFragment extends Fragment {
 
         }
 
-        /**
-         * 解析XML为TempMsg.WordInfo
-         * */
         @Override
         protected void onPostExecute(String params) {
-            String text = "null";
+            /*String text = "null";
             if (params != null) {
-                long time= MyTools.getCurrentTimeMillis();
-                try {
-                    TempMsg.WordInfo = XMLParse.parseXmlWithPull(params, true);
-                    Log.d(TAG,"XML处理完毕，存入TempMsg.tempTempMsg.WordInfo,Name为"+TempMsg.WordInfo.getName());
-                    //DBHelper.setExampleSentence(context, text, wordId);
-                } catch (Exception e) {
-                    Log.d(TAG, "onPostExecute: " + text);
-                }
-                //显示到翻译结果上
 
 
+            }*/
+            if (isNotEmpty){
+                refreshView();
+            }else {
+                MyTools.showMsg("数据库空",mContext);
+                learnFinish();
             }
 
         }
