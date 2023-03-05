@@ -3,6 +3,7 @@ package com.example.wordlist.fragment;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -57,7 +58,7 @@ public class ReviewFragment extends Fragment {
     private List<WordNameMemTuple> wordList;
     private int current;//当前队列
     private int count=0;//当前队列到第几个了
-    private int maxCount=4;//背几个换队列
+
     private boolean isNotEmpty=false;//数据库是否空
     private boolean isFirstBoot=true;
     private Queue<WordNameMemTuple> queue0=new LinkedList<>();
@@ -75,6 +76,11 @@ public class ReviewFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_review, container, false);
 
         Log.d(TAG,"执行onCreateView");
+
+        /*设置maxCount*/
+        SharedPreferences sharedNum=getActivity().getSharedPreferences("Num",Context.MODE_PRIVATE);
+        TempMsg.setLearnNum(sharedNum.getInt("learnNum",5));
+        TempMsg.setMaxCount(sharedNum.getInt("maxCount",5));//背几个换队列
 
         bindView();
         /*避免每次切换fragment都刷新队列*/
@@ -277,7 +283,7 @@ public class ReviewFragment extends Fragment {
             learnFinish();
             return;
         }
-        if (count>=maxCount){//当前队列学习的词达到了切换限值
+        if (count>=TempMsg.getMaxCount()){//当前队列学习的词达到了切换限值
             count=0;
             current++;
             Log.d(TAG,"切换队列");

@@ -14,5 +14,22 @@ public class TempMsg {
     public static WordInfo WordInfo=new WordInfo();
     public static WordInfo WordLearn=new WordInfo();
     public static String LastWordLearn="";
-    public static int x=0;
+    private static int learnNum=5;//每天学几个
+    private static int maxCount=5;//背几个换队列
+
+    public static int getLearnNum() {
+        return learnNum;
+    }
+
+    public static void setLearnNum(int learn) {
+        learnNum = learn;
+    }
+
+    public static int getMaxCount() {
+        return maxCount;
+    }
+
+    public static void setMaxCount(int max) {
+        maxCount = max;
+    }
 }
