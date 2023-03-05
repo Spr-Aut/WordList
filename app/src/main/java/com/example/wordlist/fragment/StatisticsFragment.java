@@ -1,6 +1,7 @@
 package com.example.wordlist.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,13 +19,20 @@ import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.tuple.WordNameTransTuple;
 import com.example.wordlist.util.MyTools;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import lecho.lib.hellocharts.model.PieChartData;
+import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.view.PieChartView;
 
 public class StatisticsFragment extends Fragment {
     private static final String TAG = "StatisticsFragment";
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
-    private TextView tvStatistics;
+    TextView tvStatistics;
+    PieChartView pieChart;
+    PieChartData pieChartData;
     private WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,15 +42,21 @@ public class StatisticsFragment extends Fragment {
 
         tvStatistics=mView.findViewById(R.id.tv_statistics);
 
+        pieChart=mView.findViewById(R.id.pieChart);
+
         Button button=mView.findViewById(R.id.btn_add_batch);
         Button button2=mView.findViewById(R.id.btn_delete_batch);
         Button button3=mView.findViewById(R.id.btn_query_batch);
+        Button button4=mView.findViewById(R.id.btn_reset_batch);
         button.setOnClickListener(v -> addToDB());
         button2.setOnClickListener(v -> deleteAll());
         button3.setOnClickListener(v -> getWordList());
+        button4.setOnClickListener(v -> resetAll());
 
         return mView;
     }
+
+
 
     private void init() {
         Log.d(TAG,"刷新统计数据");
@@ -58,6 +72,45 @@ public class StatisticsFragment extends Fragment {
         Log.d(TAG,"读取数据库耗时"+time);
         tvStatistics.setText(memory[0]+","+memory[1]+","+memory[2]+","+memory[3]);
     }
+
+    private void refreshPieChart() {
+        MyTools.timeStart();
+        pieChartData=new PieChartData();
+        int numValues=5;//扇形数量
+        int totalNum= wordDao.countAll();
+        int[] item=new int[5];
+        item[0]= wordDao.countMem0();
+        item[1]=wordDao.countMem1();;
+        item[2]=wordDao.countMem2();;
+        item[3]=wordDao.countMem3Op0();;//mem>=3,op==0
+        item[4]=wordDao.countMem3Op1();;//mem>=3,op==1
+        int[] color=new int[]{
+                getResources().getColor(R.color.pie_color1),
+                getResources().getColor(R.color.pie_color2),
+                getResources().getColor(R.color.pie_color3),
+                getResources().getColor(R.color.pie_color4),
+                getResources().getColor(R.color.pie_color5)
+        };
+        List<SliceValue>values=new ArrayList<>();
+        for (int i = 0; i < numValues; i++) {
+            SliceValue sliceValue = new SliceValue(item[i], color[i]);
+            values.add(sliceValue);
+        }
+        pieChartData.setValues(values);
+        pieChartData.setHasLabels(true);
+        pieChartData.setCenterText1(item[4]+"/"+totalNum);
+        pieChartData.setCenterText1Color(Color.GRAY);
+        pieChartData.setHasCenterCircle(true);
+        //pieChartData.setCenterCircleScale(0.4f);//中间圆环的大小
+        //pieChartData.setSlicesSpacing(24);//扇形之间的间距
+        pieChartData.setCenterText2("已完成");
+        pieChartData.setCenterText2Color(Color.GRAY);
+        pieChart.startDataAnimation();
+        pieChart.setPieChartData(pieChartData);
+        MyTools.timeEnd(TAG,"刷新pieChart");
+    }
+
+
 
     private void addToDB(){
         long time = MyTools.getCurrentTimeMillis();
@@ -81,15 +134,28 @@ public class StatisticsFragment extends Fragment {
         Log.d(TAG,"读取数据库耗时"+time);
     }
 
+    private void resetAll() {
+        long time = MyTools.getCurrentTimeMillis();
+        List<WordInfo>wordList=wordDao.getAllWord();
+        for (WordInfo wordInfo : wordList) {
+            wordInfo.setMemory(0);
+            wordInfo.setWord_operation(0);
+            wordDao.updateWord(wordInfo);
+        }
+
+        time=MyTools.getCurrentTimeMillis()-time;
+        Log.d(TAG,"读取数据库耗时"+time);
+    }
+
     private void getWordList(){
         MyTools.timeStart();
 
-        List<WordInfo> wordList = wordDao.getAllWord();
-        String name = wordList.get(5000).getName();
-
+        /*List<WordInfo> wordList = wordDao.getAllWord();
+        String name = wordList.get(5000).getName();*/
+        Log.d(TAG,wordDao.countAll()+",Mem0:"+wordDao.countMem0()+",Mem1:"+wordDao.countMem1()+",Mem2:"+wordDao.countMem2()+",Mem30:"+wordDao.countMem3Op0()+",Mem31:"+wordDao.countMem3Op1()+"");
 
         MyTools.timeEnd(TAG);
-        Log.d(TAG,name);
+        //Log.d(TAG,name);
 
     }
 
@@ -103,6 +169,7 @@ public class StatisticsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG,"继续");
+        refreshPieChart();
         //init();
     }
 

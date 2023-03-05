@@ -9,6 +9,7 @@ public class WordNameMemTuple {
     private int memory;
 
 
+
     public WordNameMemTuple() {
     }
 

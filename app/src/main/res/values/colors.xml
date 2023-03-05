@@ -32,6 +32,12 @@
     <color name="card_grey">#F2F3F8</color>
     <color name="dialog_bg">#f5c342</color>
 
+    <color name="pie_color1">#2196F3</color><!-- 扇形图颜色分配-->
+    <color name="pie_color2">#009688</color>
+    <color name="pie_color3">#FFEB3B</color>
+    <color name="pie_color4">#FFCD41</color>
+    <color name="pie_color5">#FF5555</color>
+
     <color name="button_bg_blue">#66bbff</color>
     <color name="button_bg_pressed_blue">#3590C2</color>
     <color name="main_typeface">#FF000000</color>

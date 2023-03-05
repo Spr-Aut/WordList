@@ -1,5 +1,6 @@
 package com.example.wordlist.adapter;
 
+import android.animation.ObjectAnimator;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;

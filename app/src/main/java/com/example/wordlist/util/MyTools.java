@@ -13,6 +13,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.room.Ignore;
+
 import com.example.wordlist.MainApplication;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
@@ -183,11 +185,30 @@ public class MyTools {
         Log.d(TAG,"耗时："+time+"毫秒 "+text);
     }
 
+    /*判断time和currentTime是否为同一天*/
+    public static boolean isSameDay(long time){
+        Date date=new Date(time);
+        int year= Integer.valueOf(new SimpleDateFormat("yyyy").format(date));
+        int day=Integer.valueOf(new SimpleDateFormat("d").format(date));
+
+        long currentTime=getCurrentTimeMillis();
+        Date currentDate=new Date(currentTime);
+        int currentYear= Integer.valueOf(new SimpleDateFormat("yyyy").format(currentDate));
+        int currentDay=Integer.valueOf(new SimpleDateFormat("d").format(currentDate));
+        if ((year==currentYear&&day==currentDay))return true;
+        else return false;
+    }
+
     /*将WordNameTransTuple转为WordInfo*/
     public static WordInfo nameMemToWord(WordNameMemTuple tuple){
         WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
         WordInfo word = wordDao.getWordByName(tuple.getName());
         return word;
+    }
+
+    /*将WordInfo转为WordNameTransTuple*/
+    public static WordNameMemTuple wordToNameMem(WordInfo wordInfo){
+        return new WordNameMemTuple(wordInfo.getName(),wordInfo.getMemory());
     }
 
     public static void setStatusBar(Activity activity){

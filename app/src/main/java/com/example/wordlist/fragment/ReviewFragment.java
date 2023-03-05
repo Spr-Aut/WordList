@@ -65,7 +65,7 @@ public class ReviewFragment extends Fragment {
     private Queue<WordNameMemTuple> queue2=new LinkedList<>();
     private Queue<WordNameMemTuple> queue3=new LinkedList<>();
     private Queue<WordNameMemTuple> currentQueue;
-    private int delayToDetail=500;
+    private long delayToDetail=500L;
 
 
     @Override
@@ -193,25 +193,31 @@ public class ReviewFragment extends Fragment {
         Log.d(TAG,"从wordList加载到四个队列");
         MyTools.timeStart();
         for (WordNameMemTuple word : wordList) {
-            //将所有mem置为0
-            //word.setMemory(0);
-            WordInfo wordInfo = MyTools.nameMemToWord(word);
+            /*WordInfo wordInfo = MyTools.nameMemToWord(word);
             if (wordInfo!=null){
                 //wordDao.updateWord(wordInfo);
-                addWordToQueue(wordInfo);
-            }
+
+            }*/
+            addWordToQueue(word);
         }
         MyTools.timeEnd(TAG);
     }
 
     /*加载单个word到队列*/
-    private void addWordToQueue(WordInfo wordInfo){
-        WordNameMemTuple word=new WordNameMemTuple(wordInfo.getName(),wordInfo.getMemory());
+    private void addWordToQueue(WordNameMemTuple word){
         switch (word.getMemory()){
             case 0-> queue0.add(word);
             case 1-> queue1.add(word);
             case 2-> queue2.add(word);
-            case 3-> queue3.add(word);
+            case 3-> {//此时op是0
+                WordInfo wordInfo=MyTools.nameMemToWord(word);
+                if (!MyTools.isSameDay(wordInfo.getTime_stamp())){//不是今天才背过的，则将mem置0
+                    wordInfo.setMemory(0);
+                    wordDao.updateWord(wordInfo);
+                    word.setMemory(0);
+                }
+                queue3.add(word);
+            }
         }
     }
 
@@ -313,7 +319,13 @@ public class ReviewFragment extends Fragment {
 
     private void opWell() {
         Log.d(TAG,"点击了熟知");
-        TempMsg.WordLearn.setWord_operation(1);//不再出现
+        if (TempMsg.WordLearn.getMemory()==0&&!MyTools.isSameDay(TempMsg.WordLearn.getTime_stamp())){
+            TempMsg.WordLearn.setWord_operation(1);//不再出现
+            Log.d(TAG,TempMsg.WordLearn.getName()+"之前背过，不再出现");
+        }else {
+            Log.d(TAG,TempMsg.WordLearn.getName()+"是新词，今天不再出现");
+        }//否则，只是今天不再出现
+        TempMsg.WordLearn.setMemory(3);
         //wordDao.insertOneWord(TempMsg.WordLearn);
         updateToDB();
         refreshData();
@@ -326,7 +338,7 @@ public class ReviewFragment extends Fragment {
         TempMsg.WordLearn.setMemory(memory);
         //wordDao.insertOneWord(TempMsg.WordLearn);
         updateToDB();
-        addWordToQueue(TempMsg.WordLearn);
+        addWordToQueue(MyTools.wordToNameMem(TempMsg.WordLearn));
         turnToDetail(TempMsg.WordLearn.getName());
         //延时一秒刷新，避免切换activity动画过程中，单词刷新
         new Handler().postDelayed(mRefresh,delayToDetail);
@@ -336,7 +348,7 @@ public class ReviewFragment extends Fragment {
         Log.d(TAG,"点击了模糊");
         //memory不改变
         updateToDB();
-        addWordToQueue(TempMsg.WordLearn);
+        addWordToQueue(MyTools.wordToNameMem(TempMsg.WordLearn));
         turnToDetail(TempMsg.WordLearn.getName());
         new Handler().postDelayed(mRefresh,delayToDetail);
 
@@ -349,7 +361,7 @@ public class ReviewFragment extends Fragment {
         TempMsg.WordLearn.setMemory(memory);
         //wordDao.insertOneWord(TempMsg.WordLearn);
         updateToDB();
-        addWordToQueue(TempMsg.WordLearn);
+        addWordToQueue(MyTools.wordToNameMem(TempMsg.WordLearn));
         turnToDetail(TempMsg.WordLearn.getName());
         new Handler().postDelayed(mRefresh,delayToDetail);
     }

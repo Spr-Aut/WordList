@@ -33,6 +33,20 @@ public interface WordDao {
     @Query("SELECT `name`,`memory` FROM WordInfo WHERE word_operation = 0")
     List<WordNameMemTuple> getAllOpWord();
 
+    @Query("SELECT COUNT(*) FROM WordInfo")
+    int countAll();
+    @Query("SELECT COUNT(*) FROM WordInfo WHERE memory==0")
+    int countMem0();
+    @Query("SELECT COUNT(*) FROM WordInfo WHERE memory==1")
+    int countMem1();
+    @Query("SELECT COUNT(*) FROM WordInfo WHERE memory==2")
+    int countMem2();
+    @Query("SELECT COUNT(*) FROM WordInfo WHERE memory>=3 AND word_operation==0")
+    int countMem3Op0();
+    @Query("SELECT COUNT(*) FROM WordInfo WHERE memory>=3 AND word_operation==1")
+    int countMem3Op1();
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE) // 记录重复时替换原记录
     void insertOneWord(WordInfo word); // 插入一条信息
 
@@ -44,11 +58,6 @@ public interface WordDao {
 
     @Delete
     void deleteWord(WordInfo word); // 删除信息
-
-
-
-
-
 
 
 
