@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.wordlist.MainApplication;
 import com.example.wordlist.R;
 import com.example.wordlist.XMLParse;
+import com.example.wordlist.activity.ComposeActivity;
 import com.example.wordlist.activity.WordListActivity;
 import com.example.wordlist.broadcast.BroadcastName;
 import com.example.wordlist.dao.BookDao;
@@ -76,6 +77,7 @@ public class TranslateFragment extends Fragment {
         tvResult=mView.findViewById(R.id.tv_trans_translate);
 
         btnWordList.setOnClickListener(v -> checkWordList());
+        btnWordList.setOnLongClickListener(v -> toCompose());
         btnTrans.setOnClickListener(v -> translate());
         btnClear.setOnClickListener(v -> clear());
         btnAdd.setOnClickListener(v -> addToDB());
@@ -83,6 +85,11 @@ public class TranslateFragment extends Fragment {
         //popUpKeyboard(etOrigin);
 
         return mView;
+    }
+
+    private boolean toCompose() {
+        startActivity(new Intent(getActivity(), ComposeActivity.class));
+        return true;
     }
 
     private void checkWordList() {
