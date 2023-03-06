@@ -21,11 +21,24 @@
         <item name="android:layout_weight">1</item>
         <item name="android:padding">5dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/tab_bg_selector</item>
+        <item name="android:background">@color/main_bg</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@drawable/tab_text_selector</item>
         <item name="android:button">@null</item>
     </style>
+    <!--F7F7F7-->
+
+    <!--<style name="TabButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/tab_bg_selector</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@drawable/tab_text_selector</item>
+        <item name="android:button">@null</item>
+    </style>-->
 
     <style name="TabText">
         <item name="android:layout_width">match_parent</item>

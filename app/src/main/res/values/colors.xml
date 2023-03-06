@@ -17,8 +17,8 @@
     <color name="frag_bg">#ffffff</color>
     <color name="card_bg">#F2F3F8</color>
     -->
-    <color name="main_bg">#F2F3F8</color>
-    <color name="frag_bg">#ffffff</color>
+    <color name="main_bg">#F7F7F7</color>
+    <color name="frag_bg">#F2F3F8</color>
     <color name="card_bg">#ffffff</color>
     <color name="button_bg">#445f88</color>
     <color name="button_bg_pressed">#4d303030</color>

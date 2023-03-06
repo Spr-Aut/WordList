@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,7 @@ import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.util.TempMsg;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class WordDetailFragment extends Fragment {
     private static final String TAG = "WordDetailFragment";
@@ -38,9 +40,10 @@ public class WordDetailFragment extends Fragment {
     private TextView tvSymbolUs;//美式音标
     private TextView tvDesc;//释义
     private TextView tvSentence;//例句
-    private ImageButton btnSound;
-    private ImageButton btnFavorite;
-    private Button btnContinue;
+    private LinearLayout placeHolder;//顶部占70dp高度
+    private FloatingActionButton btnSound;
+    private FloatingActionButton btnFavorite;
+    private FloatingActionButton btnContinue;
     private MyBroadcastReceiver broadcastReceiver;
 
     private String wordName="";
@@ -69,6 +72,7 @@ public class WordDetailFragment extends Fragment {
         btnSound=mView.findViewById(R.id.btn_sound);
         btnFavorite=mView.findViewById(R.id.btn_favorite);
         btnContinue=mView.findViewById(R.id.btn_continue);
+        placeHolder=mView.findViewById(R.id.placeholder_detail_top);
     }
 
     @Override
@@ -142,10 +146,12 @@ public class WordDetailFragment extends Fragment {
                 wordInfo= wordDao.getWordByName(wordName);
                 btnContinue.setVisibility(View.VISIBLE);
                 btnContinue.setOnClickListener(v -> getActivity().finish());
-
+                placeHolder.setVisibility(View.GONE);
 
             }else {
                 wordInfo=TempMsg.WordInfo;
+                btnContinue.setVisibility(View.GONE);
+                placeHolder.setVisibility(View.VISIBLE);
             }
 
             if (wordInfo.getName()!=null&&wordInfo.getName().length()!=0&&wordDao.getWordByName(wordInfo.getName())!=null){

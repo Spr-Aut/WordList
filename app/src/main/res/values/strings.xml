@@ -7,6 +7,7 @@
     <dimen name="padding_top_main">30dp</dimen>
     <dimen name="padding_bottom_main">20dp</dimen>
     <dimen name="padding_horizontal_item">30dp</dimen>
+    <dimen name="padding_horizontal">16dp</dimen>
     <dimen name="padding_vertical_item">16dp</dimen>
     <dimen name="padding_vertical_main">16dp</dimen>
     <dimen name="padding_widget">19dp</dimen>

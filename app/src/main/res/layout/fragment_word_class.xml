@@ -1,16 +1,22 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/frag_bg"
+    android:background="@color/main_bg"
     android:orientation="vertical"
     >
+
+    <!-- 二代翻页视图ViewPager2节点也需要使用完整路径 -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tl_head"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/frag_bg"
+        android:background="@color/main_bg"
         android:paddingTop="@dimen/padding_top_main">
 
         <RelativeLayout
@@ -39,14 +45,10 @@
         android:layout_height="1dp"
         android:background="@color/grey" />-->
 
-    <!-- 二代翻页视图ViewPager2节点也需要使用完整路径 -->
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp2_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 
 
 
 
-</LinearLayout>
+
+</RelativeLayout>

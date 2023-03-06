@@ -6,7 +6,7 @@
     android:paddingTop="120dp"
     android:paddingBottom="@dimen/padding_bottom_main"
     android:paddingHorizontal="@dimen/padding_horizontal_main"
-    android:background="@color/card_bg"
+    android:background="@color/main_bg"
     >
     <!--main_bg-->
     <RelativeLayout
