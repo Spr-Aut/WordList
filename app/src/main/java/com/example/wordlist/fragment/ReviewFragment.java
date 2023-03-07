@@ -60,7 +60,8 @@ public class ReviewFragment extends Fragment {
     private int count=0;//当前队列到第几个了
 
     private boolean isNotEmpty=false;//数据库是否空
-    private boolean isFirstBoot=true;
+    private boolean isFirstBoot=true;//是否是第一次启动
+    private boolean showSentence=false;//是否显示例句
     private Queue<WordNameMemTuple> queue0=new LinkedList<>();
     private Queue<WordNameMemTuple> queue1=new LinkedList<>();
     private Queue<WordNameMemTuple> queue2=new LinkedList<>();
@@ -77,10 +78,12 @@ public class ReviewFragment extends Fragment {
 
         Log.d(TAG,"执行onCreateView");
 
-        /*设置maxCount*/
-        SharedPreferences sharedNum=getActivity().getSharedPreferences("Num",Context.MODE_PRIVATE);
-        TempMsg.setLearnNum(sharedNum.getInt("learnNum",5));
-        TempMsg.setMaxCount(sharedNum.getInt("maxCount",5));//背几个换队列
+        /*设置maxCount、音标*/
+        SharedPreferences userData=mContext.getSharedPreferences("UserData",Context.MODE_PRIVATE);
+        TempMsg.setLearnNum(userData.getInt("learnNum",5));
+        TempMsg.setMaxCount(userData.getInt("maxCount",5));//背几个换队列
+        TempMsg.setIsUk(userData.getBoolean("isUk",true));//默认为英式音标
+
 
         bindView();
         /*避免每次切换fragment都刷新队列*/
@@ -134,15 +137,25 @@ public class ReviewFragment extends Fragment {
             tvLast.setOnClickListener(v -> turnToDetail(lastWord));
         }
         tvWord.setText(TempMsg.WordLearn.getName());
-        tvSymbol.setText(TempMsg.WordLearn.getSymbol_uk());
-        tvSymbol.setOnClickListener(v -> {
-            playSound(TempMsg.WordLearn.getSound_uk());
-        });
-        tvSentence.setText("");
+        if (TempMsg.isIsUk()){
+            tvSymbol.setText(TempMsg.WordLearn.getSymbol_uk());
+            tvSymbol.setOnClickListener(v -> {
+                playSound(TempMsg.WordLearn.getSound_uk());
+            });
+        }else {
+            tvSymbol.setText(TempMsg.WordLearn.getSymbol_us());
+            tvSymbol.setOnClickListener(v -> {
+                playSound(TempMsg.WordLearn.getSound_us());
+            });
+        }
+
+        showSentence=false;
+        tvSentence.setText("点击显示例句");
         cvSentence.setOnClickListener(v -> {
         Log.d(TAG,"切换句子的显示状态:"+ TempMsg.WordLearn.getSentence());
-            if (tvSentence.getText()==""&&isNotEmpty)tvSentence.setText(MyTools.briefSentence(TempMsg.WordLearn.getSentence()));
-            else tvSentence.setText("");
+            showSentence=!showSentence;
+            if (showSentence&&isNotEmpty)tvSentence.setText(MyTools.briefSentence(TempMsg.WordLearn.getSentence()));
+            else tvSentence.setText("点击显示例句");
         });
         cvWell.setOnClickListener(v -> opWell());
         cvKnow.setOnClickListener(v -> opKnow());
@@ -204,20 +217,20 @@ public class ReviewFragment extends Fragment {
                 //wordDao.updateWord(wordInfo);
 
             }*/
-            addWordToQueue(word);
+            addWordToQueue(word,true);
         }
         MyTools.timeEnd(TAG);
     }
 
     /*加载单个word到队列*/
-    private void addWordToQueue(WordNameMemTuple word){
+    private void addWordToQueue(WordNameMemTuple word,Boolean isInitializing){//isInitializing判断是否正在初始化队列
         switch (word.getMemory()){
             case 0-> queue0.add(word);
             case 1-> queue1.add(word);
             case 2-> queue2.add(word);
             case 3-> {//此时op是0
                 WordInfo wordInfo=MyTools.nameMemToWord(word);
-                if (!MyTools.isSameDay(wordInfo.getTime_stamp())){//不是今天才背过的，则将mem置0
+                if (!MyTools.isSameDay(wordInfo.getTime_stamp())&&isInitializing){//不是今天才背过的，且是在进行队列初始化，则将mem置0
                     wordInfo.setMemory(0);
                     wordDao.updateWord(wordInfo);
                     word.setMemory(0);
@@ -344,7 +357,9 @@ public class ReviewFragment extends Fragment {
         TempMsg.WordLearn.setMemory(memory);
         //wordDao.insertOneWord(TempMsg.WordLearn);
         updateToDB();
-        addWordToQueue(MyTools.wordToNameMem(TempMsg.WordLearn));
+        if (memory<3){//避免它再次出现在queue0
+            addWordToQueue(MyTools.wordToNameMem(TempMsg.WordLearn),false);
+        }
         turnToDetail(TempMsg.WordLearn.getName());
         //延时一秒刷新，避免切换activity动画过程中，单词刷新
         new Handler().postDelayed(mRefresh,delayToDetail);
@@ -354,7 +369,7 @@ public class ReviewFragment extends Fragment {
         Log.d(TAG,"点击了模糊");
         //memory不改变
         updateToDB();
-        addWordToQueue(MyTools.wordToNameMem(TempMsg.WordLearn));
+        addWordToQueue(MyTools.wordToNameMem(TempMsg.WordLearn),false);
         turnToDetail(TempMsg.WordLearn.getName());
         new Handler().postDelayed(mRefresh,delayToDetail);
 
@@ -367,7 +382,7 @@ public class ReviewFragment extends Fragment {
         TempMsg.WordLearn.setMemory(memory);
         //wordDao.insertOneWord(TempMsg.WordLearn);
         updateToDB();
-        addWordToQueue(MyTools.wordToNameMem(TempMsg.WordLearn));
+        addWordToQueue(MyTools.wordToNameMem(TempMsg.WordLearn),false);
         turnToDetail(TempMsg.WordLearn.getName());
         new Handler().postDelayed(mRefresh,delayToDetail);
     }

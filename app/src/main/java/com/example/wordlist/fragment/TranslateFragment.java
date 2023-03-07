@@ -111,6 +111,7 @@ public class TranslateFragment extends Fragment {
         tvResult.setText("");
         notifyWord();
         stateSwitch(STATE_DURING_INPUT);
+        MyTools.showMsg("清空输入框",mContext);
         Log.d(TAG,"清空TempMsg.WordInfo");
     }
 

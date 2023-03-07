@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,9 +33,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ViewPager viewPager;
     private RadioGroup radioGroup;
-    MenuItem navCall;
+    MenuItem navNumEdit;
+    MenuItem navSymbolEdit;
     NavigationView navView;
-    private Dialog dialog;
+
+    private Dialog dialogNum;
+    private Dialog dialogSymbol;
+    SharedPreferences userData;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -42,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //setStatusBar();
         MyTools.setStatusBar(this);
+        userData=getSharedPreferences("UserData",MODE_PRIVATE);
 
         radioGroup=findViewById(R.id.rg_tabbar);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -71,13 +78,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
         /*设置侧滑navigationView的点击事件*/
         navView=findViewById(R.id.navView);
+        navNumEdit=navView.getMenu().findItem(R.id.navNumEdit);
+        navSymbolEdit=navView.getMenu().findItem(R.id.navSymbolEdit);
+        navNumEdit.setTitle("每日学习数："+userData.getInt("learnNum",5));
+        if (TempMsg.isIsUk()){
+            navSymbolEdit.setTitle("默认发音：英式");
+        }else {
+            navSymbolEdit.setTitle("默认发音：美式");
+        }
+
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.navCall -> createDialog();
+                    case R.id.navNumEdit -> createDialogNum();
+                    case R.id.navSymbolEdit -> createDialogSymbol();
                 }
                 return true;
             }
@@ -85,11 +103,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void createDialog(){
-        if(dialog==null){
-            Log.d(TAG,"显示弹窗");
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"启动");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"继续");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG,"停止");
+    }
+
+    private void createDialogNum(){//设置单词学习数
+        if(dialogNum==null){
+            Log.d(TAG,"弹窗：设置学习数");
             View view= LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_num_edit,null);
-            dialog=new Dialog(MainActivity.this);
+            dialogNum=new Dialog(MainActivity.this);
             EditText etNum=view.findViewById(R.id.etNum);
             Button btnNumConfirm=view.findViewById(R.id.btnNumConfirm);
             Button btnNumCancel=view.findViewById(R.id.btnNumCancel);
@@ -99,31 +136,70 @@ public class MainActivity extends AppCompatActivity {
                 if (updateLearnNum(num)){
                     MyTools.showMsg("每日学习数设为"+num+"个",MainActivity.this);
                 }
-                dialog.dismiss();
+                dialogNum.dismiss();
             });
-            btnNumCancel.setOnClickListener(v -> dialog.dismiss());
-            dialog.setContentView(view);
+            btnNumCancel.setOnClickListener(v -> dialogNum.dismiss());
+            dialogNum.setContentView(view);
         }
-        dialog.show();
+        dialogNum.show();
+    }
+    private void createDialogSymbol(){//设置音标
+        if(dialogSymbol==null){
+            Log.d(TAG,"弹窗：设置音标");
+            View view= LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_symbol_edit,null);
+            dialogSymbol=new Dialog(MainActivity.this);
+            Button btnNumConfirm=view.findViewById(R.id.btnUk);
+            Button btnNumCancel=view.findViewById(R.id.btnUs);
+            btnNumConfirm.setOnClickListener(v -> {
+                updateSymbol(true);
+                dialogSymbol.dismiss();
+            });
+            btnNumCancel.setOnClickListener(v -> {
+                updateSymbol(false);
+                dialogSymbol.dismiss();
+            });
+            dialogSymbol.setContentView(view);
+        }
+        dialogSymbol.show();
+    }
+
+    private void updateSymbol(Boolean isUk) {
+
+        SharedPreferences.Editor edit = userData.edit();
+        edit.putBoolean("isUk",isUk);
+        edit.commit();
+        TempMsg.setIsUk(isUk);
+        if (isUk){
+            Log.d(TAG,"选择了英式");
+            MyTools.showMsg("切换为英式",MainActivity.this);
+            navSymbolEdit.setTitle("默认发音：英式");
+        }else {
+            Log.d(TAG,"选择了美式");
+            MyTools.showMsg("切换为美式",MainActivity.this);
+            navSymbolEdit.setTitle("默认发音：美式");
+        }
+
     }
 
     private boolean updateLearnNum(int num){
         int learnNum=num;//每日学习的单词数
         int temp=learnNum/3;
         int maxCount=temp<5?temp:5;//背几个换队列（最多5个）
-        SharedPreferences shared=getSharedPreferences("Num",MODE_PRIVATE);
-        SharedPreferences.Editor editor=shared.edit();
+
+        SharedPreferences.Editor editor=userData.edit();
         editor.putInt("learnNum",learnNum);
         editor.putInt("maxCount",maxCount);
         editor.commit();
-        setLearnNum(learnNum,maxCount);
+
+        TempMsg.setLearnNum(learnNum);
+        TempMsg.setMaxCount(maxCount);
+
+        navNumEdit.setTitle("每日学习数："+num);//更新navNumEdit
+
         Log.d(TAG,"learnNum:"+learnNum+"maxCount:"+maxCount);
         return true;
     }
-    private void setLearnNum(int learnNum,int maxCount){//给TempMsg设置
-        TempMsg.setLearnNum(learnNum);
-        TempMsg.setMaxCount(maxCount);
-    }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.room.Ignore;
@@ -39,6 +40,7 @@ public class MyTools {
     public final static int EXISTENCE = 1;
     public final static int NONEXISTENCE = 0;
 
+    private static Toast toast;
     public static long time=0L;
 
     /*判断单词是否出现被安排在在下一个，击中率为(100-memory)/100*/
@@ -96,8 +98,13 @@ public class MyTools {
     }
 
     public static void showMsg(String msg, Context context) {
-        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-        //toast.setGravity(Gravity.TOP,0,0);
+        if (toast==null){
+            toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+            Log.d(TAG,"弹出toast");
+        }else {
+            toast.setText(msg);
+            Log.d(TAG,"已存在toast，更新内容");
+        }
         toast.show();
     }
 

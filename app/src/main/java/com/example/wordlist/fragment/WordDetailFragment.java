@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -56,6 +57,10 @@ public class WordDetailFragment extends Fragment {
         // 根据布局文件fragment_tab_second.xml生成视图对象
         mView = inflater.inflate(R.layout.fragment_word_detail, container, false);
         Log.d(TAG,"创建");
+
+        SharedPreferences userData=mContext.getSharedPreferences("UserData",Context.MODE_PRIVATE);
+        TempMsg.setIsUk(userData.getBoolean("isUk",true));
+
 
         judgeSource();
         bindView();
@@ -168,8 +173,16 @@ public class WordDetailFragment extends Fragment {
             Log.d(TAG,"刷新Detail");
             //Log.d(TAG,wordInfo.getSentence());
 
+            tvSymbolUk.setOnClickListener(v -> playSound(wordInfo.getSound_uk()));
+            tvSymbolUs.setOnClickListener(v -> playSound(wordInfo.getSound_us()));
+
             btnSound.setOnClickListener(v -> {
-                playSound(wordInfo.getSound_uk());//默认播放英式
+                if (TempMsg.isIsUk()){
+                    playSound(wordInfo.getSound_uk());//播放英式
+                }else {
+                    playSound(wordInfo.getSound_us());//播放美式
+                }
+
             });
             btnFavorite.setOnClickListener(v -> {
                 if (wordInfo.getName()!=null&&wordInfo.getName()!=""){
@@ -210,6 +223,7 @@ public class WordDetailFragment extends Fragment {
             MediaPlayer mediaPlayer = MediaPlayer.create(mContext, Uri.parse(soundRul));
             mediaPlayer.start();
         }else {
+            Log.d(TAG,"声音获取失败");
             MyTools.showMsg("声音获取失败",mContext);
         }
     }

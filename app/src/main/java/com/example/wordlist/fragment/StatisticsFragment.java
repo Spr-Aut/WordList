@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@ public class StatisticsFragment extends Fragment {
     TextView tvStatistics;
     PieChartView pieChart;
     PieChartData pieChartData;
+    LinearLayout viewAdminSettings;
     private WordDao wordDao = MainApplication.getInstance().getWordDB().wordDao();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,8 +43,8 @@ public class StatisticsFragment extends Fragment {
         mView = inflater.inflate(R.layout.frgment_statistics, container, false);
 
         tvStatistics=mView.findViewById(R.id.tv_statistics);
-
         pieChart=mView.findViewById(R.id.pieChart);
+        viewAdminSettings=mView.findViewById(R.id.view_admin_settings);
 
         Button button=mView.findViewById(R.id.btn_add_batch);
         Button button2=mView.findViewById(R.id.btn_delete_batch);
@@ -52,6 +54,13 @@ public class StatisticsFragment extends Fragment {
         button2.setOnClickListener(v -> deleteAll());
         button3.setOnClickListener(v -> getWordList());
         button4.setOnClickListener(v -> resetAll());
+
+        viewAdminSettings.setVisibility(View.INVISIBLE);
+        tvStatistics.setOnClickListener(v -> {
+            if (viewAdminSettings.getVisibility()==View.INVISIBLE)viewAdminSettings.setVisibility(View.VISIBLE);
+            else viewAdminSettings.setVisibility(View.INVISIBLE);
+
+        });
 
         return mView;
     }

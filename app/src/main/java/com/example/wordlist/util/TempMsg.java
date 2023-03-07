@@ -16,6 +16,15 @@ public class TempMsg {
     public static String LastWordLearn="";
     private static int learnNum=5;//每天学几个
     private static int maxCount=5;//背几个换队列
+    private static boolean isUk=true;//是否为英式音标
+
+    public static boolean isIsUk() {
+        return isUk;
+    }
+
+    public static void setIsUk(boolean isUk) {
+        TempMsg.isUk = isUk;
+    }
 
     public static int getLearnNum() {
         return learnNum;

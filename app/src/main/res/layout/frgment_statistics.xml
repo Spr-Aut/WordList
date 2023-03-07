@@ -5,57 +5,84 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/main_bg">
+    android:background="@color/main_bg"
+    android:paddingTop="@dimen/padding_top_main">
 
     <TextView
         android:id="@+id/tv_statistics"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="数据统计"
         android:textSize="26sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         />
-    <Button
-        android:id="@+id/btn_add_batch"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/view_admin_settings"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue_light"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"
-        android:text="添加"
-        />
-    <Button
-        android:id="@+id/btn_delete_batch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_light"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"
-        android:text="删除"
-        />
-    <Button
-        android:id="@+id/btn_query_batch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_light"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"
-        android:text="查询"
-        />
-    <Button
-        android:id="@+id/btn_reset_batch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_light"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"
-        android:text="重置"
-        />
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+            <Button
+                android:id="@+id/btn_add_batch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_light"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="添加"
+                />
+            <Button
+                android:id="@+id/btn_delete_batch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_light"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="删除"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+            <Button
+                android:id="@+id/btn_query_batch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_light"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="查询"
+                />
+            <Button
+                android:id="@+id/btn_reset_batch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_light"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="重置"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
 
     <lecho.lib.hellocharts.view.PieChartView
         android:id="@+id/pieChart"
