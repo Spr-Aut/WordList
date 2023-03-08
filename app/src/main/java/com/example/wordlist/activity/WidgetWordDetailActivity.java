@@ -1,9 +1,11 @@
-package com.example.wordlist;
+package com.example.wordlist.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.wordlist.R;
 import com.example.wordlist.fragment.WordDetailFragment;
 import com.example.wordlist.util.MyTools;
 
@@ -21,6 +23,12 @@ public class WidgetWordDetailActivity extends AppCompatActivity {
                 .commit();
 
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     @Override

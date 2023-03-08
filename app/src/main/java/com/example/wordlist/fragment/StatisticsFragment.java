@@ -123,7 +123,7 @@ public class StatisticsFragment extends Fragment {
 
     private void addToDB(){
         long time = MyTools.getCurrentTimeMillis();
-        WordInfo word=wordDao.getWordByName("nothing");
+        WordInfo word=wordDao.getWordByName("but");
         for(int i=0;i<5000;i++){
             word.setName(i+"");
             wordDao.insertOneWord(word);

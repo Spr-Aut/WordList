@@ -42,9 +42,10 @@
         <activity
             android:name=".activity.WordDetailActivity"
             android:exported="false" />
-        <activity android:name=".WidgetWordDetailActivity"
+        <activity android:name=".activity.WidgetWordDetailActivity"
             android:exported="true"
-            android:launchMode="standard"/>
+            android:launchMode="singleInstance"
+            android:taskAffinity="com.example.wordlist.activity.WidgetWordDetailActivity"/>
         <activity
             android:name=".activity.WordListActivity"
             android:exported="false" />

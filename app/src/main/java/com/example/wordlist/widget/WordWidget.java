@@ -6,30 +6,21 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.RemoteViews;
-import android.widget.TextView;
 
 import androidx.room.Room;
 
 import com.example.wordlist.R;
-import com.example.wordlist.WidgetWordDetailActivity;
-import com.example.wordlist.activity.MainActivity;
-import com.example.wordlist.activity.WordDetailActivity;
+import com.example.wordlist.activity.WidgetWordDetailActivity;
 import com.example.wordlist.broadcast.BroadcastName;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.database.WordDatabase;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.MyTools;
-import com.example.wordlist.util.TempMsg;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * Implementation of App Widget functionality.
@@ -99,7 +90,7 @@ public class WordWidget extends AppWidgetProvider {
         Log.d(TAG,"设置小组件的RemoteViews");
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.word_widget);
 
-        WordInfo word=getWord(wordDao);
+        WordInfo word=getWord(wordDao);//随机获取一个单词
         if (word!=null){
             /*跳转到WidgetWordDetailActivity*/
             String name=word.getName();
