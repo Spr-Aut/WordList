@@ -13,4 +13,7 @@
     <dimen name="padding_widget">19dp</dimen>
     <dimen name="padding_horizontal_bar_main_top">30dp</dimen>
     <string name="title_activity_compose">ComposeActivity</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
 </resources>

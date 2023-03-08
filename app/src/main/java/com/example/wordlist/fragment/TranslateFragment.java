@@ -27,6 +27,7 @@ import com.example.wordlist.dao.BookDao;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.util.TempMsg;
+import com.example.wordlist.widget.WordWidget;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -113,6 +114,8 @@ public class TranslateFragment extends Fragment {
         stateSwitch(STATE_DURING_INPUT);
         MyTools.showMsg("清空输入框",mContext);
         Log.d(TAG,"清空TempMsg.WordInfo");
+
+
     }
 
     private void translate(){
@@ -142,11 +145,13 @@ public class TranslateFragment extends Fragment {
      * */
     private void notifyWord(){
         //广播
-        Intent intent=new Intent(BroadcastName.WORD_DETAIL_REFRESH);
+        Intent intent=new Intent(BroadcastName.ACTION_WIDGET_UPDATE);
+        intent.setClassName(mContext,"com.example.wordlist.widget.WordWidget");
         String name=TempMsg.WordInfo.getName();
         intent.putExtra("name",name);
         mContext.sendBroadcast(intent);
         Log.d(TAG,"发送广播,name="+name);
+        //mContext.sendBroadcast(new Intent(BroadcastName.ACTION_WIDGET_UPDATE));
 
         /*TempMsg.WordInfo.setName(TempMsg.WordInfo.getName());
         TempMsg.WordInfo.setSymbol_us(TempMsg.WordInfo.getSymbol_us());

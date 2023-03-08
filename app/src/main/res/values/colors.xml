@@ -47,7 +47,6 @@
     <color name="widget_typeface_third">#4d000000</color>
 
 
-
     <color name="grey">#888888</color>
     <color name="red">#ff0000</color>
     <color name="orange">#F9CC12</color>
@@ -72,8 +71,6 @@
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
-
-
 
 
     <color name="colorMainBlue">#3675FF</color>

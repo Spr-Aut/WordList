@@ -8,8 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppCompatTheme" parent="Theme.AppCompat.Light.NoActionBar">
-    </style>
+    <style name="AppCompatTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
 
     <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="bg_main">@color/blue</item>
@@ -75,6 +74,16 @@
     <style name="TextStyleTrans">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="Widget.WordList.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+    </style>
+
+    <style name="Widget.WordList.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
 </resources>

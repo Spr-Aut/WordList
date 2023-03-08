@@ -239,6 +239,8 @@ public class WordDetailFragment extends Fragment {
                 Log.d(TAG,"收到广播，name="+wordName);
                 refreshView();//暂时去掉，因为现在访问了WordList再清空translate的etOrigin，会导致闪退
             }
+
+
         }
     }
 
