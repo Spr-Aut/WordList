@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -102,9 +103,18 @@ public class WordWidget extends AppWidgetProvider {
             PendingIntent pendingActivity=PendingIntent.getActivity(context,requestCode,intentActivity,PendingIntent.FLAG_IMMUTABLE);
             views.setOnClickPendingIntent(R.id.view_group_widget,pendingActivity);
 
+            SharedPreferences userData = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
+            boolean isUk = userData.getBoolean("isUk", true);
+
             views.setTextViewText(R.id.tvWidgetWord,word.getName());
-            views.setTextViewText(R.id.tvWidgetSymbolUk,word.getSymbol_uk());
-            views.setTextViewText(R.id.tvWidgetSymbolUs,word.getSymbol_us());
+            if (isUk){
+                views.setImageViewResource(R.id.ivWidgetSymbol,R.drawable.icon_uk);
+                views.setTextViewText(R.id.tvWidgetSymbol,word.getSymbol_uk());
+            }else {
+                views.setImageViewResource(R.id.ivWidgetSymbol,R.drawable.icon_us);
+                views.setTextViewText(R.id.tvWidgetSymbol,word.getSymbol_us());
+            }
+
             views.setTextViewText(R.id.tvWidgetDesc,word.getDesc());
         }
 
