@@ -17,6 +17,15 @@ public class TempMsg {
     private static int learnNum=5;//每天学几个
     private static int maxCount=5;//背几个换队列
     private static boolean isUk=true;//是否为英式音标
+    private static String WidgetWordName="";
+
+    public static String getWidgetWordName() {
+        return WidgetWordName;
+    }
+
+    public static void setWidgetWordName(String widgetWordName) {
+        WidgetWordName = widgetWordName;
+    }
 
     public static boolean isIsUk() {
         return isUk;

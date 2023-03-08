@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.RemoteViews;
@@ -14,12 +15,15 @@ import android.widget.TextView;
 import androidx.room.Room;
 
 import com.example.wordlist.R;
+import com.example.wordlist.WidgetWordDetailActivity;
 import com.example.wordlist.activity.MainActivity;
+import com.example.wordlist.activity.WordDetailActivity;
 import com.example.wordlist.broadcast.BroadcastName;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.database.WordDatabase;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.util.MyTools;
+import com.example.wordlist.util.TempMsg;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,6 +36,9 @@ import java.util.Set;
  */
 public class WordWidget extends AppWidgetProvider {
     private static final String TAG = "WordWidget";
+
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
@@ -43,6 +50,21 @@ public class WordWidget extends AppWidgetProvider {
         }else if (intent!=null&&intent.getAction().equals(BroadcastName.ACTION_WIDGET_BUTTON)){
             Log.d(TAG,"小组件收到广播:按钮");
             updateAll(context,AppWidgetManager.getInstance(context));
+
+        }else if (intent!=null&&intent.getAction().equals(BroadcastName.ACTION_WIDGET_ACTIVITY)){
+            /*String name=TempMsg.getWidgetWordName();
+            Log.d(TAG,"小组件收到广播:跳转，name="+name);
+            Intent intentActivity=new Intent(context, WordDetailActivity.class);
+            intentActivity.putExtra("name",name);
+            Log.d(TAG,"启动activity，name为："+name);
+            intentActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            int requestCode=name.hashCode();
+            PendingIntent pendingActivity=PendingIntent.getActivity(context,requestCode,intentActivity,PendingIntent.FLAG_IMMUTABLE);
+            try {
+                pendingActivity.send();
+            } catch (PendingIntent.CanceledException e) {
+                throw new RuntimeException(e);
+            }*/
         }
 
     }
@@ -79,10 +101,22 @@ public class WordWidget extends AppWidgetProvider {
 
         Log.d(TAG,"设置小组件的RemoteViews");
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.word_widget);
-        Intent intentActivity=new Intent(context,MainActivity.class);
-        PendingIntent pendingActivity=PendingIntent.getActivity(context,0,intentActivity,PendingIntent.FLAG_IMMUTABLE);
+        /*Intent intentActivity=new Intent(context,WordWidget.class);
+        intentActivity.setAction(BroadcastName.ACTION_WIDGET_ACTIVITY);
+        int requestCode=name.hashCode();
+        PendingIntent pendingActivity=PendingIntent.getBroadcast(context,requestCode,intentActivity,PendingIntent.FLAG_IMMUTABLE);
+        views.setOnClickPendingIntent(R.id.view_group_widget,pendingActivity);*/
+
+        /*跳转到WidgetWordDetailActivity*/
+        Intent intentActivity=new Intent(context, WidgetWordDetailActivity.class);
+        intentActivity.putExtra("name",name);
+        Log.d(TAG,"启动activity，name为："+name);
+        intentActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        int requestCode=name.hashCode();
+        PendingIntent pendingActivity=PendingIntent.getActivity(context,requestCode,intentActivity,PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.view_group_widget,pendingActivity);
 
+        /*绑定按钮点击事件*/
         Intent intentButton=new Intent(context,WordWidget.class);
         intentButton.setAction(BroadcastName.ACTION_WIDGET_BUTTON);
         PendingIntent pendingButton=PendingIntent.getBroadcast(context,0,intentButton,PendingIntent.FLAG_IMMUTABLE);
@@ -93,6 +127,7 @@ public class WordWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.tvWidgetSymbolUk,word.getSymbol_uk());
             views.setTextViewText(R.id.tvWidgetSymbolUs,word.getSymbol_us());
             views.setTextViewText(R.id.tvWidgetDesc,word.getDesc());
+
         }
 
         MyTools.timeEnd(TAG);

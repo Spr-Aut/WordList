@@ -126,12 +126,15 @@ public class WordDetailFragment extends Fragment {
     /*判断数据来源*/
     private void judgeSource(){
         //来自Intent的话，不管广播和nameTemp
+        Log.d(TAG,"当前的intent为："+getActivity().getIntent());
         String nameIntent = getActivity().getIntent().getStringExtra("name");//Intent
+        Log.d(TAG,"当前的intent.string为："+nameIntent);
         //nameBroad在MyBroadCast里赋值了
         String nameTemp=TempMsg.WordInfo.getName();
 
         if (nameIntent!=null&&nameIntent.length()!=0){//来自Intent，不管广播和nameTemp
             wordName=nameIntent;
+            Log.d(TAG,"从Intent启动："+nameIntent);
             isFromIntent=true;
         }else{
             wordName=nameTemp;

@@ -24,6 +24,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="wordlist.action.APPWIDGET_UPDATE"/>
                 <action android:name="wordlist.action.APPWIDGET_BUTTON"/>
+                <action android:name="wordlist.action.APPWIDGET_ACTIVITY"/>
             </intent-filter>
 
             <meta-data
@@ -41,6 +42,9 @@
         <activity
             android:name=".activity.WordDetailActivity"
             android:exported="false" />
+        <activity android:name=".WidgetWordDetailActivity"
+            android:exported="true"
+            android:launchMode="standard"/>
         <activity
             android:name=".activity.WordListActivity"
             android:exported="false" />
