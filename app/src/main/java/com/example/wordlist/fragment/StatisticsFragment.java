@@ -2,6 +2,7 @@ package com.example.wordlist.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,17 +16,24 @@ import androidx.fragment.app.Fragment;
 
 import com.example.wordlist.MainApplication;
 import com.example.wordlist.R;
+import com.example.wordlist.XMLParse;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.tuple.WordNameTransTuple;
 import com.example.wordlist.util.MyTools;
+import com.example.wordlist.util.TempMsg;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.view.PieChartView;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class StatisticsFragment extends Fragment {
     private static final String TAG = "StatisticsFragment";
@@ -50,10 +58,10 @@ public class StatisticsFragment extends Fragment {
         Button button2=mView.findViewById(R.id.btn_delete_batch);
         Button button3=mView.findViewById(R.id.btn_query_batch);
         Button button4=mView.findViewById(R.id.btn_reset_batch);
-        button.setOnClickListener(v -> addToDB());
-        button2.setOnClickListener(v -> deleteAll());
-        button3.setOnClickListener(v -> getWordList());
-        button4.setOnClickListener(v -> resetAll());
+        button.setOnClickListener(v -> asyncTask(0));
+        button2.setOnClickListener(v -> asyncTask(1));
+        button3.setOnClickListener(v -> asyncTask(2));
+        button4.setOnClickListener(v -> asyncTask(3));
 
         viewAdminSettings.setVisibility(View.INVISIBLE);
         tvStatistics.setOnClickListener(v -> {
@@ -65,7 +73,10 @@ public class StatisticsFragment extends Fragment {
         return mView;
     }
 
-
+    private void asyncTask(int taskId){
+        tvStatistics.setText("正在执行MyAsyncTask...");
+        new MyAsyncTask().execute(taskId);
+    }
 
     private void init() {
         Log.d(TAG,"刷新统计数据");
@@ -173,7 +184,6 @@ public class StatisticsFragment extends Fragment {
         super.onStart();
         Log.d(TAG,"启动");
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -181,14 +191,11 @@ public class StatisticsFragment extends Fragment {
         refreshPieChart();
         //init();
     }
-
     @Override
     public void onStop() {
         super.onStop();
         Log.d(TAG,"停止");
     }
-
-
 
     /**
      * 切换Fragment可视状态
@@ -199,6 +206,46 @@ public class StatisticsFragment extends Fragment {
         if (isVisibleToUser){
             Log.d(TAG,"切换可视状态");
         }else {
+        }
+    }
+
+    private class MyAsyncTask extends AsyncTask<Integer, Integer, Boolean> {
+        @Override
+        protected Boolean doInBackground(Integer... integers) {
+            Log.d(TAG,"正在执行MyAsyncTask...");
+
+            switch (integers[0]){
+                case 0 -> addToDB();
+                case 1 -> deleteAll();
+                case 2 -> getWordList();
+                case 3 -> resetAll();
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            //    更新ProgressDialog的进度条
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            if (aBoolean){
+                Log.d(TAG,"MyAsyncTask执行完成");
+                tvStatistics.setText("数据统计");
+                refreshPieChart();
+            }else {
+                Log.d(TAG,"MyAsyncTask执行失败");
+            }
         }
     }
 
