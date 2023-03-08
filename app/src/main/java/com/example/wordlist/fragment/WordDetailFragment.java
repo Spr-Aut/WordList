@@ -235,9 +235,8 @@ public class WordDetailFragment extends Fragment {
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG,"收到广播");
             if (intent!=null&&intent.getAction().equals(BroadcastName.WORD_DETAIL_REFRESH)){
-
-
                 wordName=intent.getStringExtra("name");
                 Log.d(TAG,"收到广播，name="+wordName);
                 refreshView();//暂时去掉，因为现在访问了WordList再清空translate的etOrigin，会导致闪退

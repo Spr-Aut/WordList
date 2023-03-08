@@ -145,13 +145,11 @@ public class TranslateFragment extends Fragment {
      * */
     private void notifyWord(){
         //广播
-        Intent intent=new Intent(BroadcastName.ACTION_WIDGET_UPDATE);
-        intent.setClassName(mContext,"com.example.wordlist.widget.WordWidget");
+        Intent intent=new Intent(BroadcastName.WORD_DETAIL_REFRESH);
         String name=TempMsg.WordInfo.getName();
         intent.putExtra("name",name);
         mContext.sendBroadcast(intent);
         Log.d(TAG,"发送广播,name="+name);
-        //mContext.sendBroadcast(new Intent(BroadcastName.ACTION_WIDGET_UPDATE));
 
         /*TempMsg.WordInfo.setName(TempMsg.WordInfo.getName());
         TempMsg.WordInfo.setSymbol_us(TempMsg.WordInfo.getSymbol_us());
