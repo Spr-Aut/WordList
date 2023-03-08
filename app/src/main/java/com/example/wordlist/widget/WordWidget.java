@@ -80,41 +80,43 @@ public class WordWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId,views);
     }
 
+    static WordInfo getWord(WordDao wordDao){
+        List<String> wordNameList = wordDao.getWordNameList();
+        WordInfo word=null;
+        for(int i=0;i<50;i++){
+            int index=new Random().nextInt(wordNameList.size());
+            String name=wordNameList.get(index);
+            word=wordDao.getWordByName(name);
+            if (word!=null)return word;
+        }
+        return word;
+    }
+
     static RemoteViews getRemoteViews(Context context){
         MyTools.timeStart();
         WordDao wordDao = Room.databaseBuilder(context, WordDatabase.class,"WordInfo").addMigrations().allowMainThreadQueries().build().wordDao();
-        //List<String>nameList=wordDao.getWordNameList();
-        /*获取随机数，用于从数据库中随机读一个单词*/
-        long maxTime = wordDao.getMaxTime();
-        long minTime = wordDao.getMinTime();
-        long chazhi=maxTime-minTime;
-        Log.d(TAG,"获取最大值："+maxTime+",最小值："+minTime+"差值为："+chazhi);
-        Random random=new Random();
-        long timeStamp=(long)(random.nextFloat()*chazhi)+minTime;
-        Log.d(TAG,"随机数为："+timeStamp);
-
-        String name = wordDao.getWordNameRandom(timeStamp);
-        Log.d(TAG,name+"");
-        WordInfo word=wordDao.getWordByName(name);
-
-
 
         Log.d(TAG,"设置小组件的RemoteViews");
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.word_widget);
-        /*Intent intentActivity=new Intent(context,WordWidget.class);
-        intentActivity.setAction(BroadcastName.ACTION_WIDGET_ACTIVITY);
-        int requestCode=name.hashCode();
-        PendingIntent pendingActivity=PendingIntent.getBroadcast(context,requestCode,intentActivity,PendingIntent.FLAG_IMMUTABLE);
-        views.setOnClickPendingIntent(R.id.view_group_widget,pendingActivity);*/
 
-        /*跳转到WidgetWordDetailActivity*/
-        Intent intentActivity=new Intent(context, WidgetWordDetailActivity.class);
-        intentActivity.putExtra("name",name);
-        Log.d(TAG,"启动activity，name为："+name);
-        intentActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        int requestCode=name.hashCode();
-        PendingIntent pendingActivity=PendingIntent.getActivity(context,requestCode,intentActivity,PendingIntent.FLAG_IMMUTABLE);
-        views.setOnClickPendingIntent(R.id.view_group_widget,pendingActivity);
+        WordInfo word=getWord(wordDao);
+        if (word!=null){
+            /*跳转到WidgetWordDetailActivity*/
+            String name=word.getName();
+            Intent intentActivity=new Intent(context, WidgetWordDetailActivity.class);
+            intentActivity.putExtra("name",name);
+            Log.d(TAG,"启动activity，name为："+name);
+            intentActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            int requestCode=name.hashCode();
+            PendingIntent pendingActivity=PendingIntent.getActivity(context,requestCode,intentActivity,PendingIntent.FLAG_IMMUTABLE);
+            views.setOnClickPendingIntent(R.id.view_group_widget,pendingActivity);
+
+            views.setTextViewText(R.id.tvWidgetWord,word.getName());
+            views.setTextViewText(R.id.tvWidgetSymbolUk,word.getSymbol_uk());
+            views.setTextViewText(R.id.tvWidgetSymbolUs,word.getSymbol_us());
+            views.setTextViewText(R.id.tvWidgetDesc,word.getDesc());
+        }
+
 
         /*绑定按钮点击事件*/
         Intent intentButton=new Intent(context,WordWidget.class);
@@ -122,13 +124,6 @@ public class WordWidget extends AppWidgetProvider {
         PendingIntent pendingButton=PendingIntent.getBroadcast(context,0,intentButton,PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.btnWidgetRefresh,pendingButton);
 
-        if (word!=null){
-            views.setTextViewText(R.id.tvWidgetWord,word.getName());
-            views.setTextViewText(R.id.tvWidgetSymbolUk,word.getSymbol_uk());
-            views.setTextViewText(R.id.tvWidgetSymbolUs,word.getSymbol_us());
-            views.setTextViewText(R.id.tvWidgetDesc,word.getDesc());
-
-        }
 
         MyTools.timeEnd(TAG);
         return views;
