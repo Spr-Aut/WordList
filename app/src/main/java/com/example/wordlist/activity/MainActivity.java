@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         navNumEdit=navView.getMenu().findItem(R.id.navNumEdit);
         navSymbolEdit=navView.getMenu().findItem(R.id.navSymbolEdit);
         navNumEdit.setTitle("每日学习数："+userData.getInt("learnNum",5));
-        if (TempMsg.isIsUk()){
+        if (userData.getBoolean("isUk",true)){
             navSymbolEdit.setTitle("默认发音：英式");
         }else {
             navSymbolEdit.setTitle("默认发音：美式");

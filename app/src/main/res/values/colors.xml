@@ -30,6 +30,10 @@
     <color name="button_bg">#445f88</color>
     <color name="button_bg_pressed">#4d303030</color>
 
+    <!--小组件颜色-->
+    <color name="widget_bg_top">#ff3867d5</color>
+    <color name="widget_bg_bottom">#ff6daed9</color>
+
     <color name="bg_grey_bottom">#F7F7F7</color>
     <color name="btn_normal">#F2F3F8</color>
     <color name="btn_normal_pressed">#4d303030</color>

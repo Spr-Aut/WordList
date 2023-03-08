@@ -136,9 +136,10 @@ public class WordWidget extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             Log.d(TAG,"小组件添加："+appWidgetId);
-            updateWidget(context,appWidgetManager,appWidgetId);
+            //updateWidget(context,appWidgetManager,appWidgetId);
 
         }
+        updateAll(context,appWidgetManager);
 
         //Log.d(TAG,"小组件剩余："+idsSet);
     }

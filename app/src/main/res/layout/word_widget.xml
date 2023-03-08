@@ -4,26 +4,30 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.WordList.AppWidgetContainer"
     android:id="@+id/view_group_widget"
-    android:background="@color/card_bg">
+    >
 
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         >
         <TextView
             android:id="@+id/tvWidgetWord"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
             android:text="translate"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
             />
         <RelativeLayout
             android:id="@+id/view_group_Symbol"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1.2"
             android:layout_below="@+id/tvWidgetWord"
             >
             <ImageView
@@ -38,9 +42,11 @@
                 android:layout_height="30dp"
                 android:text="/transleit/"
                 android:textStyle="bold"
+                android:textColor="@color/white"
                 android:gravity="center_vertical"
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@id/ivWidgetSymbol"
+                android:layout_centerVertical="true"
                 />
             <ImageButton
                 android:id="@+id/btnWidgetRefresh"
@@ -48,16 +54,19 @@
                 android:layout_height="30dp"
                 android:background="@drawable/icon_next"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 />
         </RelativeLayout>
         <TextView
             android:id="@+id/tvWidgetDesc"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_below="@+id/view_group_Symbol"
             android:text="vt. vi.翻译；解释；转化；被翻译"
-            android:textStyle="bold"
             android:textSize="16sp"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
             />
-    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>
