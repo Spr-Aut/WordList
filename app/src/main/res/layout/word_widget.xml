@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.WordList.AppWidgetContainer"
-    android:padding="@dimen/padding_widget">
+    android:padding="@dimen/padding_widget"
+    android:id="@+id/view_group_widget">
 
     <Button
         android:id="@+id/btnWidgetRefresh"
@@ -34,12 +35,14 @@
             android:layout_marginVertical="10dp"
             >
             <TextView
+                android:id="@+id/tvWidgetSymbolUk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="/transleit/"
                 android:textStyle="bold"
                 />
             <TextView
+                android:id="@+id/tvWidgetSymbolUs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="/transleit/"
@@ -48,6 +51,7 @@
                 />
         </LinearLayout>
         <TextView
+            android:id="@+id/tvWidgetDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/view_group_Symbol"

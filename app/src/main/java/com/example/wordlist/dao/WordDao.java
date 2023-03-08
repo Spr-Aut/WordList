@@ -20,6 +20,18 @@ public interface WordDao {
     @Query("SELECT * FROM WordInfo")
     List<WordInfo> getAllWord();//所有单词
 
+    @Query("SELECT `name` FROM WordInfo ORDER BY time_stamp")
+    List<String> getWordNameList();
+
+    @Query("SELECT `name` FROM WordInfo WHERE time_stamp > :time LIMIT 1")
+    String getWordNameRandom(long time);
+
+    @Query("SELECT MAX(time_stamp) FROM WordInfo")
+    Long getMaxTime();
+
+    @Query("SELECT MIN(time_stamp) FROM WordInfo")
+    Long getMinTime();
+
     @Query("SELECT * FROM WordInfo ORDER BY time_stamp desc")
     List<WordInfo> getAllWordDescByTime();//所有单词按时间排序
 

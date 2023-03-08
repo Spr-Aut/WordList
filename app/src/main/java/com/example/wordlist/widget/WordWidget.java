@@ -11,32 +11,38 @@ import android.widget.Button;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import androidx.room.Room;
+
 import com.example.wordlist.R;
 import com.example.wordlist.activity.MainActivity;
 import com.example.wordlist.broadcast.BroadcastName;
+import com.example.wordlist.dao.WordDao;
+import com.example.wordlist.database.WordDatabase;
+import com.example.wordlist.entity.WordInfo;
+import com.example.wordlist.util.MyTools;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class WordWidget extends AppWidgetProvider {
-    Button btnWidgetRefresh;
-    TextView tvWidgetWord;
-    private static Set idsSet = new HashSet();
     private static final String TAG = "WordWidget";
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         Log.d(TAG,"收到广播"+intent.getAction());
         if (intent!=null&&intent.getAction().equals(BroadcastName.ACTION_WIDGET_UPDATE)){
-            //Log.d(TAG,"小组件收到广播"+idsSet.size());
+            Log.d(TAG,"小组件收到广播:更新所有小组件");
             updateAll(context,AppWidgetManager.getInstance(context));
-            Log.d(TAG,"执行到了updateAll之后");
+
         }else if (intent!=null&&intent.getAction().equals(BroadcastName.ACTION_WIDGET_BUTTON)){
             Log.d(TAG,"小组件收到广播:按钮");
+            updateAll(context,AppWidgetManager.getInstance(context));
         }
 
     }
@@ -53,14 +59,43 @@ public class WordWidget extends AppWidgetProvider {
     }
 
     static RemoteViews getRemoteViews(Context context){
+        MyTools.timeStart();
+        WordDao wordDao = Room.databaseBuilder(context, WordDatabase.class,"WordInfo").addMigrations().allowMainThreadQueries().build().wordDao();
+        //List<String>nameList=wordDao.getWordNameList();
+        /*获取随机数，用于从数据库中随机读一个单词*/
+        long maxTime = wordDao.getMaxTime();
+        long minTime = wordDao.getMinTime();
+        long chazhi=maxTime-minTime;
+        Log.d(TAG,"获取最大值："+maxTime+",最小值："+minTime+"差值为："+chazhi);
+        Random random=new Random();
+        long timeStamp=(long)(random.nextFloat()*chazhi)+minTime;
+        Log.d(TAG,"随机数为："+timeStamp);
+
+        String name = wordDao.getWordNameRandom(timeStamp);
+        Log.d(TAG,name+"");
+        WordInfo word=wordDao.getWordByName(name);
+
+
+
+        Log.d(TAG,"设置小组件的RemoteViews");
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.word_widget);
-        //Intent intentClick=new Intent();
-        //intentClick.setClass(context, MainActivity.class);
-        //intentClick.setAction(BroadcastName.ACTION_WIDGET_BUTTON);
-        //intentClick.setClassName(context,"com.example.wordlist.widget.WordWidget");
-        //PendingIntent pendingIntent=PendingIntent.getBroadcast(context,0,intentClick,0);
-        //views.setOnClickPendingIntent(R.id.btnWidgetRefresh,pendingIntent);
-        views.setTextViewText(R.id.tvWidgetWord,"7890");
+        Intent intentActivity=new Intent(context,MainActivity.class);
+        PendingIntent pendingActivity=PendingIntent.getActivity(context,0,intentActivity,PendingIntent.FLAG_IMMUTABLE);
+        views.setOnClickPendingIntent(R.id.view_group_widget,pendingActivity);
+
+        Intent intentButton=new Intent(context,WordWidget.class);
+        intentButton.setAction(BroadcastName.ACTION_WIDGET_BUTTON);
+        PendingIntent pendingButton=PendingIntent.getBroadcast(context,0,intentButton,PendingIntent.FLAG_IMMUTABLE);
+        views.setOnClickPendingIntent(R.id.btnWidgetRefresh,pendingButton);
+
+        if (word!=null){
+            views.setTextViewText(R.id.tvWidgetWord,word.getName());
+            views.setTextViewText(R.id.tvWidgetSymbolUk,word.getSymbol_uk());
+            views.setTextViewText(R.id.tvWidgetSymbolUs,word.getSymbol_us());
+            views.setTextViewText(R.id.tvWidgetDesc,word.getDesc());
+        }
+
+        MyTools.timeEnd(TAG);
         return views;
     }
 
