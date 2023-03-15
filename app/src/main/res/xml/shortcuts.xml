@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="wordlist"
+        android:enabled="true"
+        android:icon="@mipmap/wordlist"
+        android:shortcutLongLabel="@string/shortcut_wordlist"
+        android:shortcutDisabledMessage="@string/shortcut_wordlist"
+        android:shortcutShortLabel="@string/shortcut_wordlist">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.example.wordlist.activity.WordListActivity"
+            android:targetPackage="com.example.wordlist"/>
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+
+</shortcuts>
+

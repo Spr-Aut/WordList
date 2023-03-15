@@ -16,4 +16,6 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">在桌面上添加一个单词</string>
+
+    <string name="shortcut_wordlist">单词本</string>
 </resources>
