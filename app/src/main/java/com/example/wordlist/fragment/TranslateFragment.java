@@ -21,6 +21,7 @@ import com.example.wordlist.MainApplication;
 import com.example.wordlist.R;
 import com.example.wordlist.XMLParse;
 import com.example.wordlist.activity.ComposeActivity;
+import com.example.wordlist.activity.WordDetailPagerActivity;
 import com.example.wordlist.activity.WordListActivity;
 import com.example.wordlist.broadcast.BroadcastName;
 import com.example.wordlist.dao.BookDao;
@@ -81,11 +82,17 @@ public class TranslateFragment extends Fragment {
         btnWordList.setOnLongClickListener(v -> toCompose());
         btnTrans.setOnClickListener(v -> translate());
         btnClear.setOnClickListener(v -> clear());
+        btnClear.setOnLongClickListener(v -> toPager());
         btnAdd.setOnClickListener(v -> addToDB());
 
         //popUpKeyboard(etOrigin);
 
         return mView;
+    }
+
+    private boolean toPager() {
+        startActivity(new Intent(getActivity(), WordDetailPagerActivity.class));
+        return true;
     }
 
     private boolean toCompose() {
