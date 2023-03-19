@@ -1,10 +1,14 @@
 package com.example.wordlist.fragment;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,12 +82,24 @@ public class TranslateFragment extends Fragment {
         etOrigin=mView.findViewById(R.id.et_origin_translate);
         tvResult=mView.findViewById(R.id.tv_trans_translate);
 
-        btnWordList.setOnClickListener(v -> checkWordList());
+        btnWordList.setOnClickListener(v -> {
+            MyTools.shake(getActivity());
+            checkWordList();
+        });
         btnWordList.setOnLongClickListener(v -> toPager());
-        btnTrans.setOnClickListener(v -> translate());
-        btnClear.setOnClickListener(v -> clear());
+        btnTrans.setOnClickListener(v -> {
+            MyTools.shake(getActivity());
+            translate();
+        });
+        btnClear.setOnClickListener(v -> {
+            MyTools.shake(getActivity());
+            clear();
+        });
         btnClear.setOnLongClickListener(v -> toCompose());
-        btnAdd.setOnClickListener(v -> addToDB());
+        btnAdd.setOnClickListener(v -> {
+            MyTools.shake(getActivity());
+            addToDB();
+        });
 
         //popUpKeyboard(etOrigin);
 

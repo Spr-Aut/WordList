@@ -62,8 +62,14 @@ public class WordDetailPagerFragment extends Fragment {
 
         btnSoundPager=mView.findViewById(R.id.btnSoundPager);
         btnFavoritePager=mView.findViewById(R.id.btnFavoritePager);
-        btnSoundPager.setOnClickListener(v -> clickSound());
-        btnFavoritePager.setOnClickListener(v -> clickFavorite());
+        btnSoundPager.setOnClickListener(v -> {
+            MyTools.shake(getActivity());
+            clickSound();
+        });
+        btnFavoritePager.setOnClickListener(v -> {
+            MyTools.shake(getActivity());
+            clickFavorite();
+        });
 
         return mView;
 

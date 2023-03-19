@@ -1,11 +1,8 @@
 package com.example.wordlist.adapter;
 
-import android.animation.ObjectAnimator;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.RenderEffect;
-import android.graphics.Shader;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -14,13 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wordlist.MainApplication;
@@ -30,6 +25,7 @@ import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.tuple.WordNameTransTuple;
 import com.example.wordlist.util.MyTools;
+import com.example.wordlist.util.TempMsg;
 
 import java.util.List;
 
@@ -105,11 +101,17 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         holder.mViewMain.setVisibility(View.VISIBLE);
         holder.mViewSlideDelete.setVisibility(View.VISIBLE);
         holder.mViewSlideMore.setVisibility(View.VISIBLE);
+        holder.mTvSymbol.setVisibility(View.VISIBLE);
 
         WordNameTransTuple wordInfo=mWordList.get(position);
 
         holder.mTvOrigin.setText(wordInfo.getName());
         holder.mTvTrans.setText(MyTools.briefDesc(wordInfo.getDesc()));
+        if(TempMsg.isIsUk()){//WordListFragment中设置了
+            holder.mTvSymbol.setText(wordInfo.getSymbol_uk());
+        }else {
+            holder.mTvSymbol.setText(wordInfo.getSymbol_us());
+        }
         /*float blurRadius=20f;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             holder.mTvTrans.setRenderEffect(RenderEffect.createBlurEffect(blurRadius,blurRadius, Shader.TileMode.CLAMP));
@@ -197,15 +199,18 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         TextView mTvOrigin;
         TextView mTvTrans;
-        RelativeLayout mViewMain;
+        TextView mTvSymbol;
+        LinearLayout mViewMain;
         LinearLayout mViewSlideDelete;
         LinearLayout mViewSlideMore;
+
 
         public WordListViewHolder(@NonNull View itemView) {
             super(itemView);
             this.mTvOrigin=itemView.findViewById(R.id.tv_item_origin);
             this.mTvTrans=itemView.findViewById(R.id.tv_item_trans);
             this.mViewMain=itemView.findViewById(R.id.view_item_brief);
+            this.mTvSymbol=itemView.findViewById(R.id.tv_item_symbol);
             this.mViewSlideDelete=itemView.findViewById(R.id.view_item_brief_slide_delete);
             this.mViewSlideMore=itemView.findViewById(R.id.view_item_brief_slide_more);
         }

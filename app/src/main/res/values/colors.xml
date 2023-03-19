@@ -32,6 +32,7 @@
     <color name="card_pager_head_bg">#2997ff</color>
     <color name="main_color">#2997ff</color>
     <color name="card_pager_small_text">#d4eaff</color>
+    <color name="second_typeface">#8994A9</color>
     <color name="main_typeface">#FF000000</color>
     <color name="main_typeface_converse">#FFeeeeee</color>
     <color name="desc_typeface">#333944</color>

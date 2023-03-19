@@ -1,10 +1,14 @@
 package com.example.wordlist.util;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -234,5 +238,13 @@ public class MyTools {
         // 获取当前手机的像素密度（1个dp对应几个px）
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f); // 四舍五入取整
+    }
+
+    public static void shake(Activity activity){
+        //震动
+        Vibrator vibrator=(Vibrator)activity.getSystemService(Service.VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+        }
     }
 }

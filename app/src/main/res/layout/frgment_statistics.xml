@@ -115,7 +115,7 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="不认识"
-                android:textColor="@color/black"
+                android:textColor="@color/main_typeface"
                 android:textSize="@dimen/pie_item_textSize" />
         </LinearLayout>
 
@@ -138,7 +138,7 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="模糊"
-                android:textColor="@color/black"
+                android:textColor="@color/main_typeface"
                 android:textSize="@dimen/pie_item_textSize" />
         </LinearLayout>
 
@@ -160,7 +160,7 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="认识"
-                android:textColor="@color/black"
+                android:textColor="@color/main_typeface"
                 android:textSize="@dimen/pie_item_textSize" />
         </LinearLayout>
         <LinearLayout
@@ -181,7 +181,7 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="熟知"
-                android:textColor="@color/black"
+                android:textColor="@color/main_typeface"
                 android:textSize="@dimen/pie_item_textSize" />
         </LinearLayout>
         <LinearLayout
@@ -202,7 +202,7 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="已完成"
-                android:textColor="@color/black"
+                android:textColor="@color/main_typeface"
                 android:textSize="@dimen/pie_item_textSize" />
         </LinearLayout>
     </LinearLayout>

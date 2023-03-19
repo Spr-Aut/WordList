@@ -29,6 +29,7 @@ import com.example.wordlist.entity.BookInfo;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.tuple.WordNameTransTuple;
 import com.example.wordlist.util.MyTools;
+import com.example.wordlist.util.TempMsg;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class WordListFragment extends Fragment {
     //private MyBroadcastReceiver broadcastReceiver;
     private SlideRecyclerViewAdapter slideAdapter;
     private SlideRecyclerView mRecyclerView;
-
+    private SharedPreferences userData;
     BookDao bookDao= MainApplication.getInstance().getBookDB().bookDao();
     WordDao wordDao=MainApplication.getInstance().getWordDB().wordDao();
     List<BookInfo> allBook;
@@ -51,6 +52,8 @@ public class WordListFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_word_list, container, false);// 根据布局文件fragment_tab_second.xml生成视图对象
 
         initData();
+        userData=mContext.getSharedPreferences("UserData",Context.MODE_PRIVATE);
+        TempMsg.setIsUk(userData.getBoolean("isUk",true));//默认为英式音标
 
         mRecyclerView=mView.findViewById(R.id.rc_word_list);
 

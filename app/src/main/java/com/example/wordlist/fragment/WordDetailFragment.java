@@ -153,7 +153,10 @@ public class WordDetailFragment extends Fragment {
             if (isFromIntent){
                 wordInfo= wordDao.getWordByName(wordName);
                 btnContinue.setVisibility(View.VISIBLE);
-                btnContinue.setOnClickListener(v -> getActivity().finish());
+                btnContinue.setOnClickListener(v -> {
+                    MyTools.shake(getActivity());
+                    getActivity().finish();
+                });
                 placeHolder.setVisibility(View.GONE);
 
             }else {
@@ -176,10 +179,17 @@ public class WordDetailFragment extends Fragment {
             Log.d(TAG,"刷新Detail");
             //Log.d(TAG,wordInfo.getSentence());
 
-            tvSymbolUk.setOnClickListener(v -> playSound(wordInfo.getSound_uk()));
-            tvSymbolUs.setOnClickListener(v -> playSound(wordInfo.getSound_us()));
+            tvSymbolUk.setOnClickListener(v -> {
+                MyTools.shake(getActivity());
+                playSound(wordInfo.getSound_uk());
+            });
+            tvSymbolUs.setOnClickListener(v -> {
+                MyTools.shake(getActivity());
+                playSound(wordInfo.getSound_us());
+            });
 
             btnSound.setOnClickListener(v -> {
+                MyTools.shake(getActivity());
                 if (TempMsg.isIsUk()){
                     playSound(wordInfo.getSound_uk());//播放英式
                 }else {
@@ -188,6 +198,7 @@ public class WordDetailFragment extends Fragment {
 
             });
             btnFavorite.setOnClickListener(v -> {
+                MyTools.shake(getActivity());
                 if (wordInfo.getName()!=null&&wordInfo.getName()!=""){
                     if (wordDao.getWordByName(wordInfo.getName())!=null){
                         wordDao.deleteWord(wordInfo);

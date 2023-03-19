@@ -7,6 +7,26 @@ public class WordNameTransTuple {
     private String name;
     @ColumnInfo(name = "desc")
     private String desc;
+    @ColumnInfo(name = "symbol_uk")
+    private String symbol_uk;
+    @ColumnInfo(name = "symbol_us")
+    private String symbol_us;
+
+    public String getSymbol_uk() {
+        return symbol_uk;
+    }
+
+    public void setSymbol_uk(String symbol_uk) {
+        this.symbol_uk = symbol_uk;
+    }
+
+    public String getSymbol_us() {
+        return symbol_us;
+    }
+
+    public void setSymbol_us(String symbol_us) {
+        this.symbol_us = symbol_us;
+    }
 
     public WordNameTransTuple() {
     }

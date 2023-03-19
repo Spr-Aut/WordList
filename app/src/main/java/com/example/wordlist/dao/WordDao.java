@@ -39,7 +39,7 @@ public interface WordDao {
     WordInfo getWordByName(String name);//用name查词
 
 
-    @Query("SELECT `name`,`desc` FROM WordInfo")
+    @Query("SELECT `name`,`desc`,`symbol_uk`,`symbol_us` FROM WordInfo")
     List<WordNameTransTuple> getWordList();
 
     @Query("SELECT `name`,`memory` FROM WordInfo WHERE word_operation = 0")

@@ -134,17 +134,22 @@ public class ReviewFragment extends Fragment {
             tvLastText.setText("上一个：");
             String str=lastWord+":"+MyTools.briefDesc(wordDao.getWordByName(lastWord).getDesc());
             tvLast.setText(str);
-            tvLast.setOnClickListener(v -> turnToDetail(lastWord));
+            tvLast.setOnClickListener(v -> {
+                MyTools.shake(getActivity());
+                turnToDetail(lastWord);
+            });
         }
         tvWord.setText(TempMsg.WordLearn.getName());
         if (TempMsg.isIsUk()){
             tvSymbol.setText(TempMsg.WordLearn.getSymbol_uk());
             tvSymbol.setOnClickListener(v -> {
+                MyTools.shake(getActivity());
                 playSound(TempMsg.WordLearn.getSound_uk());
             });
         }else {
             tvSymbol.setText(TempMsg.WordLearn.getSymbol_us());
             tvSymbol.setOnClickListener(v -> {
+                MyTools.shake(getActivity());
                 playSound(TempMsg.WordLearn.getSound_us());
             });
         }
@@ -152,22 +157,28 @@ public class ReviewFragment extends Fragment {
         showSentence=false;
         tvSentence.setText("点击显示例句");
         cvSentence.setOnClickListener(v -> {
-        Log.d(TAG,"切换句子的显示状态:"+ TempMsg.WordLearn.getSentence());
+            MyTools.shake(getActivity());
+            Log.d(TAG,"切换句子的显示状态:"+ TempMsg.WordLearn.getSentence());
             showSentence=!showSentence;
             if (showSentence&&isNotEmpty)tvSentence.setText(MyTools.briefSentence(TempMsg.WordLearn.getSentence()));
             else tvSentence.setText("点击显示例句");
         });
-        cvWell.setOnClickListener(v -> opWell());
-        cvKnow.setOnClickListener(v -> opKnow());
+        cvWell.setOnClickListener(v -> {
+            MyTools.shake(getActivity());
+            opWell();
+        });
+        cvKnow.setOnClickListener(v -> {
+            MyTools.shake(getActivity());
+            opKnow();
+        });
         cvAmbiguous.setOnClickListener(v -> {
-            /*try {
-                opAmbiguous();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }*/
+            MyTools.shake(getActivity());
             opAmbiguous();
         });
-        cvUnKnow.setOnClickListener(v -> opUnKnow());
+        cvUnKnow.setOnClickListener(v -> {
+            MyTools.shake(getActivity());
+            opUnKnow();
+        });
     }
     private void playSound(String soundRul) {
         if (soundRul!=null&&soundRul.length()!=0){
