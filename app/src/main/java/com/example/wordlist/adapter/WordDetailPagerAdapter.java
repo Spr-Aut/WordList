@@ -60,12 +60,15 @@ public class WordDetailPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
         itemHolder.tvDescWordDetailPager.setText(mWordList.get(position).getDesc());
         itemHolder.tvSentenceWordDetailPager.setText(mWordList.get(position).getSentence());
+        Log.d(TAG,"onBindViewHolder:当前位置为："+position);
     }
 
     @Override
     public int getItemCount() {
         return mWordList.size();
     }
+
+
 
     public class ItemHolder extends RecyclerView.ViewHolder{
         public TextView tvNameWordDetailPager;

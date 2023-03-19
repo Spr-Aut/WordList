@@ -37,7 +37,7 @@ public class WordListFragment extends Fragment {
     private static final String TAG = "WordListFragment";
     protected View mView; // 声明一个视图对象
     protected Context mContext; // 声明一个上下文对象
-    private MyBroadcastReceiver broadcastReceiver;
+    //private MyBroadcastReceiver broadcastReceiver;
     private SlideRecyclerViewAdapter slideAdapter;
     private SlideRecyclerView mRecyclerView;
 
@@ -90,9 +90,9 @@ public class WordListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        broadcastReceiver=new MyBroadcastReceiver();
+        /*broadcastReceiver=new MyBroadcastReceiver();
         IntentFilter filter=new IntentFilter(BroadcastName.WORD_DETAIL_REFRESH);
-        mContext.registerReceiver(broadcastReceiver,filter);
+        mContext.registerReceiver(broadcastReceiver,filter);*/
     }
 
     @Override
@@ -105,7 +105,7 @@ public class WordListFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        mContext.unregisterReceiver(broadcastReceiver);
+        /*mContext.unregisterReceiver(broadcastReceiver);*/
     }
 
     @Override
@@ -121,14 +121,14 @@ public class WordListFragment extends Fragment {
 
 
 
-    private class MyBroadcastReceiver extends BroadcastReceiver{
+    /*private class MyBroadcastReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent!=null&&intent.getAction().equals(BroadcastName.WORD_DETAIL_REFRESH)){
                 //refresh();
             }
         }
-    }
+    }*/
 
 
 }

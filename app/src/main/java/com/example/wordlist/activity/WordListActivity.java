@@ -1,10 +1,12 @@
 package com.example.wordlist.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.compose.ui.graphics.Color;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RadioButton;
@@ -23,6 +25,8 @@ public class WordListActivity extends AppCompatActivity {
     RelativeLayout rlTop;
     FragmentManager manager;
     RadioGroup radioGroup;
+    RadioButton rbList;
+    RadioButton rbCard;
     Boolean isList;
     SharedPreferences userData;
     @Override
@@ -34,14 +38,20 @@ public class WordListActivity extends AppCompatActivity {
         isList=userData.getBoolean("isList",true);
 
         radioGroup=findViewById(R.id.rgWordList);
+        rbList=radioGroup.findViewById(R.id.rbList);
+        rbCard=radioGroup.findViewById(R.id.rbCard);
 
         manager=getSupportFragmentManager();
         if (isList){
             manager.beginTransaction().add(R.id.container_word_list,new WordListFragment()).commit();
             radioGroup.check(R.id.rbList);
+            rbList.setTextColor(getResources().getColor(R.color.black));
+            rbCard.setTextColor(getResources().getColor(R.color.colorLightGrey));
         }else {
             manager.beginTransaction().add(R.id.container_word_list,new WordDetailPagerFragment()).commit();
             radioGroup.check(R.id.rbCard);
+            rbList.setTextColor(getResources().getColor(R.color.colorLightGrey));
+            rbCard.setTextColor(getResources().getColor(R.color.black));
         }
 
 
@@ -50,13 +60,18 @@ public class WordListActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 FragmentTransaction transaction=manager.beginTransaction();
                 if (checkedId==R.id.rbList){
+
                     transaction.replace(R.id.container_word_list,new WordListFragment()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                     SharedPreferences.Editor edit = userData.edit();
                     edit.putBoolean("isList",true).commit();
+                    rbList.setTextColor(getResources().getColor(R.color.black));
+                    rbCard.setTextColor(getResources().getColor(R.color.colorLightGrey));
                 }else if(checkedId==R.id.rbCard){
                     transaction.replace(R.id.container_word_list,new WordDetailPagerFragment()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                     SharedPreferences.Editor edit = userData.edit();
                     edit.putBoolean("isList",false).commit();
+                    rbList.setTextColor(getResources().getColor(R.color.colorLightGrey));
+                    rbCard.setTextColor(getResources().getColor(R.color.black));
                 }
             }
         });

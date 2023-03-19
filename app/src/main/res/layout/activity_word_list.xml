@@ -23,7 +23,7 @@
         android:paddingTop="@dimen/padding_top_main"
         android:background="@color/main_bg"
         >
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -43,27 +43,30 @@
                 android:textColor="@color/main_typeface"
                 android:textSize="23sp"
                 />
-        </LinearLayout>
+        </LinearLayout>-->
 
         <RadioGroup
             android:id="@+id/rgWordList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginRight="@dimen/padding_horizontal"
+            android:layout_marginBottom="5dp"
             >
             <RadioButton
                 android:id="@+id/rbList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="列表"
+                android:buttonTint="@color/main_color"
                 />
             <RadioButton
                 android:id="@+id/rbCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="卡片"
+                android:buttonTint="@color/main_color"
                 />
         </RadioGroup>
     </RelativeLayout>
