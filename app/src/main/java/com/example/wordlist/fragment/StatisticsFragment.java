@@ -12,11 +12,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.compose.ui.platform.ComposeView;
 import androidx.fragment.app.Fragment;
 
 import com.example.wordlist.MainApplication;
 import com.example.wordlist.R;
 import com.example.wordlist.XMLParse;
+import com.example.wordlist.activity.ComposeActivity;
 import com.example.wordlist.dao.WordDao;
 import com.example.wordlist.entity.WordInfo;
 import com.example.wordlist.tuple.WordNameTransTuple;
@@ -69,6 +71,7 @@ public class StatisticsFragment extends Fragment {
             else viewAdminSettings.setVisibility(View.INVISIBLE);
 
         });
+
 
         return mView;
     }

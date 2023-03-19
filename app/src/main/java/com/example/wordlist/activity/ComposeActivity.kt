@@ -4,18 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateSizeAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -40,10 +40,32 @@ class ComposeActivity : ComponentActivity() {
                 ) {
                     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                         DynamicScreen()
+                        BlurView()
                     }
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun BlurView(){
+    var checked by remember {
+        mutableStateOf(true)
+    }
+    val animatedBlur by animateDpAsState(targetValue = if (checked)10.dp else 0.dp)
+
+    Column(modifier = Modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "测试文本",
+            modifier = Modifier.blur(radius = animatedBlur, edgeTreatment = BlurredEdgeTreatment.Unbounded),
+            fontSize = 26.sp,
+
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Switch(checked = checked, onCheckedChange = {checked=!checked})
     }
 }
 
@@ -52,6 +74,10 @@ class ComposeActivity : ComponentActivity() {
 fun DynamicScreen(){
     var isCharge by remember{ mutableStateOf(false) }
     var boxState: BoxState by remember{ mutableStateOf(BoxState.NormalState) }
+    var checked by remember {
+        mutableStateOf(false)
+    }
+    val animatedBlur by animateDpAsState(targetValue = if (checked)10.dp else 0.dp)
     val animateSizeAsState by animateSizeAsState(
         targetValue = Size(boxState.width.value,boxState.height.value),
         animationSpec = spring(
@@ -66,8 +92,9 @@ fun DynamicScreen(){
             .shadow(elevation = 3.dp, shape = RoundedCornerShape(15.dp))
             .background(color = Color.Black)
         )
-        Button(onClick = {boxState = BoxState.NormalState}, modifier = Modifier.padding(top = 30.dp, bottom = 5.dp)) {
-            Text(text="默认状态")
+        Button(onClick = {boxState = BoxState.NormalState
+                         checked=!checked}, modifier = Modifier.padding(top = 30.dp, bottom = 5.dp)) {
+            Text(text="默认状态", modifier = Modifier.blur(radius = animatedBlur, edgeTreatment = BlurredEdgeTreatment.Unbounded))
         }
         Button(onClick = {boxState = BoxState.ChargeState}, modifier = Modifier.padding(vertical = 5.dp)) {
             Text(text="充电状态")

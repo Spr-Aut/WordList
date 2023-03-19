@@ -4,6 +4,8 @@ import android.animation.ObjectAnimator;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.RenderEffect;
+import android.graphics.Shader;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -108,6 +110,11 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         holder.mTvOrigin.setText(wordInfo.getName());
         holder.mTvTrans.setText(MyTools.briefDesc(wordInfo.getDesc()));
+        /*float blurRadius=20f;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            holder.mTvTrans.setRenderEffect(RenderEffect.createBlurEffect(blurRadius,blurRadius, Shader.TileMode.CLAMP));
+
+        }*/
 
         holder.mViewSlideDelete.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
