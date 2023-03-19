@@ -79,10 +79,10 @@ public class TranslateFragment extends Fragment {
         tvResult=mView.findViewById(R.id.tv_trans_translate);
 
         btnWordList.setOnClickListener(v -> checkWordList());
-        btnWordList.setOnLongClickListener(v -> toCompose());
+        btnWordList.setOnLongClickListener(v -> toPager());
         btnTrans.setOnClickListener(v -> translate());
         btnClear.setOnClickListener(v -> clear());
-        btnClear.setOnLongClickListener(v -> toPager());
+        btnClear.setOnLongClickListener(v -> toCompose());
         btnAdd.setOnClickListener(v -> addToDB());
 
         //popUpKeyboard(etOrigin);
