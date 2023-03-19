@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     >
 
 
@@ -13,6 +12,60 @@
         android:id="@+id/container_word_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/bar_word_list_top"
         />
 
-</LinearLayout>
+    <!--顶部标题栏-->
+    <RelativeLayout
+        android:id="@+id/bar_word_list_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_top_main"
+        android:background="@color/main_bg"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+            <ImageView
+                android:id="@+id/iv_main_top_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/wordlist"
+                />
+            <TextView
+                android:id="@+id/tv_main_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="单词本"
+                android:textStyle="bold"
+                android:textColor="@color/main_typeface"
+                android:textSize="23sp"
+                />
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/rgWordList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/padding_horizontal"
+            >
+            <RadioButton
+                android:id="@+id/rbList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="列表"
+                />
+            <RadioButton
+                android:id="@+id/rbCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="卡片"
+                />
+        </RadioGroup>
+    </RelativeLayout>
+
+</RelativeLayout>

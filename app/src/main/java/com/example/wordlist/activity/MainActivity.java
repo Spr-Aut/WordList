@@ -25,6 +25,8 @@ import android.widget.RadioGroup;
 
 import com.example.wordlist.R;
 import com.example.wordlist.adapter.MainPagerAdapter;
+import com.example.wordlist.fragment.WordDetailPagerFragment;
+import com.example.wordlist.fragment.WordListFragment;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.util.TempMsg;
 import com.google.android.material.navigation.NavigationView;
@@ -35,10 +37,12 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     MenuItem navNumEdit;
     MenuItem navSymbolEdit;
+    MenuItem navListOrCard;
     NavigationView navView;
 
     private Dialog dialogNum;
     private Dialog dialogSymbol;
+    private Dialog dialogListOrCard;
     SharedPreferences userData;
 
     @SuppressLint("MissingInflatedId")
@@ -83,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         navView=findViewById(R.id.navView);
         navNumEdit=navView.getMenu().findItem(R.id.navNumEdit);
         navSymbolEdit=navView.getMenu().findItem(R.id.navSymbolEdit);
+        navListOrCard=navView.getMenu().findItem(R.id.navListOrCard);
         navNumEdit.setTitle("每日学习数："+userData.getInt("learnNum",5));
         if (userData.getBoolean("isUk",true)){
             navSymbolEdit.setTitle("默认发音：英式");
@@ -90,18 +95,22 @@ public class MainActivity extends AppCompatActivity {
             navSymbolEdit.setTitle("默认发音：美式");
         }
 
+
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.navNumEdit -> createDialogNum();
                     case R.id.navSymbolEdit -> createDialogSymbol();
+                    case R.id.navListOrCard -> createDialogListOrCard();
                 }
                 return true;
             }
         });
 
     }
+
+
 
     @Override
     public void onStart() {
@@ -113,7 +122,11 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG,"继续");
-
+        if(userData.getBoolean("isList",true)){
+            navListOrCard.setTitle("单词本：列表式");
+        }else {
+            navListOrCard.setTitle("单词本：卡片式");
+        }
     }
 
     @Override
@@ -162,6 +175,36 @@ public class MainActivity extends AppCompatActivity {
         }
         dialogSymbol.show();
     }
+    private void createDialogListOrCard() {//设置单词本样式
+        if(dialogListOrCard==null){
+            Log.d(TAG,"弹窗：设置单词本样式");
+            View view= LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_list_card_edit,null);
+            dialogListOrCard=new Dialog(MainActivity.this);
+            boolean isList = userData.getBoolean("isList", true);
+            RadioGroup group=view.findViewById(R.id.rgWordListDialog);
+            if (isList){
+                group.check(R.id.rbListDialog);
+            }else {
+                group.check(R.id.rbCardDialog);
+            }
+
+            group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    if (checkedId==R.id.rbListDialog){
+                        updateWordListStyle(true);
+                        dialogListOrCard.dismiss();
+                    }else if(checkedId==R.id.rbCardDialog){
+                        updateWordListStyle(false);
+                        dialogListOrCard.dismiss();
+                    }
+                }
+            });
+
+            dialogListOrCard.setContentView(view);
+        }
+        dialogListOrCard.show();
+    }
 
     private void updateSymbol(Boolean isUk) {
 
@@ -198,6 +241,18 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG,"learnNum:"+learnNum+"maxCount:"+maxCount);
         return true;
+    }
+
+    private void updateWordListStyle(Boolean isList){
+        if (isList){
+            navListOrCard.setTitle("单词本：列表式");
+            SharedPreferences.Editor edit = userData.edit();
+            edit.putBoolean("isList",true).commit();
+        }else {
+            navListOrCard.setTitle("单词本：卡片式");
+            SharedPreferences.Editor edit = userData.edit();
+            edit.putBoolean("isList",false).commit();
+        }
     }
 
 

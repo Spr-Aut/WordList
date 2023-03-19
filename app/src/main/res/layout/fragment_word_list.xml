@@ -12,10 +12,9 @@
         android:id="@+id/rc_word_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/bar_main_top"
         />
-
-    <!--顶部标题栏-->
+<!--
+    &lt;!&ndash;顶部标题栏&ndash;&gt;
     <RelativeLayout
         android:id="@+id/bar_main_top"
         android:layout_width="match_parent"
@@ -39,7 +38,7 @@
             android:textSize="23sp"
             android:layout_centerHorizontal="true"
             />
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 
 

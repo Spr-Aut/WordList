@@ -8,60 +8,60 @@
     app:cardElevation="20dp"
     android:background="@color/card_bg"
     >
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-        <RelativeLayout
+        android:scrollbars="none"
+        android:clipToPadding="false">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/card_pager_head_bg"
+            android:orientation="vertical"
             >
-            <TextView
-                android:id="@+id/tvNameWordDetailPager"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="sentence"
-                android:textSize="40sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/padding_top_main"
-                android:layout_marginHorizontal="@dimen/padding_horizontal_pager"
-                />
-            <TextView
-                android:id="@+id/tvSymbolWordDetailPager"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="/'sent(ə)ns/"
-                android:textColor="@color/card_pager_small_text"
-                android:textSize="15sp"
-                android:layout_below="@id/tvNameWordDetailPager"
-                android:layout_centerHorizontal="true"
-                android:layout_marginHorizontal="@dimen/padding_horizontal_pager"
-                />
-            <TextView
-                android:id="@+id/tvDescWordDetailPager"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="翻译；解释"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:layout_below="@id/tvSymbolWordDetailPager"
-                android:layout_centerHorizontal="true"
-                android:layout_marginHorizontal="@dimen/padding_horizontal_pager"
-                android:layout_marginBottom="10dp"
-                />
-        </RelativeLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:clipToPadding="false">
+                android:background="@color/card_pager_head_bg"
+                >
+                <TextView
+                    android:id="@+id/tvNameWordDetailPager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sentence"
+                    android:textSize="40sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/padding_top_main"
+                    android:layout_marginHorizontal="@dimen/padding_horizontal_pager"
+                    />
+                <TextView
+                    android:id="@+id/tvSymbolWordDetailPager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="/'sent(ə)ns/"
+                    android:textColor="@color/card_pager_small_text"
+                    android:textSize="15sp"
+                    android:layout_below="@id/tvNameWordDetailPager"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginHorizontal="@dimen/padding_horizontal_pager"
+                    />
+                <TextView
+                    android:id="@+id/tvDescWordDetailPager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="翻译；解释"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_below="@id/tvSymbolWordDetailPager"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginHorizontal="@dimen/padding_horizontal_pager"
+                    android:layout_marginBottom="10dp"
+                    />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tvSentenceWordDetailPager"
@@ -75,10 +75,10 @@
                 android:layout_below="@id/tvDescWordDetailPager"
                 android:layout_marginHorizontal="@dimen/padding_horizontal_pager"
                 />
-        </ScrollView>
 
+        </LinearLayout>
+    </ScrollView>
 
-    </LinearLayout>
 
 
 
