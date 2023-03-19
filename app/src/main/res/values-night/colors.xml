@@ -12,11 +12,62 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <!--
+    <color name="main_bg">#F7F7F7</color>
+    <color name="frag_bg">#F2F3F8</color>
+    <color name="card_bg">#ffffff</color>
+    <color name="button_bg">#445f88</color>
+    <color name="button_bg_pressed">#4d303030</color>
+    -->
+    <!--
+    <color name="main_bg">#d7e4f4</color>
+    <color name="frag_bg">#F2F3F8</color>
+    <color name="card_bg">#F7F7F7</color>
+    -->
+    <color name="main_bg">#000000</color>
+    <color name="frag_bg">#F2F3F8</color>
+    <color name="card_bg">#424242</color>
+    <color name="button_bg">#445f88</color>
+    <color name="button_bg_pressed">#4d303030</color>
+    <color name="card_pager_head_bg">#2997ff</color>
+    <color name="main_color">#4089ff</color>
+    <color name="card_pager_small_text">#d4eaff</color>
+    <color name="main_typeface">#FFeeeeee</color>
+    <color name="desc_typeface">#c0c0c0</color>
+
+    <!--小组件颜色-->
+    <color name="widget_bg_top">#ff3867d5</color>
+    <color name="widget_bg_bottom">#ff6daed9</color>
+
+    <color name="bg_grey_bottom">#F7F7F7</color>
+    <color name="btn_normal">#F2F3F8</color>
+    <color name="btn_normal_pressed">#4d303030</color>
+    <color name="btn_highlight">#4089ff</color>
+    <!--<color name="btn_highlight">#4089ff</color>-->
+    <color name="btn_highlight_pressed">#3060ff</color>
+
+    <color name="card_grey">#F2F3F8</color>
+    <color name="dialog_bg">#f5c342</color>
+
+    <color name="pie_color1">#2196F3</color><!-- 扇形图颜色分配-->
+    <color name="pie_color2">#009688</color>
+    <color name="pie_color3">#FFEB3B</color>
+    <color name="pie_color4">#FFCD41</color>
+    <color name="pie_color5">#FF5555</color>
+
+    <color name="button_bg_blue">#66bbff</color>
+    <color name="button_bg_pressed_blue">#3590C2</color>
+    <color name="widget_bg">#ffffff</color>
+    <color name="widget_typeface_main">#e6000000</color>
+    <color name="widget_typeface_second">#70000000</color>
+    <color name="widget_typeface_third">#4d000000</color>
+
 
     <color name="grey">#888888</color>
     <color name="red">#ff0000</color>
     <color name="orange">#F9CC12</color>
     <color name="blue">#0099ff</color>
+
     <color name="green">#00ff99</color>
     <color name="blue_light">#aaaaff</color>
     <color name="tab_text_selected">#0084e8</color>
@@ -32,32 +83,12 @@
     <color name="yellow_f5c342">#f5c342</color>
     <color name="yellow_f6ca45">#f6ca45</color>
     <color name="yellow_f8da61">#f8da61</color>
-    <color name="gray_line">#4d303030</color>
+    <color name="gray_line">#4dc0c0c0</color>
     <color name="light_blue_50">#FFE1F5FE</color>
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
 
-    <color name="main_bg">#f7f7f7</color>
-    <color name="frag_bg">#0099ff</color>
-    <color name="card_bg">#ffffff</color>
-    <color name="dialog_bg">#f5c342</color>
-    <color name="button_bg">#ffffff</color>
-    <color name="button_bg_pressed">#4d303030</color>
-    <color name="button_bg_blue">#66bbff</color>
-    <color name="button_bg_pressed_blue">#3590C2</color>
-    <color name="main_typeface">#FF000000</color>
-    <color name="widget_bg">#ffffff</color>
-    <color name="widget_typeface_main">#e6000000</color>
-    <color name="widget_typeface_second">#70000000</color>
-    <color name="widget_typeface_third">#4d000000</color>
-
-    <color name="bg_grey_bottom">#F7F7F7</color>
-    <color name="btn_normal">#F2F3F8</color>
-    <color name="btn_normal_pressed">#4d303030</color>
-    <color name="btn_highlight">#4089ff</color>
-    <color name="btn_highlight_pressed">#3060ff</color>
-    <color name="card_grey">#F2F3F8</color>
 
     <color name="colorMainBlue">#3675FF</color>
     <color name="colorLightBlue">#4089ff</color>
@@ -92,5 +123,5 @@
     <color name="colorFontInGrey">#ffffff</color>
     <color name="colorBgWhite">#FFFFFF</color>
     <color name="colorBgWhiteN">#424242</color>
-    <color name="colorBgLittleWhite">#FBFBFD</color>
+    <color name="colorBgLittleWhite">#ff0000</color>
 </resources>

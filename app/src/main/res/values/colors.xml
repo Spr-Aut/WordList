@@ -32,6 +32,9 @@
     <color name="card_pager_head_bg">#2997ff</color>
     <color name="main_color">#2997ff</color>
     <color name="card_pager_small_text">#d4eaff</color>
+    <color name="main_typeface">#FF000000</color>
+    <color name="main_typeface_converse">#FFeeeeee</color>
+    <color name="desc_typeface">#333944</color>
 
     <!--小组件颜色-->
     <color name="widget_bg_top">#ff3867d5</color>
@@ -55,7 +58,6 @@
 
     <color name="button_bg_blue">#66bbff</color>
     <color name="button_bg_pressed_blue">#3590C2</color>
-    <color name="main_typeface">#FF000000</color>
     <color name="widget_bg">#ffffff</color>
     <color name="widget_typeface_main">#e6000000</color>
     <color name="widget_typeface_second">#70000000</color>

@@ -318,7 +318,7 @@
                             android:layout_marginTop="15dp"
                             android:background="?android:attr/selectableItemBackground"
                             android:text=""
-                            android:textColor="@color/colorLightBlack"
+                            android:textColor="@color/desc_typeface"
                             android:textSize="15sp" />
 
                     </LinearLayout>

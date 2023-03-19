@@ -30,7 +30,7 @@
                 android:layout_centerInParent="true"
                 android:paddingRight="0dp"
                 app:tabGravity="center"
-                app:tabIndicatorColor="@color/black"
+                app:tabIndicatorColor="@color/main_typeface"
                 app:tabIndicatorHeight="2dp"
                 app:tabMode="scrollable"
 

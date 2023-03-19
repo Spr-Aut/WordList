@@ -17,7 +17,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:padding">5dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/tab_bg_selector</item>
+        <item name="android:background">@color/main_bg</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@drawable/tab_text_selector</item>
         <item name="android:button">@null</item>
@@ -49,7 +49,7 @@
 
     <!--源文本-->
     <style name="TextStyleOrigin">
-        <item name="android:textColor">@color/widget_typeface_main</item>
+        <item name="android:textColor">@color/main_typeface</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">26sp</item>
     </style>

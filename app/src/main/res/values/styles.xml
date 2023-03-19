@@ -65,7 +65,7 @@
 
     <!--源文本-->
     <style name="TextStyleOrigin">
-        <item name="android:textColor">@color/widget_typeface_main</item>
+        <item name="android:textColor">@color/main_typeface</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">26sp</item>
     </style>

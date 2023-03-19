@@ -45,13 +45,13 @@ public class WordListActivity extends AppCompatActivity {
         if (isList){
             manager.beginTransaction().add(R.id.container_word_list,new WordListFragment()).commit();
             radioGroup.check(R.id.rbList);
-            rbList.setTextColor(getResources().getColor(R.color.black));
+            rbList.setTextColor(getResources().getColor(R.color.main_typeface));
             rbCard.setTextColor(getResources().getColor(R.color.colorLightGrey));
         }else {
             manager.beginTransaction().add(R.id.container_word_list,new WordDetailPagerFragment()).commit();
             radioGroup.check(R.id.rbCard);
             rbList.setTextColor(getResources().getColor(R.color.colorLightGrey));
-            rbCard.setTextColor(getResources().getColor(R.color.black));
+            rbCard.setTextColor(getResources().getColor(R.color.main_typeface));
         }
 
 
@@ -64,14 +64,14 @@ public class WordListActivity extends AppCompatActivity {
                     transaction.replace(R.id.container_word_list,new WordListFragment()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                     SharedPreferences.Editor edit = userData.edit();
                     edit.putBoolean("isList",true).commit();
-                    rbList.setTextColor(getResources().getColor(R.color.black));
+                    rbList.setTextColor(getResources().getColor(R.color.main_typeface));
                     rbCard.setTextColor(getResources().getColor(R.color.colorLightGrey));
                 }else if(checkedId==R.id.rbCard){
                     transaction.replace(R.id.container_word_list,new WordDetailPagerFragment()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                     SharedPreferences.Editor edit = userData.edit();
                     edit.putBoolean("isList",false).commit();
                     rbList.setTextColor(getResources().getColor(R.color.colorLightGrey));
-                    rbCard.setTextColor(getResources().getColor(R.color.black));
+                    rbCard.setTextColor(getResources().getColor(R.color.main_typeface));
                 }
             }
         });
