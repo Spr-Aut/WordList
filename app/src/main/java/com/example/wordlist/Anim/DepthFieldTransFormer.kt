@@ -19,11 +19,12 @@ class DepthFieldTransformer : ViewPager2.PageTransformer {
                     page.scaleX = MIN_SCALEX + (1f - MIN_SCALEX) * scale
                     page.scaleY = MIN_SCALE + (1f - MIN_SCALE) * scale
                     //page.alpha = MIN_SCALE + (1f - MIN_SCALE) * scale
+                    page.alpha = (0.3+0.7*(1-absPos)).toFloat()
                 }
                 else -> {
                     page.scaleX = MIN_SCALEX
                     page.scaleY = MIN_SCALE
-                    //page.alpha = 0f
+                    page.alpha = 0.3f
                 }
             }
         }
