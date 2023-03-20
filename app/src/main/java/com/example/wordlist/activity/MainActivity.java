@@ -39,12 +39,14 @@ public class MainActivity extends AppCompatActivity {
     MenuItem navSymbolEdit;
     MenuItem navListOrCard;
     MenuItem navShake;
+    MenuItem navListAnim;
     NavigationView navView;
 
     private Dialog dialogNum;
     private Dialog dialogSymbol;
     private Dialog dialogListOrCard;
     private Dialog dialogShake;
+    private Dialog dialogListAnim;
     SharedPreferences userData;
 
     @SuppressLint("MissingInflatedId")
@@ -91,12 +93,15 @@ public class MainActivity extends AppCompatActivity {
         navSymbolEdit=navView.getMenu().findItem(R.id.navSymbolEdit);
         navListOrCard=navView.getMenu().findItem(R.id.navListOrCard);
         navShake=navView.getMenu().findItem(R.id.navShake);
+        navListAnim=navView.getMenu().findItem(R.id.navListAnim);
 
         navNumEdit.setTitle("每日学习数："+userData.getInt("learnNum",5));
         if (userData.getBoolean("isUk",true)){
             navSymbolEdit.setTitle("默认发音：英式");
+            TempMsg.setIsUk(true);
         }else {
             navSymbolEdit.setTitle("默认发音：美式");
+            TempMsg.setIsUk(false);
         }
         if (userData.getBoolean("doShake",true)){
             navShake.setTitle("震动：开");
@@ -104,6 +109,13 @@ public class MainActivity extends AppCompatActivity {
         }else {
             navShake.setTitle("震动：关");
             MyTools.setDoShake(false);
+        }
+        if(userData.getBoolean("useListAnim",true)){
+            navListAnim.setTitle("列表动画：开");
+            TempMsg.setUseListAnim(true);
+        }else {
+            navListAnim.setTitle("列表动画：关");
+            TempMsg.setUseListAnim(false);
         }
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -113,12 +125,14 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navSymbolEdit -> createDialogSymbol();
                     case R.id.navListOrCard -> createDialogListOrCard();
                     case R.id.navShake -> createDialogShake();
+                    case R.id.navListAnim -> createDialogListAnim();
                 }
                 return true;
             }
         });
 
     }
+
 
 
 
@@ -263,6 +277,49 @@ public class MainActivity extends AppCompatActivity {
             dialogShake.setContentView(view);
         }
         dialogShake.show();
+    }
+
+    private void createDialogListAnim() {
+        if(dialogListAnim==null){
+            Log.d(TAG,"弹窗：设置是否启用列表动画");
+            View view= LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_list_anim,null);
+            dialogListAnim=new Dialog(MainActivity.this);
+
+            //dialog背景透明，否则四个角不正常
+            dialogListAnim.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            WindowManager.LayoutParams layoutParams=dialogListAnim.getWindow().getAttributes();
+            layoutParams.dimAmount=0.0f;
+            dialogListAnim.getWindow().setAttributes(layoutParams);
+
+            Button btnUseListAnim=view.findViewById(R.id.btnUseListAnim);
+            Button btnNoListAnim=view.findViewById(R.id.btnNoListAnim);
+            btnUseListAnim.setOnClickListener(v -> {
+                updateListAnim(true);
+                dialogListAnim.dismiss();
+            });
+            btnNoListAnim.setOnClickListener(v -> {
+                updateListAnim(false);
+                dialogListAnim.dismiss();
+            });
+
+            dialogListAnim.setContentView(view);
+        }
+        dialogListAnim.show();
+    }
+
+    private void updateListAnim(boolean useListAnim) {
+        SharedPreferences.Editor edit=userData.edit();
+        edit.putBoolean("useListAnim",useListAnim);
+        edit.commit();
+        TempMsg.setUseListAnim(useListAnim);
+        if(useListAnim){
+            MyTools.showMsg("启用列表动画",this);
+            navListAnim.setTitle("列表动画：开");
+        }else {
+            MyTools.showMsg("关闭列表动画",this);
+            navListAnim.setTitle("列表动画：关");
+        }
+
     }
 
     private void updateShake(Boolean doShake) {

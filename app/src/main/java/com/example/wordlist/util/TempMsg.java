@@ -17,6 +17,16 @@ public class TempMsg {
     private static int learnNum=5;//每天学几个
     private static int maxCount=5;//背几个换队列
     private static boolean isUk=true;//是否为英式音标
+    private static boolean useListAnim=true;//是否为启用列表动画
+
+    public static boolean isUseListAnim() {
+        return useListAnim;
+    }
+
+    public static void setUseListAnim(boolean useListAnim) {
+        TempMsg.useListAnim = useListAnim;
+    }
+
     private static String WidgetWordName="";
 
     public static String getWidgetWordName() {

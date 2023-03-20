@@ -10,12 +10,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wordlist.MainApplication;
@@ -155,6 +157,12 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 return true;
             }
         });
+
+        //为整个卡片设置动画
+        if (TempMsg.isUseListAnim()){
+            holder.mViewMain.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.fade_scale_anim));
+        }
+
     }
 
     //切换单条数据翻译结果的显示与否
@@ -200,7 +208,7 @@ public class SlideRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView mTvOrigin;
         TextView mTvTrans;
         TextView mTvSymbol;
-        LinearLayout mViewMain;
+        CardView mViewMain;
         LinearLayout mViewSlideDelete;
         LinearLayout mViewSlideMore;
 

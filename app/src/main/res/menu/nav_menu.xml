@@ -17,14 +17,9 @@
         android:icon="@drawable/icon_shake"
         android:title="震动：开"/>
     <item
-        android:visible="false"
-        android:id="@+id/navMail"
-        android:icon="@drawable/nav_mail"
-        android:title="Mail"/>
-    <item
-        android:visible="false"
-        android:id="@+id/navTask"
-        android:icon="@drawable/nav_task"
-        android:title="Task"/>
+        android:id="@+id/navListAnim"
+        android:icon="@drawable/icon_anim"
+        android:title="列表动画：开"/>
+
 
 </menu>

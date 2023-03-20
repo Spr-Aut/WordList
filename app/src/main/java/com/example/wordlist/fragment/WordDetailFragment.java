@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.wordlist.MainApplication;
@@ -56,7 +57,7 @@ public class WordDetailFragment extends Fragment {
         mContext = getActivity(); // 获取活动页面的上下文
         // 根据布局文件fragment_tab_second.xml生成视图对象
         mView = inflater.inflate(R.layout.fragment_word_detail, container, false);
-        Log.d(TAG,"创建");
+        Log.d(TAG,"创建视图");
 
         SharedPreferences userData=mContext.getSharedPreferences("UserData",Context.MODE_PRIVATE);
         TempMsg.setIsUk(userData.getBoolean("isUk",true));
@@ -81,6 +82,12 @@ public class WordDetailFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG,"创建");
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         Log.d(TAG,"启动");
@@ -99,6 +106,7 @@ public class WordDetailFragment extends Fragment {
         judgeSource();
         refreshView();
         MyTools.timeEnd(TAG);
+        Log.d(TAG,"isFromIntent的值为："+isFromIntent);
     }
 
     @Override
@@ -111,6 +119,19 @@ public class WordDetailFragment extends Fragment {
     public void onStop(){
         super.onStop();
         Log.d(TAG,"停止");
+        mContext.unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG,"销毁视图");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"销毁");
     }
 
     @Override
@@ -134,6 +155,7 @@ public class WordDetailFragment extends Fragment {
 
         if (nameIntent!=null&&nameIntent.length()!=0){//来自Intent，不管广播和nameTemp
             wordName=nameIntent;
+            //nameIntent=null;
             Log.d(TAG,"从Intent启动："+nameIntent);
             isFromIntent=true;
         }else{
@@ -144,13 +166,17 @@ public class WordDetailFragment extends Fragment {
 
 
     private void refreshView(){
+        Log.d(TAG,"refreshView():当前的isFromIntent为："+isFromIntent);
         if (tvName.getText().equals(wordName)){
             Log.d(TAG,"无需刷新");
         }else {//刷新
             /*if (wordInfo.getName()==null&&wordInfo.getName().length()==0){
                 return;
             }*/
+            Log.d(TAG,"刷新数据");
             if (isFromIntent){
+                isFromIntent=false;
+                Log.d(TAG,"来自Intent");
                 wordInfo= wordDao.getWordByName(wordName);
                 btnContinue.setVisibility(View.VISIBLE);
                 btnContinue.setOnClickListener(v -> {
@@ -160,17 +186,21 @@ public class WordDetailFragment extends Fragment {
                 placeHolder.setVisibility(View.GONE);
 
             }else {
+                Log.d(TAG,"来自广播");
                 wordInfo=TempMsg.WordInfo;
                 btnContinue.setVisibility(View.GONE);
                 placeHolder.setVisibility(View.VISIBLE);
             }
 
             if (wordInfo.getName()!=null&&wordInfo.getName().length()!=0&&wordDao.getWordByName(wordInfo.getName())!=null){
+                Log.d(TAG,"name非空，数据库里存在");
                 btnFavorite.setImageResource(R.drawable.icon_star_fill);
             }else {
+                Log.d(TAG,"name为空");
                 btnFavorite.setImageResource(R.drawable.icon_star);
             }
 
+            Log.d(TAG,"设置name");
             tvName.setText(wordInfo.getName());
             tvSymbolUk.setText(wordInfo.getSymbol_uk());
             tvSymbolUs.setText(wordInfo.getSymbol_us());
