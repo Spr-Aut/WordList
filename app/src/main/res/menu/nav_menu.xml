@@ -13,10 +13,9 @@
         android:icon="@mipmap/wordlist"
         android:title="单词本：列表式"/>
     <item
-        android:visible="false"
-        android:id="@+id/navLocation"
-        android:icon="@drawable/nav_location"
-        android:title="Location"/>
+        android:id="@+id/navShake"
+        android:icon="@drawable/icon_shake"
+        android:title="震动：开"/>
     <item
         android:visible="false"
         android:id="@+id/navMail"

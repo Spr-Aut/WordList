@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/padding_horizontal_item"
-            android:paddingVertical="@dimen/padding_vertical_item"
+            android:paddingBottom="@dimen/padding_vertical_item"
+            android:paddingTop="10dp"
             android:orientation="horizontal"
             android:background="@color/card_bg"
             >
@@ -46,6 +47,7 @@
                     android:textStyle="italic"
                     android:text="/Hello/"
                     android:layout_below="@id/tv_item_origin"
+                    android:layout_marginTop="6dp"
                     />
             </LinearLayout>
 

@@ -46,6 +46,7 @@ public class MyTools {
 
     private static Toast toast;
     public static long time=0L;
+    private static boolean doShake=true;
 
     /*判断单词是否出现被安排在在下一个，击中率为(100-memory)/100*/
     public static boolean random_hit(int memory) {
@@ -240,11 +241,19 @@ public class MyTools {
         return (int) (dpValue * scale + 0.5f); // 四舍五入取整
     }
 
+    public static void setDoShake(Boolean bool){
+        if (bool)doShake=true;
+        else doShake=false;
+    }
+
     public static void shake(Activity activity){
         //震动
-        Vibrator vibrator=(Vibrator)activity.getSystemService(Service.VIBRATOR_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+        if(doShake){
+            Vibrator vibrator=(Vibrator)activity.getSystemService(Service.VIBRATOR_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+            }
         }
+
     }
 }

@@ -2,35 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    style="@style/DialogStyle">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="请选择单词本样式"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:gravity="center"
-        android:layout_marginVertical="@dimen/padding_vertical_item"
+        style="@style/DialogTextStyle"
         />
     <RadioGroup
         android:id="@+id/rgWordListDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginTop="@dimen/padding_vertical_item"
+        android:layout_gravity="center_horizontal"
         >
         <RadioButton
             android:id="@+id/rbListDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="列表"
+            android:buttonTint="@color/main_color"
             />
         <RadioButton
             android:id="@+id/rbCardDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="卡片"
+            android:buttonTint="@color/main_color"
             />
     </RadioGroup>
 

@@ -81,6 +81,8 @@
         <item name="android:textSize">26sp</item>
     </style>
 
+
+
     <style name="Widget.WordList.AppWidget.Container" parent="android:Widget">
         <item name="android:id">@android:id/background</item>
         <item name="android:background">?android:attr/colorBackground</item>

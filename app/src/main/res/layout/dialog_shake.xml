@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="请选择默认发音"
+        android:text="请选择是否开启震动"
         style="@style/DialogTextStyle"
         />
     <LinearLayout
@@ -16,19 +16,19 @@
         android:orientation="horizontal"
         >
         <Button
-            android:id="@+id/btnUs"
+            android:id="@+id/btnDoNotShake"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="美式"
+            android:text="否"
             style="@style/DialogButtonStyle"
             />
         <Button
-            android:id="@+id/btnUk"
+            android:id="@+id/btnDoShake"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="英式"
+            android:text="是"
             style="@style/DialogButtonStyle"
             />
     </LinearLayout>

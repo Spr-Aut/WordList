@@ -38,11 +38,13 @@ public class MainActivity extends AppCompatActivity {
     MenuItem navNumEdit;
     MenuItem navSymbolEdit;
     MenuItem navListOrCard;
+    MenuItem navShake;
     NavigationView navView;
 
     private Dialog dialogNum;
     private Dialog dialogSymbol;
     private Dialog dialogListOrCard;
+    private Dialog dialogShake;
     SharedPreferences userData;
 
     @SuppressLint("MissingInflatedId")
@@ -88,14 +90,21 @@ public class MainActivity extends AppCompatActivity {
         navNumEdit=navView.getMenu().findItem(R.id.navNumEdit);
         navSymbolEdit=navView.getMenu().findItem(R.id.navSymbolEdit);
         navListOrCard=navView.getMenu().findItem(R.id.navListOrCard);
+        navShake=navView.getMenu().findItem(R.id.navShake);
+
         navNumEdit.setTitle("每日学习数："+userData.getInt("learnNum",5));
         if (userData.getBoolean("isUk",true)){
             navSymbolEdit.setTitle("默认发音：英式");
         }else {
             navSymbolEdit.setTitle("默认发音：美式");
         }
-
-
+        if (userData.getBoolean("doShake",true)){
+            navShake.setTitle("震动：开");
+            MyTools.setDoShake(true);
+        }else {
+            navShake.setTitle("震动：关");
+            MyTools.setDoShake(false);
+        }
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -103,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navNumEdit -> createDialogNum();
                     case R.id.navSymbolEdit -> createDialogSymbol();
                     case R.id.navListOrCard -> createDialogListOrCard();
+                    case R.id.navShake -> createDialogShake();
                 }
                 return true;
             }
@@ -140,6 +150,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG,"弹窗：设置学习数");
             View view= LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_num_edit,null);
             dialogNum=new Dialog(MainActivity.this);
+
+            //dialog背景透明，否则四个角不正常
+            dialogNum.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            WindowManager.LayoutParams layoutParams=dialogNum.getWindow().getAttributes();
+            layoutParams.dimAmount=0.0f;
+            dialogNum.getWindow().setAttributes(layoutParams);
+
             EditText etNum=view.findViewById(R.id.etNum);
             Button btnNumConfirm=view.findViewById(R.id.btnNumConfirm);
             Button btnNumCancel=view.findViewById(R.id.btnNumCancel);
@@ -161,6 +178,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG,"弹窗：设置音标");
             View view= LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_symbol_edit,null);
             dialogSymbol=new Dialog(MainActivity.this);
+
+            //dialog背景透明，否则四个角不正常
+            dialogSymbol.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            WindowManager.LayoutParams layoutParams=dialogSymbol.getWindow().getAttributes();
+            layoutParams.dimAmount=0.0f;
+            dialogSymbol.getWindow().setAttributes(layoutParams);
+
             Button btnNumConfirm=view.findViewById(R.id.btnUk);
             Button btnNumCancel=view.findViewById(R.id.btnUs);
             btnNumConfirm.setOnClickListener(v -> {
@@ -180,6 +204,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG,"弹窗：设置单词本样式");
             View view= LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_list_card_edit,null);
             dialogListOrCard=new Dialog(MainActivity.this);
+
+            //dialog背景透明，否则四个角不正常
+            dialogListOrCard.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            WindowManager.LayoutParams layoutParams=dialogListOrCard.getWindow().getAttributes();
+            layoutParams.dimAmount=0.0f;
+            dialogListOrCard.getWindow().setAttributes(layoutParams);
+
             boolean isList = userData.getBoolean("isList", true);
             RadioGroup group=view.findViewById(R.id.rgWordListDialog);
             if (isList){
@@ -204,6 +235,48 @@ public class MainActivity extends AppCompatActivity {
             dialogListOrCard.setContentView(view);
         }
         dialogListOrCard.show();
+    }
+
+    private void createDialogShake() {//设置是否震动
+        if(dialogShake==null){
+            Log.d(TAG,"弹窗：设置是否震动");
+            View view= LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_shake,null);
+            dialogShake=new Dialog(MainActivity.this);
+
+            //dialog背景透明，否则四个角不正常
+            dialogShake.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            WindowManager.LayoutParams layoutParams=dialogShake.getWindow().getAttributes();
+            layoutParams.dimAmount=0.0f;
+            dialogShake.getWindow().setAttributes(layoutParams);
+
+            Button btnDoShake=view.findViewById(R.id.btnDoShake);
+            Button btnDoNotShake=view.findViewById(R.id.btnDoNotShake);
+            btnDoShake.setOnClickListener(v -> {
+                updateShake(true);
+                dialogShake.dismiss();
+            });
+            btnDoNotShake.setOnClickListener(v -> {
+                updateShake(false);
+                dialogShake.dismiss();
+            });
+
+            dialogShake.setContentView(view);
+        }
+        dialogShake.show();
+    }
+
+    private void updateShake(Boolean doShake) {
+        SharedPreferences.Editor edit = userData.edit();
+        edit.putBoolean("doShake",doShake);
+        edit.commit();
+        MyTools.setDoShake(doShake);
+        if(doShake){
+            MyTools.showMsg("开启震动",this);
+            navShake.setTitle("震动：开");
+        }else {
+            MyTools.showMsg("关闭震动",this);
+            navShake.setTitle("震动：关");
+        }
     }
 
     private void updateSymbol(Boolean isUk) {
@@ -246,10 +319,12 @@ public class MainActivity extends AppCompatActivity {
     private void updateWordListStyle(Boolean isList){
         if (isList){
             navListOrCard.setTitle("单词本：列表式");
+            MyTools.showMsg("单词本设为列表式",this);
             SharedPreferences.Editor edit = userData.edit();
             edit.putBoolean("isList",true).commit();
         }else {
             navListOrCard.setTitle("单词本：卡片式");
+            MyTools.showMsg("单词本设为卡片式",this);
             SharedPreferences.Editor edit = userData.edit();
             edit.putBoolean("isList",false).commit();
         }

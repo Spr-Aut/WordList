@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DialogStyle">
+        <item name="android:background">@drawable/rectangle_solid</item>
+        <item name="android:paddingHorizontal">@dimen/padding_horizontal_item</item>
+        <item name="android:paddingVertical">@dimen/padding_horizontal_item</item>
+    </style>
+
+    <style name="DialogButtonStyle">
+        <item name="android:layout_marginTop">@dimen/padding_vertical_item</item>
+        <item name="android:layout_marginHorizontal">@dimen/padding_horizontal</item>
+        <item name="android:background">@drawable/btn_highlight_selector</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DialogTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/main_typeface</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>
