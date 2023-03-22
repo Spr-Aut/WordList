@@ -191,6 +191,8 @@ public class TranslateFragment extends Fragment {
             case STATE_BEFORE_INPUT:
                 tvResult.setText("");
                 btnTrans.setVisibility(View.VISIBLE);//显示翻译按钮
+                btnTrans.setText("翻译");
+                btnTrans.setEnabled(true);
                 btnClear.setVisibility(View.VISIBLE);//显示清除按钮
                 btnAdd.setVisibility(View.GONE);//隐藏添加按钮
                 break;
@@ -266,21 +268,28 @@ public class TranslateFragment extends Fragment {
         @Override
         protected void onPostExecute(String params) {
             String text = "null";
-            if (params != null) {
+            if (params != null&&params.length()!=0) {
                 long time= MyTools.getCurrentTimeMillis();
                 try {
                     TempMsg.WordInfo = XMLParse.parseXmlWithPull(params, true);
-                    Log.d(TAG,"XML处理完毕，存入TempMsg.tempTempMsg.WordInfo,Name为"+TempMsg.WordInfo.getName());
+                    Log.d(TAG,"XML处理完毕，Name为"+TempMsg.WordInfo.getName());
                     //DBHelper.setExampleSentence(context, text, wordId);
                 } catch (Exception e) {
                     Log.d(TAG, "onPostExecute: " + text);
                 }
-                //显示到翻译结果上
-                tvResult.setText(MyTools.briefDesc(TempMsg.WordInfo.getDesc()));
-                //tvTranslation.setText("翻译");
-                //tvTranslation.setEnabled(true);
-                stateSwitch(STATE_AFTER_TRANS);//获取到了翻译结果，显示添加按钮
-                notifyWord();
+                if (TempMsg.WordInfo.getDesc().length()==0){
+                    Log.d(TAG,"未查询到释义");
+                    stateSwitch(STATE_BEFORE_INPUT);
+                    MyTools.showMsg("未查询到释义，请重新输入",mContext);
+                }else {
+                    //显示到翻译结果上
+                    tvResult.setText(MyTools.briefDesc(TempMsg.WordInfo.getDesc()));
+                    //tvTranslation.setText("翻译");
+                    //tvTranslation.setEnabled(true);
+                    stateSwitch(STATE_AFTER_TRANS);//获取到了翻译结果，显示添加按钮
+                    notifyWord();
+                }
+
 
             }
 
