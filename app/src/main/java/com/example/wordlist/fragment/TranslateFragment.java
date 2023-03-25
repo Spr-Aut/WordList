@@ -30,6 +30,7 @@ import com.example.wordlist.activity.WordListActivity;
 import com.example.wordlist.broadcast.BroadcastName;
 import com.example.wordlist.dao.BookDao;
 import com.example.wordlist.dao.WordDao;
+import com.example.wordlist.test.TestActivity;
 import com.example.wordlist.util.MyTools;
 import com.example.wordlist.util.TempMsg;
 import com.example.wordlist.widget.WordWidget;
@@ -86,7 +87,7 @@ public class TranslateFragment extends Fragment {
             MyTools.shake(getActivity());
             checkWordList();
         });
-        btnWordList.setOnLongClickListener(v -> toPager());
+        btnWordList.setOnLongClickListener(v -> toBookDownload());
         btnTrans.setOnClickListener(v -> {
             MyTools.shake(getActivity());
             translate();
@@ -106,8 +107,8 @@ public class TranslateFragment extends Fragment {
         return mView;
     }
 
-    private boolean toPager() {
-        startActivity(new Intent(getActivity(), WordDetailPagerActivity.class));
+    private boolean toBookDownload() {
+        startActivity(new Intent(getActivity(), TestActivity.class));
         return true;
     }
 

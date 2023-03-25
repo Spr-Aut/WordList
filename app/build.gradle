@@ -81,4 +81,8 @@ dependencies {
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version" //饼状图
+
+    implementation 'com.google.code.gson:gson:2.8.5'//GSON
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1'//Retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
 }

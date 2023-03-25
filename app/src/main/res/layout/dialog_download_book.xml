@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/DialogStyle">
+    <TextView
+        android:id="@+id/tvDownloadBook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请确认是否下载词书《高考》"
+        style="@style/DialogTextStyle"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/btnNotDownloadBook"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="否"
+            style="@style/DialogButtonStyle"
+            />
+        <Button
+            android:id="@+id/btnDownloadBook"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="是"
+            style="@style/DialogButtonStyle"
+            />
+    </LinearLayout>
+</LinearLayout>

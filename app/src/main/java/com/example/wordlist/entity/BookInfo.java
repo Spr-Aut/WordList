@@ -9,36 +9,15 @@ public class BookInfo {
     @PrimaryKey
     @NonNull
     private String name;
-
-    private int price;
-
-    private String text;
-
-    private long time=1675341973622L;
-
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
+    private boolean hasDownload;
 
     public BookInfo() {
     }
 
-    /*public RoomTest(String name, int price) {
+    public BookInfo(String name, boolean hasDownload) {
         this.name = name;
-        this.price = price;
-    }*/
+        this.hasDownload = hasDownload;
+    }
 
     /**
      * 获取
@@ -58,21 +37,21 @@ public class BookInfo {
 
     /**
      * 获取
-     * @return price
+     * @return hasDownload
      */
-    public int getPrice() {
-        return price;
+    public boolean isHasDownload() {
+        return hasDownload;
     }
 
     /**
      * 设置
-     * @param price
+     * @param hasDownload
      */
-    public void setPrice(int price) {
-        this.price = price;
+    public void setHasDownload(boolean hasDownload) {
+        this.hasDownload = hasDownload;
     }
 
     public String toString() {
-        return "RoomTest{name = " + name + ", price = " + price + "}";
+        return "BookInfo{name = " + name + ", hasDownload = " + hasDownload + "}";
     }
 }

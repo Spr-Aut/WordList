@@ -16,22 +16,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WordList"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.WordListDownloadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".test.TestActivity"
+            android:exported="true">
+
+        </activity>
+
         <receiver
             android:name=".widget.WordWidget"
-            android:exported="true"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="wordlist.action.APPWIDGET_UPDATE"/>
-                <action android:name="wordlist.action.APPWIDGET_BUTTON"/>
-                <action android:name="wordlist.action.APPWIDGET_ACTIVITY"/>
+                <action android:name="wordlist.action.APPWIDGET_UPDATE" />
+                <action android:name="wordlist.action.APPWIDGET_BUTTON" />
+                <action android:name="wordlist.action.APPWIDGET_ACTIVITY" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/word_widget_info" >
-
-            </meta-data>
+                android:resource="@xml/word_widget_info" />
         </receiver>
 
         <activity
@@ -42,10 +49,11 @@
         <activity
             android:name=".activity.WordDetailActivity"
             android:exported="false" />
-        <activity android:name=".activity.WidgetWordDetailActivity"
+        <activity
+            android:name=".activity.WidgetWordDetailActivity"
             android:exported="true"
             android:launchMode="singleInstance"
-            android:taskAffinity="com.example.wordlist.activity.WidgetWordDetailActivity"/>
+            android:taskAffinity="com.example.wordlist.activity.WidgetWordDetailActivity" />
         <activity
             android:name=".activity.WordListActivity"
             android:exported="false" />
@@ -57,11 +65,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts"/>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
-        <activity android:name=".activity.WordDetailPagerActivity"/>
+        <activity android:name=".activity.WordDetailPagerActivity" />
     </application>
 
 </manifest>

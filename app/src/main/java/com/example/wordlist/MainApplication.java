@@ -11,11 +11,12 @@ import com.example.wordlist.dao.BookDao;
 import com.example.wordlist.database.BookDatabase;
 import com.example.wordlist.database.WordDatabase;
 
+import java.util.HashMap;
+
 public class MainApplication extends Application {
     private static MainApplication mainApplication;
     private BookDatabase bookDatabase;
     private WordDatabase wordDatabase;
-    private WordDatabase wordDatabase2;
 
 
     //获取当前应用的唯一实例
@@ -32,6 +33,7 @@ public class MainApplication extends Application {
         //构建图书数据库的示例
         bookDatabase= Room.databaseBuilder(mainApplication,BookDatabase.class,"BookInfo").addMigrations().allowMainThreadQueries().build();
         wordDatabase=Room.databaseBuilder(mainApplication,WordDatabase.class,"WordInfo").addMigrations().allowMainThreadQueries().build();
+
     }
 
     public BookDatabase getBookDB(){
